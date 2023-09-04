@@ -1,0 +1,9 @@
+{
+    "embeds": [
+      {
+        "title": "%%title%%",
+        "description": "%%message%%",
+        "color": 13359655
+      }
+    ]
+  }

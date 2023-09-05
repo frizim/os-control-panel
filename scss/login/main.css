@@ -26,12 +26,12 @@
 
 body, html {
 	height: 100%;
-	font-family: Ubuntu-Regular, sans-serif;
+	font-family: 'Ubuntu-Regular', sans-serif;
 }
 
 /*---------------------------------------------*/
 a {
-	font-family: Ubuntu-Regular;
+	font-family: 'Ubuntu-Regular', sans-serif;
 	font-size: 14px;
 	line-height: 1.7;
 	color: #666666;
@@ -57,7 +57,7 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 p {
-	font-family: Ubuntu-Regular;
+	font-family: 'Ubuntu-Regular', sans-serif;
 	font-size: 14px;
 	line-height: 1.7;
 	color: #666666;
@@ -119,7 +119,7 @@ iframe {
 /*//////////////////////////////////////////////////////////////////
 [ Utility ]*/
 .txt1 {
-  font-family: Ubuntu-Regular;
+	font-family: 'Ubuntu-Regular', sans-serif;
   font-size: 16px;
   color: #827ffe;
   line-height: 1.4;
@@ -150,7 +150,7 @@ iframe {
   
   background-position: center;
   background-size: cover;
-  background-repeat: no-repeat;;
+  background-repeat: no-repeat;
 }
 
 
@@ -170,7 +170,7 @@ iframe {
 }
 
 .login100-form-title {
-  font-family: Ubuntu-Bold;
+	font-family: 'Ubuntu-Bold', sans-serif;
   font-size: 30px;
   color: #403866;
   line-height: 1.2;
@@ -197,7 +197,7 @@ iframe {
 
 /*---------------------------------------------*/
 .input100 {
-  font-family: Ubuntu-Bold;
+	font-family: 'Ubuntu-Bold', sans-serif;
   color: #403866;
   line-height: 1.2;
   font-size: 18px;
@@ -268,7 +268,7 @@ iframe {
 }
 
 .label-checkbox100 {
-  font-family: Ubuntu-Regular;
+	font-family: 'Ubuntu-Regular', sans-serif;
   font-size: 16px;
   color: #999999;
   line-height: 1.2;
@@ -281,7 +281,7 @@ iframe {
 
 .label-checkbox100::before {
   content: "\f00c";
-  font-family: FontAwesome;
+  font-family: 'Font Awesome 6 Free', sans-serif;
   font-size: 13px;
   color: transparent;
 
@@ -325,7 +325,7 @@ iframe {
 }
 
 .login100-form-btn {
-  font-family: Ubuntu-Bold;
+  font-family: 'Ubuntu-Bold', sans-serif;
   font-size: 16px;
   color: #fff;
   line-height: 1.2;
@@ -379,7 +379,7 @@ iframe {
   right: 12px;
   pointer-events: none;
 
-  font-family: Ubuntu-Regular;
+  font-family: 'Ubuntu-Regular', sans-serif;
   color: #c80000;
   font-size: 14px;
   line-height: 1.4;
@@ -396,7 +396,7 @@ iframe {
 
 .alert-validate::after {
   content: "\f12a";
-  font-family: FontAwesome;
+  font-family: 'Font Awesome 6 Free', sans-serif;
   display: block;
   position: absolute;
   color: #c80000;

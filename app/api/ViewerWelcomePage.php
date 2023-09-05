@@ -29,6 +29,7 @@ class ViewerWelcomePage extends \Mcp\RequestHandler
             'grid-name' => $this->app->config('grid')['name'],
             'news' => $this->app->config('grid')['main-news']
         ])->unsafeVar('json-image-array', json_encode($images))
+            ->unsafeVar('image-1', $images[0])->unsafeVar('image-2', $images[1])
             ->unsafeVar('stats', "Registrierte User: ".$opensim->getUserCount()."<br>Regionen: ".$opensim->getRegionCount()."<br>Aktuell Online: ".($opensim->getOnlineCount()-1))
             ->render();
     }

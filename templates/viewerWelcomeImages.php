@@ -1,12 +1,14 @@
-<html>
+<!DOCTYPE html>
+<html lang='en'>
     <head>
+        <title><?= $v['grid-name'] ?></title>
         <style>
             body {
                 background-color: rgb(0, 0, 0);
                 width: 100%;
                 height: 100%;
                 overflow: hidden;
-                font-family: 'Arial';
+                font-family: 'Arial', sans-serif;
                 font-size: 11px;
                 padding: 0;
                 margin: 0;
@@ -65,8 +67,8 @@
         </style>
     </head>
     <body>
-        <img src='' style='border: 0; display: block; opacity; 0; position: absolute;' id='Image1' />
-        <img src='' style='border: 0; display: block; opacity: 0; position: absolute;' id='Image2' />
+        <img src='<?= $v['image-1'] ?>' style='border: 0; display: block; opacity: 0; position: absolute;' id='Image1' alt=''/>
+        <img src='<?= $v['image-2'] ?>' style='border: 0; display: block; opacity: 0; position: absolute;' id='Image2' alt=''/>
         <script type='text/javascript'>
             var Images = <?= $v['json-image-array'] ?>;
             var MakeAnimation = true;

@@ -1,4 +1,4 @@
-<center><?= $v['message'] ?></center>
+<p class="text-center"><?= $v['message'] ?></p>
 
 <div class="container-fluid">
     <div class="row">
@@ -37,7 +37,7 @@
             
                     <div class="row" style="margin-top: 15px;">
                         <div class="col">
-                            <label for="dropdownPartner">Partner</label>
+                            <label for="inputpartner">Partner</label>
                             <input type="text" class="form-control" name="formInputFeldPartnerName" id="inputpartner" placeholder="<?= $v['partner'] ?>">
                         </div>
                     </div>
@@ -70,7 +70,7 @@
             
                     <div class="row" style="margin-top: 15px;">
                         <div class="col">
-                            <label for="newPassword">Neues Passwort</label>
+                            <label for="PasswordNew">Neues Passwort</label>
                             <input type="text" class="form-control" id="PasswordNew" name="newPassword">
                         </div>
                     </div>
@@ -78,7 +78,7 @@
                     
                     <div class="row" style="margin-top: 15px;">
                         <div class="col">
-                            <label for="newPasswordRepeat">Neues Passwort wiederholen</label>
+                            <label for="PasswordNewRepeat">Neues Passwort wiederholen</label>
                             <input type="text" class="form-control" id="PasswordNewRepeat" name="newPasswordRepeat">
                         </div>
                     </div>
@@ -86,7 +86,7 @@
                     <div class="row" style="margin-top: 15px;">
                         <div class="col">
                             <?= $v['csrf'] ?>
-                            <center><button type="submit" name="savePassword" class="btn btn-primary btn-lg">Speichern</button></center>
+                            <p class="text-center"><button type="submit" name="savePassword" class="btn btn-primary btn-lg">Speichern</button></p>
                         </div>
                     </div>
                 </form>
@@ -98,7 +98,7 @@
                 </div>
 
                 <p class="lead"><b>IAR Sicherung</b></p>
-                <center><?= $v['iar-message'] ?></center>
+                <p class="text-center"><?= $v['iar-message'] ?></p>
                 Hier kannst du eine IAR deines Inventars erstellen.<br>
                 Dies wird einige Zeit dauern. Du bekommst eine PM mit einem Downloadlink sobald deine IAR fertig erstellt wurde.
 
@@ -106,7 +106,7 @@
                     <div class="row" style="margin-top: 15px;">
                         <div class="col">
                             <?= $v['csrf'] ?>
-                            <center><button type="submit" name="createIAR" class="btn btn-primary btn-lg" <?= $v['iar-button-state'] ?>>IAR erstellen</button></center>
+                            <p class="text-center"><button type="submit" name="createIAR" class="btn btn-primary btn-lg" <?= $v['iar-button-state'] ?>>IAR erstellen</button></p>
                         </div>
                     </div>
                 </form>
@@ -137,7 +137,7 @@
                     <div class="row">
                         <div class="col">
                             <?= $v['csrf'] ?>
-                            <center><button type="submit" name="deleteAccount" class="btn btn-danger btn-lg">Account löschen</button></center>
+                            <p class="text-center"><button type="submit" name="deleteAccount" class="btn btn-danger btn-lg">Account löschen</button></p>
                         </div>
                     </div>
                 </form>

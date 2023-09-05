@@ -62,6 +62,7 @@ class Profile extends \Mcp\RequestHandler
             'offline-im-state' => $opensim->allowOfflineIM($_SESSION['UUID']) == "TRUE" ? ' checked' : ' ',
             'firstname' => $_SESSION['FIRSTNAME'],
             'lastname' => $_SESSION['LASTNAME'],
+            'username' => $_SESSION['DISPLAYNAME'],
             'partner' => $partnerName,
             'email' => $opensim->getUserMail($_SESSION['UUID']),
             'residents-js-array' => '',

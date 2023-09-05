@@ -8,7 +8,7 @@ use Mcp\Middleware\PreSessionMiddleware;
 use Mcp\Util\SmtpClient;
 use Mcp\Util\Util;
 
-class Dashboard extends \Mcp\RequestHandler
+class ResetPassword extends \Mcp\RequestHandler
 {
 
     private const MESSAGE = 'Hallo %%NAME%%,<br/><br/>das Passwort für deinen 4Creative-Account wurde soeben über die Funktion "Passwort vergessen" geändert.<br/><br/>Solltest du diese Änderung nicht selbst durchgeführt haben, wende dich bitte umgehend per E-Mail (info@4creative.net) oder Discord (@ikeytan) an uns.';
@@ -98,7 +98,8 @@ class Dashboard extends \Mcp\RequestHandler
     private function displayPage(string $message = ''): void
     {
         if (!isset($_GET['token']) || !preg_match('/^[a-z0-9A-Z]{32}$/', $_GET['token'])) {
-            displayTokenError(TOKEN_INVALID);
+            $this->displayTokenError($this::TOKEN_INVALID);
+            return;
         }
 
         $this->app->template('reset-password.php')->parent('__presession.php')->vars([

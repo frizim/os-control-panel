@@ -35,9 +35,11 @@ class ManageUsers extends RequestHandler
             $table = $table.$entry;
         }
     
-        $tpl = $this->app->template('users.php')->parent('__dashboard.php')->var('title', 'Benutzer')->unsafeVar('user-list', $table.'</tbody></table>')
-            ->unsafeVar('users-message', isset($_SESSION['users-message']) ? $_SESSION['users-message'] : '')
-            ->unsafeVar('custom-css', '<link rel="stylesheet" href="./style/admin-users.css">');
+        $tpl = $this->app->template('users.php')->parent('__dashboard.php')->vars([
+            'title' => 'Benutzer',
+            'username' => $_SESSION['DISPLAYNAME']
+            ])->unsafeVar('user-list', $table.'</tbody></table>')
+            ->unsafeVar('users-message', isset($_SESSION['users-message']) ? $_SESSION['users-message'] : '');
 
         if (isset($_SESSION['users-message'])) {
             $tpl->unsafeVar('users-message', $_SESSION['users-message']);

@@ -8,12 +8,9 @@
 
     <title>OpenSim - Kontrollzentrum - <?= $v['username'] ?> - <?= $v['title'] ?></title>
 
-    <link href="./style/4Creative.ico" rel="icon">
-    <link href="./style/4Creative.ico" rel="apple-touch-icon">
-    <link href="./style/default/css/autocomplete.css" rel="stylesheet" type="text/css">
-    <link href="./style/default/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="./style/default/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
-    <link href="./style/default/css/sb-admin.css" rel="stylesheet"> <?= isset($v['custom-css']) ? $v['custom-css'] : '' ?>
+    <link href="./img/4Creative.ico" rel="icon">
+    <link href="./img/4Creative.ico" rel="apple-touch-icon">
+    <link href="./style/sb-admin.min.css" rel="stylesheet"> <?= $v['custom-css'] ?>
 </head>
 
 <body id="page-top">
@@ -138,20 +135,9 @@
         </div>
     </div>
 
-    <script src="./style/default/vendor/jquery/jquery.min.js"></script>
-    <script src="./style/default/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <script src="./style/default/vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <script src="./style/default/vendor/chart.js/Chart.min.js"></script>
-    <script src="./style/default/vendor/datatables/jquery.dataTables.js"></script>
-    <script src="./style/default/vendor/datatables/dataTables.bootstrap4.js"></script>
-
-    <script src="./style/default/js/sb-admin.min.js"></script>
-
-    <script src="./style/default/js/demo/datatables-demo.js"></script>
-    <script src="./style/default/js/demo/chart-area-demo.js"></script>
-
+    <script src="./js/vendor/jquery.min.js"></script>
+    <script src="./js/vendor/bootstrap.bundle.min.js"></script>
+    <script src="./js/vendor/jquery.easing.min.js"></script>
+    <script src="./js/sb-admin.min.js"></script>
 </body>
-
 </html>

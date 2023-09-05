@@ -7,7 +7,7 @@ class DiscordUtil
 {
     public static function sendMessageToWebhook($webhook, $title, $message): void
     {
-        $rawMessage = file_get_contents("style/discordMessage.json");
+        $rawMessage = file_get_contents("data/discordMessage.json");
         $rawMessage = str_replace("%%message%%", $message, $rawMessage);
         $rawMessage = str_replace("%%title%%", $title, $rawMessage);
 

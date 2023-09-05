@@ -1,8 +1,14 @@
+// Import autocomplete
+@import "autocomplete.scss";
+
 // Import Custom Variables
 @import "variables.scss";
 
+// Import FA
+@import "../fontawesome.scss";
+
 // Import Bootstrap
-@import "../vendor/bootstrap/scss/bootstrap.scss";
+@import "../node_modules/bootstrap/scss/bootstrap.scss";
 
 // Import Custom SCSS
 @import "mixins.scss";
@@ -12,3 +18,4 @@
 @import "cards.scss";
 @import "login.scss";
 @import "footer.scss";
+@import "admin-users.scss";

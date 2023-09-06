@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Mcp;
 
 use PDO;
+use Exception;
 
 class Mcp implements ConnectionProvider
 {
@@ -41,8 +42,19 @@ class Mcp implements ConnectionProvider
     public function __construct($basedir)
     {
         $this->templateDir = $basedir.DIRECTORY_SEPARATOR.'templates';
-        require $basedir.DIRECTORY_SEPARATOR.'config.php';
-        $this->config = $RUNTIME;
+        $this->config = array();
+        try {
+            $config = parse_ini_file($basedir.DIRECTORY_SEPARATOR.'config.ini', true);
+            foreach ($config['general'] as $key => $val) {
+                $this->config[$key] = $val;
+            }
+            unset($config['general']);
+            $this->config = array_merge($config, $this->config);
+        } catch (Exception $e) {
+            error_log('Could not load config, aborting. Error: '.$e->getMessage());
+            http_response_code(500);
+            exit();
+        }
     }
 
     public function db(): PDO

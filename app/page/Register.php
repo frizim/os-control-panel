@@ -67,7 +67,7 @@ class Register extends RequestHandler
         $email = trim($_POST['email']);
     
         $avatar = null;
-        if (isset($this->app->config('default-avatar')[$_POST['avatar']]['UUID'])) {
+        if (isset($this->app->config('default-avatar')[$_POST['avatar']])) {
             $avatar = trim($_POST['avatar']);
         } else {
             $this->displayPage("Der gewählte Standardavatar existiert nicht.");

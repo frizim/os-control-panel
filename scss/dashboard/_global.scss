@@ -9,6 +9,10 @@ body {
   height: 100%;
 }
 
+html, body {
+  font-family: 'Ubuntu-Regular', sans-serif;
+}
+
 #wrapper {
   display: flex;
   #content-wrapper {

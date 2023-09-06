@@ -59,6 +59,10 @@
 
 }
 
+.navbar-nav > .nav-link {
+  overflow-wrap: anywhere;
+}
+
 .sidebar {
   width: $sidebar-collapsed-width !important;
   background-color: $gray-900;

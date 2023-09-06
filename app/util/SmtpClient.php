@@ -55,7 +55,7 @@ class SmtpClient
     private static function htmlToPlain($message): string
     {
         $messageNew = str_replace('<br/>', "\n", $message);
-        $messageNew = preg_replace('/<a href="(.*)">(.*)<\\/a>/', "$2: $1", $messageNew);
+        $messageNew = strip_tags(preg_replace('/<a href="(.*)">(.*)<\\/a>/', "$2: $1", $messageNew));
         return $messageNew;
     }
 

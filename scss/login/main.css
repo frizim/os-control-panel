@@ -7,11 +7,13 @@
 
 @font-face {
   font-family: Ubuntu-Regular;
+  font-display: swap;
   src: url('../fonts/ubuntu/Ubuntu-Regular.ttf'); 
 }
 
 @font-face {
   font-family: Ubuntu-Bold;
+  font-display: swap;
   src: url('../fonts/ubuntu/Ubuntu-Bold.ttf'); 
 }
 
@@ -397,6 +399,7 @@ iframe {
 .alert-validate::after {
   content: "\f12a";
   font-family: 'Font Awesome 6 Free', sans-serif;
+  font-weight: 900;
   display: block;
   position: absolute;
   color: #c80000;

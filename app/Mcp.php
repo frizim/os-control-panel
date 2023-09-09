@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Mcp;
 
-use PDO;
 use Exception;
+use PDO;
 
 class Mcp implements ConnectionProvider
 {
@@ -52,7 +52,14 @@ class Mcp implements ConnectionProvider
             $this->config = array_merge($config, $this->config);
         } catch (Exception $e) {
             error_log('Could not load config, aborting. Error: '.$e->getMessage());
-            http_response_code(500);
+            http_response_code(503);
+            exit();
+        }
+
+        $migrate = new MigrationManager($basedir.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'migrate_ver');
+        if (!$migrate->isMigrated() && !$migrate->migrate($this->db())) {
+            error_log('Migration to latest DB structure version failed, aborting.');
+            http_response_code(503);
             exit();
         }
     }
@@ -112,5 +119,4 @@ class Mcp implements ConnectionProvider
 
         (new $reqClass($this))->handleRequest();
     }
-
 }

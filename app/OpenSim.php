@@ -58,9 +58,9 @@ class OpenSim
             return $this->cache['USERNAME'][$userID];
         }
 
-        $res = $this->getUserNameFromGridData($this->pdo, $userID, 'GridUser', 'UserID');
+        $res = $this->getUserNameFromGridData($userID, 'GridUser', 'UserID');
         if ($res == null) {
-            $res = $this->getUserNameFromGridData($this->pdo, $userID, 'Friends', 'PrincipalID');
+            $res = $this->getUserNameFromGridData($userID, 'Friends', 'PrincipalID');
         }
 
         return $res == null ? "Unknown User" : $res;

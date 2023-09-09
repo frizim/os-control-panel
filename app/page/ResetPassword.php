@@ -81,7 +81,7 @@ class ResetPassword extends \Mcp\RequestHandler
                 'title' => 'Passwort geändert',
                 'preheader' => 'Das Passwort für deinen 4Creative-Account wurde soeben zurückgesetzt'
             ])->unsafeVar('message', str_replace('%%NAME%%', $name, $this::MESSAGE));
-            (new SmtpClient($smtp['host'], $smtp['port'], $smtp['address'], $smtp['password']))->sendHtml($smtp['address'], $smtp['name'], $res['Email'], 'Passwort für '.$name.' zurückgesetzt', $tplMail);
+            (new SmtpClient($smtp['host'], intval($smtp['port']), $smtp['address'], $smtp['password']))->sendHtml($smtp['address'], $smtp['name'], $res['Email'], 'Passwort für '.$name.' zurückgesetzt', $tplMail);
 
             header('Location: index.php?page=login');
         }
@@ -91,7 +91,7 @@ class ResetPassword extends \Mcp\RequestHandler
     {
         $this->app->template('error.php')->parent('__presession.php')->vars([
             'title' => 'Fehler',
-            'message' => $message
+            'error-message' => $message
         ])->render();
     }
 

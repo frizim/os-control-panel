@@ -9,6 +9,7 @@ use Mcp\RequestHandler;
 use Mcp\Middleware\PreSessionMiddleware;
 
 use Exception;
+use Mcp\Util\Util;
 
 class Register extends RequestHandler
 {
@@ -56,12 +57,14 @@ class Register extends RequestHandler
             $statementAvatarName->execute(['FirstName' => $nameParts[0], 'LastName' => $nameParts[1]]);
             if ($statementAvatarName->rowCount() > 0) {
                 $this->displayPage("Der gewählte Name ist bereits vergeben.");
+                return;
             }
         }
     
         $pass = trim($_POST['password']);
         if (strlen($pass) < $this->app->config('password-min-length')) {
             $this->displayPage('Dein Passwort muss mindestens '.$this->app->config('password-min-length').' Zeichen lang sein.');
+            return;
         }
     
         $email = trim($_POST['email']);
@@ -71,6 +74,7 @@ class Register extends RequestHandler
             $avatar = trim($_POST['avatar']);
         } else {
             $this->displayPage("Der gewählte Standardavatar existiert nicht.");
+            return;
         }
     
         $opensim = new OpenSim($this->app->db());
@@ -82,7 +86,8 @@ class Register extends RequestHandler
         $statementInviteDeleter = $this->app->db()->prepare('DELETE FROM mcp_invites WHERE InviteCode = :code');
         $statementInviteDeleter->execute(['code' => $_REQUEST['code']]);
         if ($statementInviteDeleter->rowCount() == 0) {
-            $this->displayError("Der angegebene Einladungscode ist nicht mehr gültig.");
+            Util::displayError($this->app, "Der angegebene Einladungscode ist nicht mehr gültig.");
+            return;
         }
     
         try {
@@ -116,6 +121,7 @@ class Register extends RequestHandler
             $this->app->db()->rollBack();
             error_log('Could not create Account: '.$pdoException->getMessage());
             $this->displayPage('Fehler bei der Erstellung deines Accounts. Bitte versuche es später erneut.');
+            return;
         }
     
         session_abort();
@@ -152,26 +158,18 @@ class Register extends RequestHandler
         ])->render();
     }
 
-    private function displayError(string $message): void
-    {
-        $this->app->template('error.php')->parent('__presession.php')->vars([
-            'error-message' => $message,
-            'title' => 'Fehler'
-        ])->render();
-    }
-
     private function checkInvite(): bool
     {
         if (!isset($_REQUEST['code'])) {
-            $this->displayError("Du benötigst einen Einladungscode, um dich bei 4Creative zu registrieren.");
+            Util::displayError($this->app, "Du benötigst einen Einladungscode, um dich bei 4Creative zu registrieren.");
         } elseif (strlen($_REQUEST['code']) != 32 || !preg_match('/^[a-f0-9]+$/', $_REQUEST['code'])) {
-            $this->displayError("Der angegebene Einladungscode ist nicht gültig. Nutze genau den Link, der dir zugeschickt wurde.");
+            Util::displayError($this->app, "Der angegebene Einladungscode ist nicht gültig. Nutze genau den Link, der dir zugeschickt wurde.");
         } else {
             $statementInviteCode = $this->app->db()->prepare("SELECT 1 FROM mcp_invites WHERE InviteCode = ? LIMIT 1");
             $statementInviteCode->execute([$_REQUEST['code']]);
         
             if ($statementInviteCode->rowCount() == 0) {
-                $this->displayError("Der angegebene Einladungscode ist nicht gültig. Nutze genau den Link, der dir zugeschickt wurde.");
+                Util::displayError($this->app, "Der angegebene Einladungscode ist nicht gültig. Nutze genau den Link, der dir zugeschickt wurde.");
                 return false;
             }
             return true;

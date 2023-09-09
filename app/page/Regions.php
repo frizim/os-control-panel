@@ -11,29 +11,33 @@ use Mcp\Middleware\AdminMiddleware;
 
 class Regions extends \Mcp\RequestHandler
 {
+    private bool $showAll;
+
     public function __construct(\Mcp\Mcp $app)
     {
-        parent::__construct($app, isset($_GET['SHOWALL']) ? new AdminMiddleware($app, $app->config('domain')) : new LoginRequiredMiddleware($app, $app->config('domain')));
+        $this->showAll = isset($_GET['SHOWALL']) && $_GET['SHOWALL'] == "1";
+        parent::__construct($app, $this->showAll ? new AdminMiddleware($app, $app->config('domain')) : new LoginRequiredMiddleware($app, $app->config('domain')));
     }
 
     public function get(): void
     {
         $table = '<table class="table"><thead><tr><th scope="col">Region Name</th><th scope="col">Eigentümer</th><th scope="col">Position</th><th scope="col">Aktionen</th></thead><tbody>';
 
-        $showAll = isset($_GET['SHOWALL']) && $_GET['SHOWALL'] == "1";
-        $statement = $this->app->db()->prepare("SELECT uuid,regionName,owner_uuid,locX,locY FROM regions ".($showAll ? "ORDER BY owner_uuid ASC" : "WHERE owner_uuid = ? ORDER BY uuid ASC"));
-        $statement->execute($showAll ? array() : array($_SESSION['UUID']));
+
+        $statement = $this->app->db()->prepare("SELECT uuid,regionName,owner_uuid,locX,locY FROM regions ".($this->showAll ? "ORDER BY owner_uuid ASC" : "WHERE owner_uuid = ? ORDER BY uuid ASC"));
+        $statement->execute($this->showAll ? array() : array($_SESSION['UUID']));
     
         $opensim = new OpenSim($this->app->db());
 
         $csrf = $this->app->csrfField();
+        $urlShowall = $this->showAll ? '&SHOWALL=1' : '';
         while ($row = $statement->fetch()) {
             $stats = $this->getRegionStatsData($row['uuid']);
-            $table = $table.'<tr><td>'.htmlspecialchars($row['regionName']).'<div class="blockquote-footer">'.(!empty($stats) ? 'Prims: '.$stats['Prims'].'; RAM-Nutzung: '.$stats['ProcMem'].'; SIM/PHYS FPS: '.$stats['SimFPS'].'/'.$stats['PhyFPS'].' ('.$stats['RegionVersion'].')' : 'Keine Statistik verfügbar').'</div></td><td>'.htmlspecialchars($opensim->getUserName($row['owner_uuid'])).'</td><td>'.Util::fillString(($row['locX'] / 256), 4).' / '.Util::fillString(($row['locY'] / 256), 4).'</td><td><form action="index.php?page=regions" method="post">'.$csrf.'<input type="hidden" name="region" value="'.$row['uuid'].'"><button type="submit" name="remove" class="btn btn-link btn-sm">LÖSCHEN</button></form></td></tr>';
+            $table = $table.'<tr><td>'.htmlspecialchars($row['regionName']).'<div class="blockquote-footer">'.(!empty($stats) ? 'Prims: '.$stats['Prims'].'; RAM-Nutzung: '.$stats['ProcMem'].'; SIM/PHYS FPS: '.$stats['SimFPS'].'/'.$stats['PhyFPS'].' ('.$stats['RegionVersion'].')' : 'Keine Statistik verfügbar').'</div></td><td>'.htmlspecialchars($opensim->getUserName($row['owner_uuid'])).'</td><td>'.Util::fillString(($row['locX'] / 256), 4).' / '.Util::fillString(($row['locY'] / 256), 4).'</td><td><form action="index.php?page=regions'.$urlShowall.'" method="post">'.$csrf.'<input type="hidden" name="region" value="'.$row['uuid'].'"><button type="submit" name="remove" class="btn btn-link btn-sm">LÖSCHEN</button></form></td></tr>';
         }
 
         $this->app->template('__dashboard.php')->vars([
-            'title' => isset($_GET["SHOWALL"]) ? 'Regionen verwalten' : 'Deine Regionen',
+            'title' => $this->showAll ? 'Regionen verwalten' : 'Deine Regionen',
             'username' => $_SESSION['DISPLAYNAME']
         ])->unsafeVar('child-content', $table.'</tbody></table>')->render();
     }
@@ -41,11 +45,10 @@ class Regions extends \Mcp\RequestHandler
     public function post(): void
     {
         $validator = new FormValidator(array(
-            'remove' => array('required' => true),
             'region' => array('required' => true, 'regex' => '/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/')
         ));
 
-        if ($validator->isValid($_POST)) {
+        if (isset($_POST['remove']) && $validator->isValid($_POST)) {
             if (isset($_GET['SHOWALL'])) {
                 $statementMembership = $this->app->db()->prepare("DELETE FROM regions WHERE uuid = ?");
                 $statementMembership->execute(array($_POST['region']));
@@ -55,7 +58,7 @@ class Regions extends \Mcp\RequestHandler
             }
         }
 
-        header('Location: index.php?page=regions');
+        header('Location: index.php?page=regions'.($this->showAll ? '&SHOWALL=1' : ''));
     }
 
     private function cleanSize($bytes)

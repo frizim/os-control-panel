@@ -9,6 +9,10 @@ class Util
 {
     public static function fillString($string, $targetlength)
     {
+        if (gettype($string) != 'string') {
+            $string = strval($string);
+        }
+
         while(strlen($string) < $targetlength)
         {
             $string = "0".$string;

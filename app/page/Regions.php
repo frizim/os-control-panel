@@ -74,15 +74,15 @@ class Regions extends \Mcp\RequestHandler
 
     private function getRegionStatsData($regionID)
     {
-        $statement = $this->app->db()->prepare("SELECT Prims,SimFPS,PhyFPS,ProcMem,RegionVersion FROM regions_info WHERE regionID = ?");
+        $statement = $this->app->db()->prepare("SELECT Prims,SimFPS,PhyFPS,ProcMem,RegionVersion FROM mcp_regions_info WHERE regionID = ?");
         $statement->execute([$regionID]);
 
         if ($row = $statement->fetch()) {
             $return = array();
-            $return['Prims'] = $row['Prims'];
-            $return['SimFPS'] = $row['SimFPS'];
-            $return['PhyFPS'] = $row['PhyFPS'];
-            $return['ProcMem'] = $this->cleanSize(str_replace(".", "", str_replace(",", ".", $row['ProcMem']))."000");
+            $return['Prims'] = strval($row['Prims']);
+            $return['SimFPS'] = strval($row['SimFPS']);
+            $return['PhyFPS'] = strval($row['PhyFPS']);
+            $return['ProcMem'] = $this->cleanSize($row['ProcMem']);
             $return['RegionVersion'] = trim($row['RegionVersion']);
 
             return $return;

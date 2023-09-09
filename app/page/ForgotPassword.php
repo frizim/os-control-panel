@@ -67,14 +67,14 @@ class ForgotPassword extends \Mcp\RequestHandler
             fastcgi_finish_request();
 
             if ($validRequest) {
-                $getReqTime = $this->app->db()->prepare('SELECT RequestTime FROM PasswordResetTokens WHERE PrincipalID=?');
+                $getReqTime = $this->app->db()->prepare('SELECT RequestTime FROM mcp_password_reset WHERE PrincipalID=?');
                 $getReqTime->execute([$uuid]);
                 if (($res = $getReqTime->fetch()) && time() - $res['RequestTime'] < 900) {
                     return;
                 }
 
                 $token = Util::generateToken(32);
-                $setToken = $this->app->db()->prepare('REPLACE INTO PasswordResetTokens(PrincipalID,Token,RequestTime) VALUES(?,?,?)');
+                $setToken = $this->app->db()->prepare('REPLACE INTO mcp_password_reset(PrincipalID,Token,RequestTime) VALUES(?,?,?)');
                 $setToken->execute([$uuid, $token, time()]);
 
                 $smtp = $this->app->config('smtp');
@@ -82,7 +82,7 @@ class ForgotPassword extends \Mcp\RequestHandler
                     'title' => 'Dein Passwort zurücksetzen',
                     'preheader' => 'So kannst du ein neues Passwort für deinen 4Creative-Account festlegen'
                 ])->unsafeVar('message', str_replace('%%NAME%%', $name, str_replace('%%RESET_LINK%%', 'https://'.$this->app->config('domain').'/index.php?page=reset-password&token='.$token, $this::MESSAGE)));
-                (new SmtpClient($smtp['host'], $smtp['port'], $smtp['address'], $smtp['password']))->sendHtml($smtp['address'], $smtp['name'], $email, 'Zurücksetzung des Passworts für '.$name, $tplMail);
+                (new SmtpClient($smtp['host'], intval($smtp['port']), $smtp['address'], $smtp['password']))->sendHtml($smtp['address'], $smtp['name'], $email, 'Zurücksetzung des Passworts für '.$name, $tplMail);
             }
         }
     }

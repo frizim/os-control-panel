@@ -79,7 +79,7 @@ class Register extends RequestHandler
         $salt = bin2hex(random_bytes(16));
         $passwordHash = md5(md5($pass).':'.$salt);
     
-        $statementInviteDeleter = $this->app->db()->prepare('DELETE FROM InviteCodes WHERE InviteCode = :code');
+        $statementInviteDeleter = $this->app->db()->prepare('DELETE FROM mcp_invites WHERE InviteCode = :code');
         $statementInviteDeleter->execute(['code' => $_REQUEST['code']]);
         if ($statementInviteDeleter->rowCount() == 0) {
             $this->displayError("Der angegebene Einladungscode ist nicht mehr gültig.");
@@ -167,7 +167,7 @@ class Register extends RequestHandler
         } elseif (strlen($_REQUEST['code']) != 32 || !preg_match('/^[a-f0-9]+$/', $_REQUEST['code'])) {
             $this->displayError("Der angegebene Einladungscode ist nicht gültig. Nutze genau den Link, der dir zugeschickt wurde.");
         } else {
-            $statementInviteCode = $this->app->db()->prepare("SELECT 1 FROM InviteCodes WHERE InviteCode = ? LIMIT 1");
+            $statementInviteCode = $this->app->db()->prepare("SELECT 1 FROM mcp_invites WHERE InviteCode = ? LIMIT 1");
             $statementInviteCode->execute([$_REQUEST['code']]);
         
             if ($statementInviteCode->rowCount() == 0) {

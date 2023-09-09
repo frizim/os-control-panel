@@ -179,7 +179,7 @@ class OpenSim
             $statementHgTraveling = $this->pdo->prepare('DELETE FROM hg_traveling_data WHERE UserID = ?');
             $statementHgTraveling->execute([$uuid]);
 
-            $statementUserIdentitys = $this->pdo->prepare('DELETE FROM UserIdentitys WHERE PrincipalID = ?');
+            $statementUserIdentitys = $this->pdo->prepare('DELETE FROM mcp_user_identities WHERE PrincipalID = ?');
             $statementUserIdentitys->execute([$uuid]);
 
             $statementFriends = $this->pdo->prepare('DELETE FROM Friends WHERE PrincipalID = ? OR Friend = ?');
@@ -233,7 +233,7 @@ class OpenSim
 
     public function deleteIdentity($uuid, $identId): bool
     {
-        $statementValidate = $this->pdo->prepare('SELECT 1 FROM UserIdentitys WHERE PrincipalID = ? AND IdentityID = ?');
+        $statementValidate = $this->pdo->prepare('SELECT 1 FROM mcp_user_identities WHERE PrincipalID = ? AND IdentityID = ?');
         $statementValidate->execute([$uuid, $identId]);
 
         if($statementValidate->fetch()) {

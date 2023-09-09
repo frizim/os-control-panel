@@ -25,10 +25,7 @@ class MigrationManager
             'ALTER TABLE mcp_regions_info MODIFY COLUMN regionID CHAR(36), MODIFY COLUMN ProcMem INT(11) UNSIGNED NOT NULL, MODIFY COLUMN Prims INT(11) UNSIGNED NOT NULL, MODIFY COLUMN SimFPS FLOAT NOT NULL, MODIFY COLUMN PhyFPS FLOAT NOT NULL, MODIFY COLUMN OfflineTimer BIGINT UNSIGNED NOT NULL DEFAULT 0',
             'CREATE TRIGGER IF NOT EXISTS del_id_trig AFTER DELETE ON UserAccounts FOR EACH ROW DELETE FROM mcp_user_identities WHERE mcp_user_identities.PrincipalID = OLD.PrincipalID OR mcp_user_identities.IdentityID = OLD.PrincipalID',
             'CREATE TRIGGER IF NOT EXISTS del_pwres_trig AFTER DELETE ON UserAccounts FOR EACH ROW DELETE FROM mcp_password_reset WHERE mcp_password_reset.PrincipalID = OLD.PrincipalID'
-        ]/*,
-        2 => [
-            'ALTER TRIGGER del_id_trig'
-        ]*/
+        ]
     ];
 
     private const MIGRATE_VERSION_CURRENT = 2;

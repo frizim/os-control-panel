@@ -16,16 +16,16 @@ class Identities extends \Mcp\RequestHandler
 
     public function get(): void
     {
-        $statementCheckForEntry = $this->app->db()->prepare("SELECT 1 FROM UserIdentitys WHERE PrincipalID = ? LIMIT 1");
+        $statementCheckForEntry = $this->app->db()->prepare("SELECT 1 FROM mcp_user_identities WHERE PrincipalID = ? LIMIT 1");
         $statementCheckForEntry->execute(array($_SESSION['UUID']));
     
         if ($statementCheckForEntry->rowCount() == 0) {
-            $statement = $this->app->db()->prepare('INSERT INTO `UserIdentitys` (PrincipalID, IdentityID) VALUES (:PrincipalID, :IdentityID)');
+            $statement = $this->app->db()->prepare('INSERT INTO `mcp_user_identities` (PrincipalID, IdentityID) VALUES (:PrincipalID, :IdentityID)');
             $statement->execute(['PrincipalID' => $_SESSION['UUID'], 'IdentityID' => $_SESSION['UUID']]);
         }
     
         $table = '<table class="table"><thead><tr><th scope="col">Name</th><th scope="col">Aktionen</th></thead><tbody>';
-        $statement = $this->app->db()->prepare("SELECT IdentityID FROM UserIdentitys WHERE PrincipalID = ? ORDER BY IdentityID ASC");
+        $statement = $this->app->db()->prepare("SELECT IdentityID FROM mcp_user_identities WHERE PrincipalID = ? ORDER BY IdentityID ASC");
         $statement->execute(array($_SESSION['UUID']));
     
         $opensim = new OpenSim($this->app->db());
@@ -62,7 +62,7 @@ class Identities extends \Mcp\RequestHandler
             ));
 
             if ($validator->isValid($_POST)) {
-                $statement = $this->app->db()->prepare("SELECT 1 FROM UserIdentitys WHERE PrincipalID = :PrincipalID AND IdentityID = :IdentityID LIMIT 1");
+                $statement = $this->app->db()->prepare("SELECT 1 FROM mcp_user_identities WHERE PrincipalID = :PrincipalID AND IdentityID = :IdentityID LIMIT 1");
                 $statement->execute(['PrincipalID' => $_SESSION['UUID'], 'IdentityID' => $_POST['uuid']]);
         
                 $statementPresence = $this->app->db()->prepare("SELECT 1 FROM Presence WHERE UserID = :PrincipalID LIMIT 1");
@@ -73,7 +73,7 @@ class Identities extends \Mcp\RequestHandler
                         $statementAuth = $this->app->db()->prepare('UPDATE auth SET UUID = :IdentityID WHERE UUID = :PrincipalID');
                         $statementAuth->execute(['IdentityID' => $_POST['uuid'], 'PrincipalID' => $_SESSION['UUID']]);
         
-                        $statementUserIdentitys = $this->app->db()->prepare('UPDATE UserIdentitys SET PrincipalID = :IdentityID WHERE PrincipalID = :PrincipalID');
+                        $statementUserIdentitys = $this->app->db()->prepare('UPDATE mcp_user_identities SET PrincipalID = :IdentityID WHERE PrincipalID = :PrincipalID');
                         $statementUserIdentitys->execute(['IdentityID' => $_POST['uuid'], 'PrincipalID' => $_SESSION['UUID']]);
         
                         $statementFriends = $this->app->db()->prepare('UPDATE Friends SET PrincipalID = :IdentityID WHERE PrincipalID = :PrincipalID');
@@ -122,7 +122,7 @@ class Identities extends \Mcp\RequestHandler
                         $statementAccounts = $this->app->db()->prepare('INSERT INTO UserAccounts (PrincipalID, ScopeID, FirstName, LastName, Email, ServiceURLs, Created, UserLevel, UserFlags, UserTitle, active) VALUES (:PrincipalID, :ScopeID, :FirstName, :LastName, :Email, :ServiceURLs, :Created, :UserLevel, :UserFlags, :UserTitle, :active )');
                         $statementAccounts->execute(['PrincipalID' => $avatarUUID, 'ScopeID' => "00000000-0000-0000-0000-000000000000", 'FirstName' => $avatarNameParts[0], 'LastName' => $avatarNameParts[1], 'Email' => $_SESSION['EMAIL'], 'ServiceURLs' => "HomeURI= GatekeeperURI= InventoryServerURI= AssetServerURI= ", 'Created' => time(), 'UserLevel' => 0, 'UserFlags' => 0, 'UserTitle' => "", 'active' => 1]);
         
-                        $statementUserIdentitys = $this->app->db()->prepare('INSERT INTO UserIdentitys (PrincipalID, IdentityID) VALUES (:PrincipalID, :IdentityID)');
+                        $statementUserIdentitys = $this->app->db()->prepare('INSERT INTO mcp_user_identities (PrincipalID, IdentityID) VALUES (:PrincipalID, :IdentityID)');
                         $statementUserIdentitys->execute(['PrincipalID' => $_SESSION['UUID'], 'IdentityID' => $avatarUUID]);
                     } else {
                         $_SESSION['identities_err'] = 'Dieser Name ist schon in Benutzung.';

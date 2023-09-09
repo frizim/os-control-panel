@@ -44,7 +44,7 @@ class ResetPassword extends \Mcp\RequestHandler
                 return;
             }
 
-            $getReq = $this->app->db()->prepare('SELECT UserAccounts.PrincipalID AS UUID,FirstName,LastName,Email,Token,RequestTime FROM PasswordResetTokens JOIN UserAccounts ON UserAccounts.PrincipalID = PasswordResetTokens.PrincipalID WHERE Token = ?');
+            $getReq = $this->app->db()->prepare('SELECT UserAccounts.PrincipalID AS UUID,FirstName,LastName,Email,Token,RequestTime FROM mcp_password_reset JOIN UserAccounts ON UserAccounts.PrincipalID = mcp_password_reset.PrincipalID WHERE Token = ?');
             $getReq->execute([$_POST['resetToken']]);
             $res = $getReq->fetch();
 
@@ -55,7 +55,7 @@ class ResetPassword extends \Mcp\RequestHandler
 
             $uuid = $res['UUID'];
             $name = $res['FirstName'].' '.$res['LastName'];
-            $getToken = $this->app->db()->prepare('DELETE FROM PasswordResetTokens WHERE PrincipalID = ? AND Token = ?');
+            $getToken = $this->app->db()->prepare('DELETE FROM mcp_password_reset WHERE PrincipalID = ? AND Token = ?');
             $getToken->execute([$uuid, $_POST['resetToken']]);
             if ($getToken->rowCount() == 0) {
                 $this->displayTokenError($this::TOKEN_INVALID);

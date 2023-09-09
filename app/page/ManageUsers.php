@@ -24,7 +24,7 @@ class ManageUsers extends RequestHandler
         $statement = $this->app->db()->prepare("SELECT FirstName,LastName,UserLevel,PrincipalID FROM UserAccounts JOIN auth ON auth.UUID = UserAccounts.PrincipalID ORDER BY Created ASC");
         $statement->execute();
     
-        $statementIdent = $this->app->db()->prepare("SELECT FirstName,LastName,UserLevel,IdentityID FROM UserIdentitys JOIN UserAccounts ON UserAccounts.PrincipalID = UserIdentitys.IdentityID WHERE UserIdentitys.PrincipalID = ? AND UserIdentitys.PrincipalID != UserIdentitys.IdentityID");
+        $statementIdent = $this->app->db()->prepare("SELECT FirstName,LastName,UserLevel,IdentityID FROM mcp_user_identities JOIN UserAccounts ON UserAccounts.PrincipalID = mcp_user_identities.IdentityID WHERE mcp_user_identities.PrincipalID = ? AND mcp_user_identities.PrincipalID != mcp_user_identities.IdentityID");
         $csrf = $this->app->csrfField();
         while ($row = $statement->fetch()) {
             $entry = '<tr><td>'.htmlspecialchars($row['FirstName']).'</td><td>'.htmlspecialchars($row['LastName']).'</td><td>'.htmlspecialchars(strval($row['UserLevel'])).'</td><td><form action="index.php?page=users" method="post">'.$csrf.'<input type="hidden" name="userid" value="'.htmlspecialchars($row['PrincipalID']).'"><button type="submit" name="genpw" class="btn btn-link btn-sm">PASSWORT ZURÜCKSETZEN</button> <button type="submit" name="deluser" class="btn btn-link btn-sm" style="color: red">LÖSCHEN</button></form></td></tr>';
@@ -62,7 +62,7 @@ class ManageUsers extends RequestHandler
             if ($validator->isValid($_POST)) {
                 $inviteID = bin2hex(random_bytes(16));
 
-                $statement = $this->app->db()->prepare('INSERT INTO `InviteCodes` (`InviteCode`) VALUES (:InviteCode)');
+                $statement = $this->app->db()->prepare('INSERT INTO `mcp_invites` (`InviteCode`) VALUES (:InviteCode)');
                 $statement->execute(['InviteCode' => $inviteID]);
                 
                 $_SESSION['invite-id'] = $inviteID;
@@ -92,7 +92,7 @@ class ManageUsers extends RequestHandler
                 $opensim = new OpenSim($this->app->db());
                 if (isset($_POST['genpw'])) {
                     $token = Util::generateToken(32);
-                    $setToken = $this->app->db()->prepare('REPLACE INTO PasswordResetTokens(PrincipalID,Token,RequestTime) VALUES(?,?,?)');
+                    $setToken = $this->app->db()->prepare('REPLACE INTO mcp_password_reset(PrincipalID,Token,RequestTime) VALUES(?,?,?)');
                     $setToken->execute([$_POST['userid'], $token, time()]);
                     $resetLink = "https://".$this->app->config('domain').'/index.php?page=reset-password&token='.$token;
 

@@ -229,13 +229,11 @@ class Profile extends \Mcp\RequestHandler
 
     private function setNamePart(string $part, string $value, string $otherPart, string $otherValue): bool
     {
-        global $RUNTIME;
-
-        $query = $RUNTIME['PDO']->prepare('SELECT 1 FROM UserAccounts WHERE '.$part.' = ? AND '.$otherPart.' = ?');
+        $query = $this->app->db()->prepare('SELECT 1 FROM UserAccounts WHERE '.$part.' = ? AND '.$otherPart.' = ?');
         $query->execute(array($value, $otherValue));
 
         if ($query->rowCount() == 0) {
-            $statement = $RUNTIME['PDO']->prepare('UPDATE UserAccounts SET '.$part.' = ? WHERE PrincipalID = ?');
+            $statement = $this->app->db()->prepare('UPDATE UserAccounts SET '.$part.' = ? WHERE PrincipalID = ?');
             $statement->execute(array($value, $_SESSION['UUID']));
             return true;
         }

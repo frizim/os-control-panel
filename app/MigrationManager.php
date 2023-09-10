@@ -15,6 +15,7 @@ class MigrationManager
         'CREATE TABLE IF NOT EXISTS `mcp_offlineim_send` (`id` int(6) NOT NULL DEFAULT 0) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci',
         'CREATE TABLE IF NOT EXISTS `mcp_regions_info` (`regionID` CHAR(36) NOT NULL COLLATE utf8_unicode_ci, `RegionVersion` VARCHAR(128) NOT NULL DEFAULT "" COLLATE utf8_unicode_ci, `ProcMem` INT(11) NOT NULL, `Prims` INT(11) NOT NULL, `SimFPS` INT(11) NOT NULL, `PhyFPS` INT(11) NOT NULL, `OfflineTimer` INT(11) NOT NULL DEFAULT 0, PRIMARY KEY (`regionID`) USING BTREE) COLLATE=utf8_unicode_ci ENGINE=InnoDB',
         'CREATE TABLE IF NOT EXISTS `mcp_cron_runs` (`Name` VARCHAR(50) NOT NULL, `LastRun` INT(11) UNSIGNED NOT NULL, PRIMARY KEY(`Name`)) ENGINE InnoDB',
+        'CREATE TABLE IF NOT EXISTS `mcp_iar_state` (`userID` CHAR(36) NOT NULL COLLATE utf8_unicode_ci, `filesize` BIGINT(20) NOT NULL DEFAULT 0, `iarfilename` VARCHAR(64) NOT NULL COLLATE utf8_unicode_ci, `state` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0, `created` INT(11) UNSIGNED NOT NULL DEFAULT 0, PRIMARY KEY (`userID`) USING BTREE) COLLATE=utf8_unicode_ci ENGINE=InnoDB',
         'CREATE TRIGGER IF NOT EXISTS del_id_trig AFTER DELETE ON UserAccounts FOR EACH ROW DELETE FROM mcp_user_identities WHERE mcp_user_identities.PrincipalID = OLD.PrincipalID OR mcp_user_identities.IdentityID = OLD.PrincipalID',
         'CREATE TRIGGER IF NOT EXISTS del_pwres_trig AFTER DELETE ON UserAccounts FOR EACH ROW DELETE FROM mcp_password_reset WHERE mcp_password_reset.PrincipalID = OLD.PrincipalID'
     ];
@@ -29,10 +30,14 @@ class MigrationManager
         ],
         2 => [
             'CREATE TABLE IF NOT EXISTS `mcp_cron_runs` (`Name` VARCHAR(50) NOT NULL, `LastRun` INT(11) UNSIGNED NOT NULL, PRIMARY KEY(`Name`)) ENGINE InnoDB'
+        ],
+        3 => [
+            'RENAME TABLE IF EXISTS iarstates TO mcp_iar_state',
+            'ALTER TABLE mcp_iar_state MODIFY COLUMN userID CHAR(36) NOT NULL COLLATE utf8_unicode_ci, DROP COLUMN running, ADD COLUMN `state` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0 AFTER iarfilename, ADD COLUMN created INT(11) UNSIGNED NOT NULL DEFAULT 0 AFTER `state`'
         ]
     ];
 
-    private const MIGRATE_VERSION_CURRENT = 3;
+    private const MIGRATE_VERSION_CURRENT = 4;
 
     private int $migrateVersion;
     private string $migrateVersionFile;

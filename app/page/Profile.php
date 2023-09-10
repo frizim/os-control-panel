@@ -18,11 +18,8 @@ class Profile extends \Mcp\RequestHandler
     {
         $tpl = $this->app->template('profile.php')->parent('__dashboard.php');
 
-        $statement = $this->app->db()->prepare("CREATE TABLE IF NOT EXISTS `iarstates` (`userID` VARCHAR(36) NOT NULL COLLATE 'utf8_unicode_ci', `filesize` BIGINT(20) NOT NULL DEFAULT '0', `iarfilename` VARCHAR(64) NOT NULL COLLATE 'utf8_unicode_ci', `running` INT(1) NOT NULL DEFAULT '0', PRIMARY KEY (`userID`) USING BTREE) COLLATE='utf8_unicode_ci' ENGINE=InnoDB;");
-        $statement->execute();
-    
         //Prüfe ob IAR grade erstellt wird.
-        $statementIARCheck = $this->app->db()->prepare('SELECT 1 FROM iarstates WHERE userID =:userID');
+        $statementIARCheck = $this->app->db()->prepare('SELECT 1 FROM mcp_iar_state WHERE userID =:userID');
         $statementIARCheck->execute(['userID' => $_SESSION['UUID']]);
         $iarRunning = $statementIARCheck->rowCount() != 0;
         $statementIARCheck->closeCursor();
@@ -30,16 +27,11 @@ class Profile extends \Mcp\RequestHandler
         if ($iarRunning) {
             if (isset($_SESSION['iar_created'])) {
                 $tpl->unsafeVar('iar-message', '<div class="alert alert-success" role="alert">Deine IAR wird jetzt erstellt und der Download Link wird dir per PM zugesendet.</div>');
+                unset($_SESSION['iar_created']);
             } else {
                 $tpl->unsafeVar('iar-message', '<div class="alert alert-danger" role="alert">Aktuell wird eine IAR erstellt.<br>Warte bitte bis du eine PM bekommst.</div>');
             }
             $tpl->var('iar-button-state', 'disabled');
-        }
-        else {
-            $tpl->vars([
-                'iar-message' => ' ',
-                'iar-state' => ''
-            ]);
         }
     
         $opensim = new OpenSim($this->app->db());
@@ -77,7 +69,7 @@ class Profile extends \Mcp\RequestHandler
             if($validator->isValid($_POST)) {
                 $iarname = md5(time().$_SESSION['UUID'] . rand()).".iar";
                 
-                $statementIARSTART = $this->app->db()->prepare('INSERT INTO iarstates (userID, filesize, iarfilename) VALUES (:userID, :filesize, :iarfilename)');
+                $statementIARSTART = $this->app->db()->prepare('INSERT INTO mcp_iar_state (userID, filesize, iarfilename) VALUES (:userID, :filesize, :iarfilename)');
                 $statementIARSTART->execute(['userID' => $_SESSION['UUID'], 'filesize' => 0, 'iarfilename' => $iarname]);
 
                 $_SESSION['iar_created'] = true;

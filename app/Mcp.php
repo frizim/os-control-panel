@@ -77,7 +77,8 @@ class Mcp implements ConnectionProvider
 
     public function config($key): string|array|int
     {
-        return $this->config[strtolower($key)];
+        $realKey = strtolower($key);
+        return isset($this->config[$realKey]) ? $this->config[$realKey] : array();
     }
 
     public function csrfField(): string

@@ -11,6 +11,7 @@ class Mcp implements ConnectionProvider
 
     private ?PDO $db = null;
     private array $config;
+    private string $dataDir;
     private string $templateDir;
 
     const ROUTES = [
@@ -42,6 +43,7 @@ class Mcp implements ConnectionProvider
     public function __construct($basedir)
     {
         $this->templateDir = $basedir.DIRECTORY_SEPARATOR.'templates';
+        $this->dataDir = $basedir.DIRECTORY_SEPARATOR.'data';
         $this->config = array();
         try {
             $config = parse_ini_file($basedir.DIRECTORY_SEPARATOR.'config.ini', true);
@@ -93,6 +95,11 @@ class Mcp implements ConnectionProvider
             'title' => 'MCP',
             'admin' => isset($_SESSION['LEVEL']) && $_SESSION['LEVEL'] > 100
         ])->unsafeVar('csrf', $this->csrfField());
+    }
+
+    public function getDataDir(): string
+    {
+        return $this->dataDir;
     }
 
     public function handleRequest()

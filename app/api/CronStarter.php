@@ -27,6 +27,7 @@ class CronStarter extends RequestHandler
             $jobRuns[$row['Name']] = $row['LastRun'];
         }
 
+        $resArray = [];
         $cronUpdateStatement = $this->app->db()->prepare('REPLACE INTO mcp_cron_runs(Name,LastRun) VALUES (?,?)');
         foreach ($cronJobs as $jobName) {
             $jobClass = "Mcp\\Cron\\".$jobName;
@@ -35,10 +36,15 @@ class CronStarter extends RequestHandler
                 $now = time();
                 $nextRun = $job->getNextRun(isset($jobRuns[$jobName]) ? $jobRuns[$jobName] : $now - 60);
                 if ($now >= $nextRun && $job->run()) {
-                    error_log($now.' <= '.$nextRun);
                     $cronUpdateStatement->execute([$jobName, time()]);
+                    $resArray[$jobName] = ['result' => 'ok', 'nextRun' => $job->getNextRun(time())];
+                }
+                else {
+                    $resArray[$jobName] = ['result' => 'failed'];
                 }
             }
         }
+
+        echo json_encode($resArray);
     }
 }

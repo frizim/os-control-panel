@@ -10,11 +10,12 @@ class OpenSim
 {
 
     private PDO $pdo;
-    private $cache = array();
+    private bool $apcu;
 
     public function __construct(PDO $pdo)
     {
         $this->pdo = $pdo;
+        $this->apcu = function_exists('apcu_fetch') && apcu_enabled();
     }
 
     private function getUserNameFromGridData($userID, $table, $row): ?string
@@ -28,10 +29,11 @@ class OpenSim
             if (count($userData) >= 3) {
                 $dbUserID = $userData[0];
                 $dbUserName = $userData[2];
-
-                $this->cache['USERNAME'][$userID] = $dbUserName;
-
+                
                 if ($dbUserID == $userID) {
+                    if ($this->apcu) {
+                        apcu_store('os_username_'.$userID, $dbUserName, 600);
+                    }
                     return $dbUserName;
                 }
             }
@@ -46,16 +48,20 @@ class OpenSim
             return "Unknown User";
         }
 
-        if (isset($this->cache['USERNAME'][$userID])) {
-            return $this->cache['USERNAME'][$userID];
+        if ($this->apcu && apcu_exists('os_username_'.$userID)) {
+            return apcu_fetch('os_username_'.$userID);
         }
 
         $statementUser = $this->pdo->prepare('SELECT FirstName,LastName FROM UserAccounts WHERE PrincipalID = ?');
         $statementUser->execute(array($userID));
 
         if ($rowUser = $statementUser->fetch()) {
-            $this->cache['USERNAME'][$userID] = $rowUser['FirstName'].' '.$rowUser['LastName'];
-            return $this->cache['USERNAME'][$userID];
+            $name = $rowUser['FirstName'].' '.$rowUser['LastName'];
+            if ($this->apcu) {
+                apcu_store('os_username_'.$userID, $name, 300);
+            }
+            
+            return $name;
         }
 
         $res = $this->getUserNameFromGridData($userID, 'GridUser', 'UserID');

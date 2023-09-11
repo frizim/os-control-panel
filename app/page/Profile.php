@@ -19,18 +19,28 @@ class Profile extends \Mcp\RequestHandler
         $tpl = $this->app->template('profile.php')->parent('__dashboard.php');
 
         //Prüfe ob IAR grade erstellt wird.
-        $statementIARCheck = $this->app->db()->prepare('SELECT 1 FROM mcp_iar_state WHERE userID =:userID');
-        $statementIARCheck->execute(['userID' => $_SESSION['UUID']]);
-        $iarRunning = $statementIARCheck->rowCount() != 0;
-        $statementIARCheck->closeCursor();
-    
-        if ($iarRunning) {
-            if (isset($_SESSION['iar_created'])) {
-                $tpl->unsafeVar('iar-message', '<div class="alert alert-success" role="alert">Deine IAR wird jetzt erstellt und der Download Link wird dir per PM zugesendet.</div>');
-                unset($_SESSION['iar_created']);
-            } else {
-                $tpl->unsafeVar('iar-message', '<div class="alert alert-danger" role="alert">Aktuell wird eine IAR erstellt.<br>Warte bitte bis du eine PM bekommst.</div>');
+        $iarRunning = false;
+
+        if (isset($_SESSION['iar_created'])) {
+            $tpl->unsafeVar('iar-message', '<div class="alert alert-success" role="alert">Deine IAR wird jetzt erstellt und der Download Link wird dir per PM zugesendet.</div>');
+            unset($_SESSION['iar_created']);
+            $iarRunning = true;
+        } else {
+            $statementIARCheck = $this->app->db()->prepare('SELECT iarfilename,state,created FROM mcp_iar_state WHERE userID =:userID');
+            $statementIARCheck->execute(['userID' => $_SESSION['UUID']]);
+            if ($row = $statementIARCheck->fetch()) {
+                if ($row['state'] < 2) {
+                    $tpl->unsafeVar('iar-message', '<div class="alert alert-danger" role="alert">Aktuell wird eine IAR erstellt.<br>Warte bitte bis du eine PM bekommst.</div>');
+                    $iarRunning = true;
+                }
+                else {
+                    $tpl->unsafeVar('iar-message', '<div class="alert alert-success role="alert">Du kannst dir deine IAR (erstellt am '.date('d.m.Y', $row['created']).') <a href="https://'.$this->app->config('domain').'/index.php?api=downloadIar&id='.substr($row['iarfilename'], 0, strlen($row['iarfilename']) - 4).'">hier</a> herunterladen.</div>');
+                }
             }
+            $statementIARCheck->closeCursor();
+        }
+
+        if ($iarRunning) {
             $tpl->var('iar-button-state', 'disabled');
         }
     
@@ -67,12 +77,27 @@ class Profile extends \Mcp\RequestHandler
         if (isset($_POST['createIAR'])) {
             $validator = new FormValidator(array()); // CSRF validation only
             if($validator->isValid($_POST)) {
-                $iarname = md5(time().$_SESSION['UUID'] . rand()).".iar";
-                
-                $statementIARSTART = $this->app->db()->prepare('INSERT INTO mcp_iar_state (userID, filesize, iarfilename) VALUES (:userID, :filesize, :iarfilename)');
-                $statementIARSTART->execute(['userID' => $_SESSION['UUID'], 'filesize' => 0, 'iarfilename' => $iarname]);
+                $validRequest = true;
 
-                $_SESSION['iar_created'] = true;
+                $statementIarFile = $this->app->db()->prepare('SELECT iarfilename,state,created FROM mcp_iar_state WHERE userID = ?');
+                $statementIarFile->execute([$_SESSION['UUID']]);
+                if ($row = $statementIarFile->fetch()) {
+                    if ($row['state'] == 2) {
+                        unlink($this->app->getDataDir().DIRECTORY_SEPARATOR.'iars'.DIRECTORY_SEPARATOR.$row['iarfilename']);
+                    }
+                    else {
+                        $validRequest = false;
+                    }
+                }
+
+                if ($validRequest) {
+                    $iarname = md5(time().$_SESSION['UUID'] . rand()).".iar";
+                
+                    $statementIARSTART = $this->app->db()->prepare('INSERT INTO mcp_iar_state (userID, filesize, iarfilename) VALUES (:userID, :filesize, :iarfilename) ON DUPLICATE KEY UPDATE filesize = :replFilesize, state = :replState');
+                    $statementIARSTART->execute(['userID' => $_SESSION['UUID'], 'filesize' => 0, 'iarfilename' => $iarname, 'replFilesize' => 0, 'replState' => 0]);
+    
+                    $_SESSION['iar_created'] = true;
+                }
             }
         }
         elseif (isset($_POST['saveProfileData'])) {

@@ -31,20 +31,8 @@
             
                     <div class="row" style="margin-top: 15px;">
                         <div class="col">
-                            <hr>
-                        </div>
-                    </div>
-            
-                    <div class="row" style="margin-top: 15px;">
-                        <div class="col">
                             <label for="inputpartner">Partner</label>
                             <input type="text" class="form-control" name="formInputFeldPartnerName" id="inputpartner" placeholder="<?= $v['partner'] ?>">
-                        </div>
-                    </div>
-            
-                    <div class="row" style="margin-top: 15px;">
-                        <div class="col">
-                            <hr>
                         </div>
                     </div>
             
@@ -54,12 +42,12 @@
                             <button type="submit" name="saveProfileData" class="btn btn-primary btn-lg">Speichern</button>
                         </div>
                     </div>
-                    
                 </form>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div style="width: 400px; margin: auto; left: 50%;">
+                <div class="row" style="margin-top: 15px;">
+                    <div class="col">
+                        <hr>
+                    </div>
+                </div>
                 <form action="index.php?page=profile" method="post">
                     <div class="row">
                         <div class="col">
@@ -86,17 +74,14 @@
                     <div class="row" style="margin-top: 15px;">
                         <div class="col">
                             <?= $v['csrf'] ?>
-                            <p class="text-center"><button type="submit" name="savePassword" class="btn btn-primary btn-lg">Speichern</button></p>
+                            <button type="submit" name="savePassword" class="btn btn-primary btn-lg">Speichern</button>
                         </div>
                     </div>
                 </form>
-
-                <div class="row" style="margin-top: 15px;">
-                    <div class="col">
-                        <hr>
-                    </div>
-                </div>
-
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div style="width: 400px; margin: auto; left: 50%;">
                 <p class="lead"><b>IAR Sicherung</b></p>
                 <p class="text-center"><?= $v['iar-message'] ?></p>
                 Hier kannst du eine IAR deines Inventars erstellen.<br>

@@ -31,6 +31,15 @@ class RestConsole
         return true;
     }
 
+    public function closeSession(): void
+    {
+        $response = $this->sendRequest('/CloseSession/', [
+            'ID' => $this->sessionId
+        ]);
+
+        $this->detectError($response, '/CloseSession/');
+    }
+
     public function readResponses(): array
     {
         if ($this->sessionId == null) {

@@ -34,7 +34,7 @@ class Profile extends \Mcp\RequestHandler
                     $iarRunning = true;
                 }
                 else {
-                    $tpl->unsafeVar('iar-message', '<div class="alert alert-success role="alert">Du kannst dir deine IAR (erstellt am '.date('d.m.Y', $row['created']).') <a href="https://'.$this->app->config('domain').'/index.php?api=downloadIar&id='.substr($row['iarfilename'], 0, strlen($row['iarfilename']) - 4).'">hier</a> herunterladen.</div>');
+                    $tpl->unsafeVar('iar-message', '<div class="alert alert-success role="alert">Du kannst dir deine IAR (erstellt am '.date('d.m.Y', $row['created']).') <a href="https://'.$this->app->config('domain').'/index.php?api=downloadIar&id='.substr($row['iarfilename'], 0, strlen($row['iarfilename']) - 4).'">hier</a> herunterladen. Sie ist mit dem Passwort <i>password</i> geschützt.</div>');
                 }
             }
             $statementIARCheck->closeCursor();

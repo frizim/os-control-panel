@@ -54,7 +54,7 @@ class IarMonitor extends CronJob
                             $statementUpdate = $this->app->db()->prepare('UPDATE mcp_iar_state SET state = ?, created = ? WHERE userID = ?');
                             $statementUpdate->execute([2, time(), $row['userID']]);
                             
-                            Util::sendInworldIM("00000000-0000-0000-0000-000000000000", $row['userID'], "Inventory", $this->app->config('grid')['homeurl'], "Deine IAR ist fertig zum Download: https://".$this->app->config('domain').'/index.php?api=downloadIar&id='.substr($row['iarfilename'], 0, strlen($row['iarfilename']) - 4));
+                            Util::sendInworldIM("00000000-0000-0000-0000-000000000000", $row['userID'], "Inventory", $this->app->config('grid')['homeurl'], "Deine IAR ist fertig zum Download: https://".$this->app->config('domain').'/index.php?api=downloadIar&id='.substr($row['iarfilename'], 0, strlen($row['iarfilename']) - 4).' , sie ist mit dem Passwort "password" geschützt.');
                         }
                     }
                 }

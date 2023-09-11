@@ -22,7 +22,8 @@ class Mcp implements ConnectionProvider
             'getAccessList' => 'Api\\GetAccessList',
             'onlineDisplay' => 'Api\\OnlineDisplay',
             'viewerWelcomeSite' => 'Api\\ViewerWelcomePage',
-            'runCron' => 'Api\\CronStarter'
+            'runCron' => 'Api\\CronStarter',
+            'downloadIar' => 'Api\\DownloadIar'
         ],
         'page' => [
             'dashboard' => 'Page\\Dashboard',

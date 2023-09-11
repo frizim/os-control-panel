@@ -25,6 +25,7 @@ class MigrationManager
             'RENAME TABLE IF EXISTS UserIdentitys TO mcp_user_identities, PasswordResetTokens TO mcp_password_reset, InviteCodes TO mcp_invites, im_offline_send TO mcp_offlineim_send, regions_info TO mcp_regions_info',
             'ALTER TABLE mcp_invites MODIFY COLUMN InviteCode CHAR(64) NOT NULL',
             'ALTER TABLE mcp_regions_info MODIFY COLUMN regionID CHAR(36), MODIFY COLUMN ProcMem INT(11) UNSIGNED NOT NULL, MODIFY COLUMN Prims INT(11) UNSIGNED NOT NULL, MODIFY COLUMN SimFPS FLOAT NOT NULL, MODIFY COLUMN PhyFPS FLOAT NOT NULL, MODIFY COLUMN OfflineTimer BIGINT UNSIGNED NOT NULL DEFAULT 0',
+            'ALTER TABLE mcp_user_identities MODIFY COLUMN PrincipalID CHAR(36) COLLATE utf8mb3_general_ci, MODIFY COLUMN IdentityID CHAR(36) COLLATE utf8mb3_general_ci',
             'CREATE TRIGGER IF NOT EXISTS del_id_trig AFTER DELETE ON UserAccounts FOR EACH ROW DELETE FROM mcp_user_identities WHERE mcp_user_identities.PrincipalID = OLD.PrincipalID OR mcp_user_identities.IdentityID = OLD.PrincipalID',
             'CREATE TRIGGER IF NOT EXISTS del_pwres_trig AFTER DELETE ON UserAccounts FOR EACH ROW DELETE FROM mcp_password_reset WHERE mcp_password_reset.PrincipalID = OLD.PrincipalID'
         ],

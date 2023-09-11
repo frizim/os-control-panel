@@ -30,12 +30,11 @@ class Identities extends \Mcp\RequestHandler
     
         $opensim = new OpenSim($this->app->db());
     
-        $csrf = $this->app->csrfField();
         while ($row = $statement->fetch()) {
             if ($row['IdentityID'] == $_SESSION['UUID']) {
                 $entry = '<tr><td>'.htmlspecialchars(trim($opensim->getUserName($row['IdentityID']))).' <span class="badge badge-info">Aktiv</span></td><td>-</td></tr>';
             } else {
-                $entry = '<tr><td>'.htmlspecialchars(trim($opensim->getUserName($row['IdentityID']))).'</td><td><form action="index.php?page=identities" method="post">'.$csrf.'<input type="hidden" name="uuid" value="'.htmlspecialchars($row['IdentityID']).'"><button type="submit" name="enableIdent" class="btn btn-success btn-sm">Aktivieren</button> <button type="submit" name="deleteIdent" class="btn btn-danger btn-sm">Löschen</button></form></td></tr>';
+                $entry = '<tr><td>'.htmlspecialchars(trim($opensim->getUserName($row['IdentityID']))).'</td><td data-uuid="'.htmlspecialchars($row['IdentityID']).'"><button name="enableIdent" class="btn btn-success btn-sm" data-toggle="modal" data-target="#isc">Aktivieren</button> <button type="submit" name="deleteIdent" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#idc">Löschen</button></td></tr>';
             }
     
             $table = $table.$entry;
@@ -50,6 +49,7 @@ class Identities extends \Mcp\RequestHandler
         $this->app->template('identities.php')->parent('__dashboard.php')->vars([
             'title' => 'Identitäten',
             'username' => $_SESSION['DISPLAYNAME'],
+            'activeIdent' => $_SESSION['FIRSTNAME'].' '.$_SESSION['LASTNAME'],
             'message' => $message
         ])->unsafeVar('ident-list', $table.'</tbody></table>')->render();
     }
@@ -131,7 +131,7 @@ class Identities extends \Mcp\RequestHandler
                         $_SESSION['identities_err'] = 'Dieser Name ist schon in Benutzung.';
                     }
                 } else {
-                    $_SESSION['identities_err'] = 'Der Name muss aus einem Vor und einem Nachnamen bestehen.';
+                    $_SESSION['identities_err'] = 'Der Name muss aus einem Vor- und einem Nachnamen bestehen.';
                 }
             }
         }

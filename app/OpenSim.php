@@ -246,6 +246,9 @@ class OpenSim
             $statementDelete = $this->pdo->prepare('DELETE FROM UserAccounts WHERE PrincipalID = ?');
             $statementDelete->execute([$identId]);
 
+            $statementUserProfile = $this->pdo->prepare('DELETE FROM userprofile WHERE useruuid = ?');
+            $statementUserProfile->execute([$identId]);
+
             return true;
         }
 

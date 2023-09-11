@@ -121,7 +121,10 @@ class Identities extends \Mcp\RequestHandler
         
                         $statementAccounts = $this->app->db()->prepare('INSERT INTO UserAccounts (PrincipalID, ScopeID, FirstName, LastName, Email, ServiceURLs, Created, UserLevel, UserFlags, UserTitle, active) VALUES (:PrincipalID, :ScopeID, :FirstName, :LastName, :Email, :ServiceURLs, :Created, :UserLevel, :UserFlags, :UserTitle, :active )');
                         $statementAccounts->execute(['PrincipalID' => $avatarUUID, 'ScopeID' => "00000000-0000-0000-0000-000000000000", 'FirstName' => $avatarNameParts[0], 'LastName' => $avatarNameParts[1], 'Email' => $_SESSION['EMAIL'], 'ServiceURLs' => "HomeURI= GatekeeperURI= InventoryServerURI= AssetServerURI= ", 'Created' => time(), 'UserLevel' => 0, 'UserFlags' => 0, 'UserTitle' => "", 'active' => 1]);
-        
+
+                        $statementProfile = $this->app->db()->prepare('INSERT INTO `userprofile` (`useruuid`, `profilePartner`, `profileImage`, `profileURL`, `profileFirstImage`, `profileAllowPublish`, `profileMaturePublish`, `profileWantToMask`, `profileWantToText`, `profileSkillsMask`, `profileSkillsText`, `profileLanguages`, `profileAboutText`, `profileFirstText`) VALUES (:useruuid, :profilePartner, :profileImage, :profileURL, :profileFirstImage, :profileAllowPublish, :profileMaturePublish, :profileWantToMask, :profileWantToText, :profileSkillsMask, :profileSkillsText, :profileLanguages, :profileAboutText, :profileFirstText)');
+                        $statementProfile->execute(['useruuid' => $avatarUUID, 'profilePartner' => "00000000-0000-0000-0000-000000000000", 'profileImage' => "00000000-0000-0000-0000-000000000000", 'profileURL' => '', 'profileFirstImage' => "00000000-0000-0000-0000-000000000000", "profileAllowPublish" => "0", "profileMaturePublish" => "0", "profileWantToMask" => "0", "profileWantToText" => "", "profileSkillsMask" => "0", "profileSkillsText" => "", "profileLanguages" => "", "profileAboutText" => "", "profileFirstText" => ""]);
+                        
                         $statementUserIdentitys = $this->app->db()->prepare('INSERT INTO mcp_user_identities (PrincipalID, IdentityID) VALUES (:PrincipalID, :IdentityID)');
                         $statementUserIdentitys->execute(['PrincipalID' => $_SESSION['UUID'], 'IdentityID' => $avatarUUID]);
                     } else {

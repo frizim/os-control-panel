@@ -16,6 +16,7 @@ class SmtpClient
     {
         $mailer = new PHPMailer(true);
         $mailer->isSMTP();
+        $mailer->CharSet = 'UTF-8';
         $mailer->Host = $host;
         $mailer->Port = $port;
         $mailer->Username = $username;
@@ -39,7 +40,7 @@ class SmtpClient
         $this->mailer->Subject = $subject;
         ob_start();
         $tpl->render();
-        $tplOut = ob_end_clean();
+        $tplOut = ob_get_flush();
         $this->mailer->Body = $tplOut;
         $this->mailer->AltBody = $this::htmlToPlain($tplOut);
 

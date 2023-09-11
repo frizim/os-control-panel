@@ -11,7 +11,7 @@ use Mcp\Util\Util;
 class ForgotPassword extends \Mcp\RequestHandler
 {
 
-    const MESSAGE = 'Hallo %%NAME%%,<br/><br/>wir haben soeben eine Anfrage zur Zurücksetzung des Passworts für deinen 4Creative-Account erhalten.<br/><br/>Klicke <a href="%%RESET_LINK%%">hier</a>, um ein neues Passwort festzulegen. Dieser Link läuft in 24 Stunden ab.<br/><br/>Falls du diese Anfrage nicht gesendet hast, ignoriere sie einfach. Bei weiteren Fragen kannst du uns unter info@4creative.net oder per Discord über @ikeytan erreichen.';
+    const MESSAGE = 'Hallo %%NAME%%,<br/><br/>wir haben soeben eine Anfrage zur Zurücksetzung des Passworts für deinen 4Creative-Account erhalten.<br/><br/>Klicke <a href="%%RESET_LINK%%">hier</a>, um ein neues Passwort festzulegen. Dieser Link läuft in 24 Stunden ab.<br/><br/>Falls du diese Anfrage nicht gesendet hast, ignoriere sie einfach. Bei weiteren Fragen kannst du uns unter info@4creative.net oder über unseren Discord-Server erreichen.';
 
     public function __construct(\Mcp\Mcp $app)
     {

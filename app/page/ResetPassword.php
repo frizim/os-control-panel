@@ -11,7 +11,7 @@ use Mcp\Util\Util;
 class ResetPassword extends \Mcp\RequestHandler
 {
 
-    private const MESSAGE = 'Hallo %%NAME%%,<br/><br/>das Passwort für deinen 4Creative-Account wurde soeben über die Funktion "Passwort vergessen" geändert.<br/><br/>Solltest du diese Änderung nicht selbst durchgeführt haben, wende dich bitte umgehend per E-Mail (info@4creative.net) oder Discord (@ikeytan) an uns.';
+    private const MESSAGE = 'Hallo %%NAME%%,<br/><br/>das Passwort für deinen 4Creative-Account wurde soeben über die Funktion "Passwort vergessen" geändert.<br/><br/>Solltest du diese Änderung nicht selbst durchgeführt haben, wende dich bitte umgehend per E-Mail (info@4creative.net) oder über unseren Discord-Server an uns.';
     private const TOKEN_INVALID = 'Dieser Link zur Passwortzurücksetzung ist nicht gültig. Bitte klicke oder kopiere den Link aus der E-Mail, die du erhalten hast.';
     private const TOKEN_EXPIRED = 'Dein Link zur Passwortzurücksetzung ist abgelaufen. Klicke <a href="index.php?page=forgot">hier</a>, um eine neue Anfrage zu senden.';
 

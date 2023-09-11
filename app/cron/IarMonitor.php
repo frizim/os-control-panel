@@ -10,7 +10,7 @@ use Mcp\Util\Util;
 class IarMonitor extends CronJob
 {
 
-    private ?RestConsole $console;
+    private ?RestConsole $console = null;
     private bool $consoleAvailable = true;
 
     public function __construct(\Mcp\Mcp $app)
@@ -60,7 +60,7 @@ class IarMonitor extends CronJob
                 }
             }
 
-            if ($this->consoleAvailable) {
+            if ($this->console != null) {
                 $this->console->closeSession();
             }
         }

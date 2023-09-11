@@ -15,7 +15,7 @@ class RegionChecker extends CronJob
 
     public function run(): bool
     {
-        $statement = $this->app->db()->prepare("SELECT uuid,regionName,owner_uuid,serverURI,OfflineTimer FROM regions JOIN mcp_regions_info ON regions.uuid = mcp_regions_info.regionID COLLATE utf8mb3_unicode_ci");
+        $statement = $this->app->db()->prepare("SELECT uuid,regionName,owner_uuid,serverURI,OfflineTimer FROM regions LEFT JOIN mcp_regions_info ON regions.uuid = mcp_regions_info.regionID COLLATE utf8mb3_unicode_ci");
         $statement->execute();
 
         while ($row = $statement->fetch()) {
@@ -25,6 +25,10 @@ class RegionChecker extends CronJob
             $result = curl_exec($curl);
 
             if ($result === false || strlen($result) == 0) {
+                if ($row['OfflineTimer'] == null) {
+                    continue;
+                }
+
                 $opensim = new OpenSim($this->app->db());
 
                 $longOffline = ($row['OfflineTimer'] + 3600) <= time();
@@ -46,7 +50,7 @@ class RegionChecker extends CronJob
                 $regionData = json_decode($result);
 
                 $statementAccounts = $this->app->db()->prepare('REPLACE INTO `mcp_regions_info` (`regionID`, `RegionVersion`, `ProcMem`, `Prims`, `SimFPS`, `PhyFPS`, `OfflineTimer`) VALUES (:regionID, :RegionVersion, :ProcMem, :Prims, :SimFPS, :PhyFPS, :OfflineTimer)');
-                $statementAccounts->execute(['regionID' => $row['uuid'], 'RegionVersion' => $regionData->Version, 'ProcMem' => $regionData->ProcMem, 'Prims' => $regionData->Prims, 'SimFPS' => $regionData->SimFPS, 'PhyFPS' => $regionData->PhyFPS, 'OfflineTimer' => time()]);
+                $statementAccounts->execute(['regionID' => $row['uuid'], 'RegionVersion' => $regionData->Version, 'ProcMem' => intval(str_replace(',', '', $regionData->ProcMem)), 'Prims' => $regionData->Prims, 'SimFPS' => $regionData->SimFPS, 'PhyFPS' => $regionData->PhyFPS, 'OfflineTimer' => time()]);
             }
         }
         

@@ -42,17 +42,20 @@ class Util
         return $res;
     }
     
-    public static function getDataFromHTTP($url, $content = "", $requestTyp = "application/text")
+    public static function getDataFromHTTP($url, $content = "", $requestType = "application/text")
     {
-        try {
-            if ($content != "") {
-                return file_get_contents($url, true, stream_context_create(array('http' => array('header'  => 'Content-type: '.$requestTyp, 'method' => 'POST', 'timeout' => 0.5, 'content' => $content))));
-            } else {
-                return file_get_contents($url);
-            }
-        } catch (Exception $e) {
-            echo "(HTTP REQUEST) error while conntect to remote server. : ".$url;
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 1);
+        if ($content != "") {
+            curl_setopt($curl, CURLOPT_POST, true);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $content);
+            curl_setopt($curl, CURLOPT_USERAGENT, 'mcp/0.0.1');
+            curl_setopt($curl, CURLOPT_HTTPHEADER, [
+                'Content-Type' => $requestType
+            ]);
         }
+        return curl_exec($curl);
     }
     
     public static function sendInworldIM($fromUUID, $toUUID, $fromName, $targetURL, $text)

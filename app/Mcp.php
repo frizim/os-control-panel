@@ -67,6 +67,9 @@ class Mcp implements ConnectionProvider
         }
     }
 
+    /**
+     * Connects to the MySQL database (if not done already) and returns the connection.
+     */
     public function db(): PDO
     {
         if ($this->db == null) {
@@ -78,17 +81,29 @@ class Mcp implements ConnectionProvider
         return $this->db;
     }
 
+    /**
+     * Returns the value associated with the specified key in this config, as either a string, an integer or an array.
+     * Keys are lower-cased for compatibility reasons.
+     *
+     * If there is no entry with this key, an empty array is returned.
+     */
     public function config($key): string|array|int
     {
         $realKey = strtolower($key);
         return isset($this->config[$realKey]) ? $this->config[$realKey] : array();
     }
 
+    /**
+     * Returns a hidden form field with the current CSRF token set.
+     */
     public function csrfField(): string
     {
         return '<input type="hidden" name="csrf" value="'.(isset($_SESSION['csrf']) ? $_SESSION['csrf'] : '').'">';
     }
 
+    /**
+     * Creates a TemplateBuilder instance for the specified template file, setting some basic variables.
+     */
     public function template($name): TemplateBuilder
     {
         return (new TemplateBuilder($this->templateDir, $name))->vars([
@@ -98,6 +113,9 @@ class Mcp implements ConnectionProvider
         ])->unsafeVar('csrf', $this->csrfField());
     }
 
+    /**
+     * Returns the path of the data/ directory, mostly used for dynamically created assets.
+     */
     public function getDataDir(): string
     {
         return $this->dataDir;

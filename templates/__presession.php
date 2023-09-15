@@ -5,8 +5,8 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<title><?= $v['title'] ?></title>
 		<link rel="stylesheet" type="text/css" href="./style/login.min.css">
-		<link href="./style/4Creative.ico" rel="icon">
-    	<link href="./style/4Creative.ico" rel="apple-touch-icon">
+		<link href="./img/4Creative.ico" rel="icon">
+    	<link href="./img/4Creative.ico" rel="apple-touch-icon">
 	</head>
 
 	<body>

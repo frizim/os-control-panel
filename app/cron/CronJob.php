@@ -31,6 +31,7 @@ abstract class CronJob {
                 break;
             case Frequency::DAILY:
                 $res->add(DateInterval::createFromDateString('1 day'));
+                $res->setTime(0, 0, 0);
                 break;
             case Frequency::WEEKLY:
                 $res->add(DateInterval::createFromDateString('1 week'));

@@ -58,7 +58,7 @@ class TemplateBuilder
      */
     public function render(): void
     {
-        $v = $this->vars;
+        $v = &$this->vars;
         $csrf = $this->csrf;
         $basepath = $this->basedir.DIRECTORY_SEPARATOR;
         if ($this->parent == null) {

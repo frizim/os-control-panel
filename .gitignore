@@ -3,3 +3,5 @@ public/fonts
 public/css
 public/js
 config.ini
+vendor/
+composer.phar

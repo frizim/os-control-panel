@@ -28,7 +28,7 @@ class ManageUsers extends RequestHandler
         while ($row = $statement->fetch()) {
             $user = new TemplateVarArray();
             $user['firstName'] = $row["FirstName"];
-            $user["lastName"] = $row["lastName"];
+            $user["lastName"] = $row["LastName"];
             $user["level"] = strval($row["UserLevel"]);
             $user["uuid"] = $row["PrincipalID"];
             $user["identities"] = new TemplateVarArray();

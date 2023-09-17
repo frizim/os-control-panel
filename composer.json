@@ -1,0 +1,18 @@
+{
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "phpmailer/phpmailer": "^6.8.1",
+        "ext-mbstring": "*",
+        "ext-curl": "*",
+        "ext-xml": "*",
+        "ext-simplexml": "*",
+        "ext-pdo": "*"
+    },
+    "autoload": {
+        "psr-4": {"Mcp\\": "app/"}
+    },
+    "config": {
+        "classmap-authoritative": true
+    }
+}

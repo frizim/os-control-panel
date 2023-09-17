@@ -29,9 +29,9 @@ Die Migration der Datenbankstruktur erfolgt automatisch. Möglicherweise erforde
 ## Entwickler
 
 Die Abhängigkeiten des Frontends werden über [npm](https://www.npmjs.com/) verwaltet. Alle erforderlichen Pakete können nach dem Download des Repository über `npm install` heruntergeladen werden.
-In `package.json` ist zudem ein Buildprozess (Befehl: `npm build`) definiert, durch den die Sass-Stylesheets im Verzeichnis `scss` kompiliert und optimiert und zusammen mit Schriftarten und Skripts im öffentlichen Webverzeichnis abgelegt werden.
+In `package.json` ist zudem ein Buildprozess (Befehl: `npm build`) definiert, durch den Stylesheets, Skripte und Schriftarten mit Webpack kompiliert und optimiert und im öffentlichen Webverzeichnis abgelegt werden.
 
-Das Backend besitzt kein Dependency Management. Die einzige Abhängigkeit, [PHPMailer](https://github.com/PHPMailer/PHPMailer), wurde manuell in das Repository eingefügt. Der Autoloader sucht im Verzeichnis `lib` nach solchen externen Klassen.
+Abhängigkeiten des Backends - momentan nur die o.g. Erweiterungen und [PHPMailer](https://github.com/PHPMailer/PHPMailer) - werden über [Composer](https://getcomposer.org) bereitgestellt. Mit dem zugehörigen Autoloader werden alle Klassen geladen.
 
 ### Verarbeitung von Anfragen
 

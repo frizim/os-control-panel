@@ -12,7 +12,7 @@ abstract class RequestHandler
     protected Mcp $app;
     private ?Middleware $middleware;
 
-    public function __construct(Mcp $app, ?Middleware $mw)
+    public function __construct(Mcp $app, ?Middleware $mw = null)
     {
         $this->app = $app;
         $this->middleware = $mw;

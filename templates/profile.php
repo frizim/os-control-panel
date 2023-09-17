@@ -115,11 +115,11 @@
                         <div class="col">
                             <div class="form-group">
                                 <label for="delete-confirm-password">Aktuelles Passwort</label>
-                                <input type="password" class="form-control" id="delete-confirm-password" name="delete-confirm-password">
+                                <input type="password" class="form-control" id="delete-confirm-password" name="delete-confirm-password" required>
                             </div>
                             <div class="form-group">
                                 <div class="form-check">
-                                    <input class="form-check-input" name="delete-confirm" type="checkbox" id="delete-confirm">
+                                    <input class="form-check-input" name="delete-confirm" type="checkbox" id="delete-confirm" required>
                                     <label class="form-check-label" for="delete-confirm">Ich möchte meinen Account, mein Inventar und alle sonstigen Benutzerdaten von mir unwiderruflich löschen lassen.</label>
                                 </div>
                             </div>

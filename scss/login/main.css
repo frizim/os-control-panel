@@ -9,12 +9,12 @@
 
 body, html {
 	height: 100%;
-	font-family: 'Ubuntu-Regular', sans-serif;
+	font-family: 'Ubuntu', sans-serif;
 }
 
 /*---------------------------------------------*/
 a {
-	font-family: 'Ubuntu-Regular', sans-serif;
+	font-family: 'Ubuntu', sans-serif;
 	font-size: 14px;
 	line-height: 1.7;
 	color: #666666;
@@ -40,7 +40,7 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 p {
-	font-family: 'Ubuntu-Regular', sans-serif;
+	font-family: 'Ubuntu', sans-serif;
 	font-size: 14px;
 	line-height: 1.7;
 	color: #666666;
@@ -102,7 +102,7 @@ iframe {
 /*//////////////////////////////////////////////////////////////////
 [ Utility ]*/
 .txt1 {
-	font-family: 'Ubuntu-Regular', sans-serif;
+	font-family: 'Ubuntu', sans-serif;
   font-size: 16px;
   color: #827ffe;
   line-height: 1.4;
@@ -251,7 +251,7 @@ iframe {
 }
 
 .label-checkbox100 {
-	font-family: 'Ubuntu-Regular', sans-serif;
+	font-family: 'Ubuntu', sans-serif;
   font-size: 16px;
   color: #999999;
   line-height: 1.2;
@@ -362,7 +362,7 @@ iframe {
   right: 12px;
   pointer-events: none;
 
-  font-family: 'Ubuntu-Regular', sans-serif;
+  font-family: 'Ubuntu', sans-serif;
   color: #c80000;
   font-size: 14px;
   line-height: 1.4;

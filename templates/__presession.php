@@ -18,8 +18,6 @@
 
 		<div id="dropDownSelect1"></div>
 
-		<script src="./js/vendor/jquery.min.js"></script>
-		<script src="./js/vendor/bootstrap.bundle.min.js"></script>
-		<script src="./js/login-main.js"></script>
+		<script src="./js/presession.js"></script>
 	</body>
 </html>

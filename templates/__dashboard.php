@@ -133,10 +133,7 @@
         </div>
     </div>
 
-    <script src="./js/vendor/jquery.min.js"></script>
-    <script src="./js/vendor/bootstrap.bundle.min.js"></script>
-    <script src="./js/vendor/jquery.easing.min.js"></script>
-    <script src="./js/sb-admin.min.js"></script>
+    <script src="./js/dashboard.js"></script>
     <?= $v['custom-js'] ?>
 </body>
 </html>

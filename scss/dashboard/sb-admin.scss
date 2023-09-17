@@ -1,20 +1,12 @@
-// Import autocomplete
-@import "autocomplete.scss";
-
-// Import Custom Variables
 @import "variables.scss";
 
-// Import Fonts
 @import "../fontawesome.scss";
-@import "../ubuntu.scss";
 
-// FA CSS classes
-@import "../node_modules/@fortawesome/fontawesome-free/scss/fontawesome.scss";
+@import "@fontsource/ubuntu/latin.css";
+@import "@fortawesome/fontawesome-free/scss/fontawesome.scss";
 
-// Import Bootstrap
-@import "../node_modules/bootstrap/scss/bootstrap.scss";
+@import "bootstrap/scss/bootstrap.scss";
 
-// Import Custom SCSS
 @import "mixins.scss";
 @import "global.scss";
 @import "utilities.scss";

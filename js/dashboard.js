@@ -1,3 +1,7 @@
+require("@fontsource/ubuntu/latin.css");
+require("../scss/dashboard/sb-admin.scss");
+require("bootstrap/dist/js/bootstrap.bundle.min.js");
+
 (function($) {
   "use strict"; // Start of use strict
 

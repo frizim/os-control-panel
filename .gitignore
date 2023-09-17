@@ -1,2 +1,5 @@
-config.php
-node_modules
+node_modules/
+public/fonts
+public/css
+public/js
+config.ini

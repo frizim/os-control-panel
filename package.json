@@ -1,33 +1,33 @@
 {
     "name": "mcp-frontend",
-    "description": "Frontend components for the 4Creative MCP",
+    "description": "MCP frontend components",
     "version": "1.0.0",
     "private": true,
     "scripts": {
-        "build": "npm run css && npm run js && npm run fonts",
-        "css-compile-dash": "sass --style compressed --no-error-css --no-source-map --load-path=node_modules scss/dashboard/sb-admin.scss:public/style/sb-admin.min.css",
-        "css-compile-login": "sass --style compressed --no-error-css --no-source-map --load-path=node_modules scss/login/login.scss:public/style/login.min.css",
-        "css-lint": "stylelint scss/",
-        "css-prefix": "postcss --replace public/style/* --use autoprefixer --no-map",
-        "css": "npm run css-compile-dash && npm run css-compile-login && npm run css-prefix",
-        "js": "cp node_modules/bootstrap/dist/js/bootstrap.bundle.min.js public/js/vendor/bootstrap.bundle.min.js && cp node_modules/jquery/dist/jquery.min.js public/js/vendor/jquery.min.js && cp node_modules/jquery.easing/jquery.easing.min.js public/js/vendor/jquery.easing.min.js",
-        "fonts": "cp -r node_modules/@fortawesome/fontawesome-free/webfonts public/fonts/fontawesome-free",
-        "server": "http-server ./public -c-1 -a 127.0.0.1",
-        "start": "npm run watch & npm run server",
-        "watch": "nodemon -e html,scss,js --ignore public/js -x \"npm run build\""
+        "build": "webpack",
+        "server": "php -S localhost:8080 -t public/",
+        "watch": "nodemon -e html,scss,js --ignore public -x \"npm run build\"",
+        "dev": "npm run watch & npm run server"
     },
     "dependencies": {
+        "@fontsource/ubuntu": "^5.0.8",
         "@fortawesome/fontawesome-free": "^6.4.2",
         "bootstrap": "^4.6.2",
-        "jquery": "^3.7.1",
-        "jquery.easing": "^1.4.1"
+        "jquery": "^3.7.1"
     },
     "devDependencies": {
         "autoprefixer": "^10.4.14",
+        "css-loader": "^6.8.1",
+        "css-minimizer-webpack-plugin": "^5.0.1",
         "http-server": "^14.1.1",
+        "mini-css-extract-plugin": "^2.7.6",
         "nodemon": "^3.0.1",
         "postcss": "^8.4.24",
         "postcss-cli": "^10.1.0",
-        "sass": "^1.63.6"
+        "postcss-loader": "^7.3.2",
+        "sass": "^1.63.6",
+        "sass-loader": "^13.3.2",
+        "webpack": "^5.88.2",
+        "webpack-cli": "^5.1.4"
     }
 }

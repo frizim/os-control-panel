@@ -31,8 +31,8 @@ class RegionChecker extends CronJob
 
                 $opensim = new OpenSim($this->app->db());
 
-                $longOffline = ($row['OfflineTimer'] + 3600) <= time();
-                echo "Die Region " . $row['regionName'] . " von " . $opensim->getUserName($row['owner_uuid']) . " ist " . ($longOffline ? "seit über einer Stunde" : "") . " nicht erreichbar.\n"; //TODO: Increase to 1-3 months
+                $longOffline = ($row['OfflineTimer'] + (86400 * 7)) <= time();
+                echo "Die Region " . $row['regionName'] . " von " . $opensim->getUserName($row['owner_uuid']) . " ist " . ($longOffline ? "seit über einer Woche" : "") . " nicht erreichbar.\n";
 
                 if ($longOffline) {
                     if ($this->app->config('grid')['delete-inactive-regions']) {

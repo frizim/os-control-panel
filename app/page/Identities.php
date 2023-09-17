@@ -6,6 +6,7 @@ namespace Mcp\Page;
 use Mcp\FormValidator;
 use Mcp\OpenSim;
 use Mcp\Middleware\LoginRequiredMiddleware;
+use Mcp\Util\TemplateVarArray;
 
 class Identities extends \Mcp\RequestHandler
 {
@@ -24,20 +25,18 @@ class Identities extends \Mcp\RequestHandler
             $statement->execute(['PrincipalID' => $_SESSION['UUID'], 'IdentityID' => $_SESSION['UUID']]);
         }
     
-        $table = '<table class="table"><thead><tr><th scope="col">Name</th><th scope="col">Aktionen</th></thead><tbody>';
         $statement = $this->app->db()->prepare("SELECT IdentityID FROM mcp_user_identities WHERE PrincipalID = ? ORDER BY IdentityID ASC");
         $statement->execute(array($_SESSION['UUID']));
     
         $opensim = new OpenSim($this->app->db());
+        $res = new TemplateVarArray();
     
         while ($row = $statement->fetch()) {
-            if ($row['IdentityID'] == $_SESSION['UUID']) {
-                $entry = '<tr><td>'.htmlspecialchars(trim($opensim->getUserName($row['IdentityID']))).' <span class="badge badge-info">Aktiv</span></td><td>-</td></tr>';
-            } else {
-                $entry = '<tr><td>'.htmlspecialchars(trim($opensim->getUserName($row['IdentityID']))).'</td><td data-uuid="'.htmlspecialchars($row['IdentityID']).'"><button name="enableIdent" class="btn btn-success btn-sm" data-toggle="modal" data-target="#isc">Aktivieren</button> <button type="submit" name="deleteIdent" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#idc">Löschen</button></td></tr>';
-            }
-    
-            $table = $table.$entry;
+            $ident = new TemplateVarArray();
+            $ident["uuid"] = $row["IdentityID"];
+            $ident["name"] = trim($opensim->getUserName($row['IdentityID']));
+            $ident["active"] = $row['IdentityID'] == $_SESSION['UUID'];
+            $res[] = $ident;
         }
     
         $message = '';
@@ -50,8 +49,10 @@ class Identities extends \Mcp\RequestHandler
             'title' => 'Identitäten',
             'username' => $_SESSION['DISPLAYNAME'],
             'activeIdent' => $_SESSION['FIRSTNAME'].' '.$_SESSION['LASTNAME'],
-            'message' => $message
-        ])->unsafeVar('ident-list', $table.'</tbody></table>')->render();
+            'activeUuid' => $_SESSION['UUID'],
+            'message' => $message,
+            'identities' => &$res
+        ])->render();
     }
 
     public function post(): void

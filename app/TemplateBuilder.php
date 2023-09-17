@@ -11,12 +11,15 @@ class TemplateBuilder
     private string $basedir;
     private string $name;
     private ?string $parent = null;
-    private array $vars = [];
+    private TemplateVarArray $vars;
+    private string $csrf;
 
-    public function __construct(string $basedir, string $name)
+    public function __construct(string $basedir, string $name, string $csrf = "")
     {
         $this->basedir = $basedir;
         $this->name = $name;
+        $this->vars = new TemplateVarArray([]);
+        $this->csrf = $csrf;
     }
 
     /**
@@ -36,26 +39,15 @@ class TemplateBuilder
     public function vars(array $vars): TemplateBuilder
     {
         foreach ($vars as $key => $val) {
-            $this->vars[$key] = htmlspecialchars(strval($val));
+            $this->vars[$key] = $val;
         }
         return $this;
     }
 
     /**
-     * Sets the specified variable for this template, after escaping it.
+     * Sets the specified variable for this template, which will be automatically escaped on output.
      */
-    public function var(string $key, string $val): TemplateBuilder
-    {
-        $this->vars[$key] = htmlspecialchars($val);
-        return $this;
-    }
-
-    /**
-     * Sets the specified variable for this template WITHOUT escaping it.
-     *
-     * User input included this way has to be manually sanitized before.
-     */
-    public function unsafeVar(string $key, string $val): TemplateBuilder
+    public function var(string $key, string|TemplateVarArray $val): TemplateBuilder
     {
         $this->vars[$key] = $val;
         return $this;
@@ -66,7 +58,8 @@ class TemplateBuilder
      */
     public function render(): void
     {
-        $v = new TemplateVarArray($this->vars);
+        $v = $this->vars;
+        $csrf = $this->csrf;
         $basepath = $this->basedir.DIRECTORY_SEPARATOR;
         if ($this->parent == null) {
             require $basepath.$this->name;

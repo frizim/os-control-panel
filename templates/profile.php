@@ -1,5 +1,4 @@
 <p class="text-center"><?= $v['message'] ?></p>
-
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-6">
@@ -8,23 +7,23 @@
                     <div class="row">
                         <div class="col">
                             <label for="inputVorname">Vorname</label>
-                            <input type="text" class="form-control" id="inputVorname" name="formInputFeldVorname" placeholder="<?= $v['firstname'] ?>">
+                            <input type="text" class="form-control" id="inputVorname" name="Vorname" placeholder="<?= $v['firstname'] ?>">
                         </div>
                         <div class="col">
                             <label for="inputNachname">Nachname</label>
-                            <input type="text" class="form-control" id="inputNachname" name="formInputFeldNachname" placeholder="<?= $v['lastname'] ?>">
+                            <input type="text" class="form-control" id="inputNachname" name="Nachname" placeholder="<?= $v['lastname'] ?>">
                         </div>
                     </div>
             
                     <div class="row" style="margin-top: 15px;">
                         <div class="col">
                             <label for="inputVorname">E-Mail</label>
-                            <input type="text" class="form-control" id="inputEmail" name="formInputFeldEMail" placeholder="<?= $v['email'] ?>">
+                            <input type="text" class="form-control" id="inputEmail" name="EMail" placeholder="<?= $v['email'] ?>">
                         </div>
                     </div>
                     <div class="form-group" style="margin-top: 15px;">
                         <div class="form-check">
-                            <input class="form-check-input" name="formInputFeldOfflineIM" type="checkbox" id="gridCheck"<?= $v['offline-im-state'] ?>>
+                            <input class="form-check-input" name="OfflineIM" type="checkbox" id="gridCheck"<?= $v['offline-im-state'] ?>>
                             <label class="form-check-label" for="gridCheck"> Offline IM</label>
                         </div>
                     </div>
@@ -32,13 +31,13 @@
                     <div class="row" style="margin-top: 15px;">
                         <div class="col">
                             <label for="inputpartner">Partner</label>
-                            <input type="text" class="form-control" name="formInputFeldPartnerName" id="inputpartner" placeholder="<?= $v['partner'] ?>">
+                            <input type="text" class="form-control" name="PartnerName" id="inputpartner" placeholder="<?= $v['partner'] ?>">
                         </div>
                     </div>
             
                     <div class="row" style="margin-top: 15px;">
                         <div class="col">
-                            <?= $v['csrf'] ?>
+                            <?= $csrf ?>
                             <button type="submit" name="saveProfileData" class="btn btn-primary btn-lg">Speichern</button>
                         </div>
                     </div>
@@ -73,7 +72,7 @@
 
                     <div class="row" style="margin-top: 15px;">
                         <div class="col">
-                            <?= $v['csrf'] ?>
+                            <?= $csrf ?>
                             <button type="submit" name="savePassword" class="btn btn-primary btn-lg">Speichern</button>
                         </div>
                     </div>
@@ -82,15 +81,22 @@
         </div>
         <div class="col-md-6">
             <div style="width: 400px; margin: auto; left: 50%;">
-                <p class="lead"><b>IAR Sicherung</b></p>
-                <p class="text-center"><?= $v['iar-message'] ?></p>
+                <p class="lead"><b>IAR-Backup</b></p>
+                <?php if(strlen($v["iar-message"]) > 0): ?>
+                <p class="text-center">
+                    <div class="alert alert-<?= $v["iar-status"] ?>" role="alert">
+                        <?= $v["iar-message"] ?>
+                        <?php if(strlen($v["iar-link"] > 0)): ?> <a href="<?= $v["iar-link"] ?>">Download</a> <?php endif ?>
+                    </div>
+                </p>
+                <?php endif ?>
                 Hier kannst du eine IAR deines Inventars erstellen.<br>
                 Dies wird einige Zeit dauern. Du bekommst eine PM mit einem Downloadlink sobald deine IAR fertig erstellt wurde.
 
                 <form action="index.php?page=profile" method="post">
                     <div class="row" style="margin-top: 15px;">
                         <div class="col">
-                            <?= $v['csrf'] ?>
+                            <?= $csrf ?>
                             <p class="text-center"><button type="submit" name="createIAR" class="btn btn-primary btn-lg" <?= $v['iar-button-state'] ?>>IAR erstellen</button></p>
                         </div>
                     </div>
@@ -114,14 +120,14 @@
                             <div class="form-group">
                                 <div class="form-check">
                                     <input class="form-check-input" name="delete-confirm" type="checkbox" id="delete-confirm">
-                                    <label class="form-check-label" for="delete-confirm">Ich möchte meinen Account, mein Inventar und alle sonstigen Benutzerdaten von mir auf 4Creative unwiderruflich löschen lassen.</label>
+                                    <label class="form-check-label" for="delete-confirm">Ich möchte meinen Account, mein Inventar und alle sonstigen Benutzerdaten von mir unwiderruflich löschen lassen.</label>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col">
-                            <?= $v['csrf'] ?>
+                            <?= $csrf ?>
                             <p class="text-center"><button type="submit" name="deleteAccount" class="btn btn-danger btn-lg">Account löschen</button></p>
                         </div>
                     </div>
@@ -130,112 +136,3 @@
         </div>
     </div>
 </div>
-
-
-<script>
-    var countries = [<?= $v['residents-js-array'] ?>];
-
-    function autocomplete(inp, arr) {
-    /*the autocomplete function takes two arguments,
-    the text field element and an array of possible autocompleted values:*/
-    var currentFocus;
-    /*execute a function when someone writes in the text field:*/
-    inp.addEventListener("input", function(e) {
-        var a, b, i, val = this.value;
-        /*close any already open lists of autocompleted values*/
-        closeAllLists();
-        if (!val) {
-            return false;
-        }
-        currentFocus = -1;
-        /*create a DIV element that will contain the items (values):*/
-        a = document.createElement("DIV");
-        a.setAttribute("id", this.id + "autocomplete-list");
-        a.setAttribute("class", "autocomplete-items");
-        /*append the DIV element as a child of the autocomplete container:*/
-        this.parentNode.appendChild(a);
-        /*for each item in the array...*/
-        for (i = 0; i < arr.length; i++) {
-            /*check if the item starts with the same letters as the text field value:*/
-            if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
-                /*create a DIV element for each matching element:*/
-                b = document.createElement("DIV");
-                /*make the matching letters bold:*/
-                b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
-                b.innerHTML += arr[i].substr(val.length);
-                /*insert a input field that will hold the current array item's value:*/
-                b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
-                /*execute a function when someone clicks on the item value (DIV element):*/
-                b.addEventListener("click", function(e) {
-                    /*insert the value for the autocomplete text field:*/
-                    inp.value = this.getElementsByTagName("input")[0].value;
-                    /*close the list of autocompleted values,
-                    (or any other open lists of autocompleted values:*/
-                    closeAllLists();
-                });
-                a.appendChild(b);
-            }
-        }
-    });
-    /*execute a function presses a key on the keyboard:*/
-    inp.addEventListener("keydown", function(e) {
-        var x = document.getElementById(this.id + "autocomplete-list");
-        if (x) x = x.getElementsByTagName("div");
-        if (e.keyCode == 40) {
-            /*If the arrow DOWN key is pressed,
-            increase the currentFocus variable:*/
-            currentFocus++;
-            /*and and make the current item more visible:*/
-            addActive(x);
-        } else if (e.keyCode == 38) { //up
-            /*If the arrow UP key is pressed,
-            decrease the currentFocus variable:*/
-            currentFocus--;
-            /*and and make the current item more visible:*/
-            addActive(x);
-        } else if (e.keyCode == 13) {
-            /*If the ENTER key is pressed, prevent the form from being submitted,*/
-            e.preventDefault();
-            if (currentFocus > -1) {
-                /*and simulate a click on the "active" item:*/
-                if (x) x[currentFocus].click();
-            }
-        }
-    });
-
-    function addActive(x) {
-        /*a function to classify an item as "active":*/
-        if (!x) return false;
-        /*start by removing the "active" class on all items:*/
-        removeActive(x);
-        if (currentFocus >= x.length) currentFocus = 0;
-        if (currentFocus < 0) currentFocus = (x.length - 1);
-        /*add class "autocomplete-active":*/
-        x[currentFocus].classList.add("autocomplete-active");
-    }
-
-    function removeActive(x) {
-        /*a function to remove the "active" class from all autocomplete items:*/
-        for (var i = 0; i < x.length; i++) {
-            x[i].classList.remove("autocomplete-active");
-        }
-    }
-
-    function closeAllLists(elmnt) {
-        /*close all autocomplete lists in the document,
-        except the one passed as an argument:*/
-        var x = document.getElementsByClassName("autocomplete-items");
-        for (var i = 0; i < x.length; i++) {
-            if (elmnt != x[i] && elmnt != inp) {
-                x[i].parentNode.removeChild(x[i]);
-            }
-        }
-    }
-    /*execute a function when someone clicks in the document:*/
-    document.addEventListener("click", function(e) {
-        closeAllLists(e.target);
-    });
-}
-
-autocomplete(document.getElementById("inputpartner"), countries);
-</script>

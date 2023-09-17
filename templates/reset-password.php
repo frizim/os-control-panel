@@ -18,7 +18,7 @@
 	</div>
 
 	<div class="container-login100-form-btn m-t-17">
-		<?= $v['csrf'] ?>
+		<?= $csrf ?>
 		<input type="hidden" name="resetToken" value="<?= $v['reset-token'] ?>">
 		<button class="login100-form-btn" name="reset-password">
 			Passwort ändern

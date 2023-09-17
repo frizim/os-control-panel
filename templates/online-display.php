@@ -1,10 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <title>Benutzer online</title>
-        <meta http-equiv="refresh" content="15">
-    </head>
-    <body style="background-image: url('./img/fabric-pattern.png')">
-        <?= $v['online-users'] ?>
-    </body>
-</html>
+<?php if (count($v['online-users']) == 0): ?>
+            <h1>Es ist niemand online!</h1>
+<?php else: ?>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Region</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($v['online-users'] as $user): ?>
+                <tr>
+                    <td><?= $user['name'] ?></td>
+                    <td><?= $user['region'] ?></td>
+                </tr>
+            <?php endforeach ?>
+        </tbody>
+    </table>
+<?php endif ?>

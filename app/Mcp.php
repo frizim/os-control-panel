@@ -16,10 +16,6 @@ class Mcp implements ConnectionProvider
 
     const ROUTES = [
         'api' => [
-            'economy' => 'Api\\Economy',
-            'economylandtool' => 'Api\\EconomyLandTool',
-            'economylandtool.php' => 'Api\\EconomyLandTool',
-            'getAccessList' => 'Api\\GetAccessList',
             'onlineDisplay' => 'Api\\OnlineDisplay',
             'viewerWelcomeSite' => 'Api\\ViewerWelcomePage',
             'runCron' => 'Api\\CronStarter',
@@ -106,11 +102,11 @@ class Mcp implements ConnectionProvider
      */
     public function template($name): TemplateBuilder
     {
-        return (new TemplateBuilder($this->templateDir, $name))->vars([
+        return (new TemplateBuilder($this->templateDir, $name, $this->csrfField()))->vars([
             'domain' => $this->config['domain'],
             'title' => 'MCP',
             'admin' => isset($_SESSION['LEVEL']) && $_SESSION['LEVEL'] > 100
-        ])->unsafeVar('csrf', $this->csrfField());
+        ]);
     }
 
     /**

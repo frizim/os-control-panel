@@ -8,6 +8,7 @@ use Mcp\OpenSim;
 use Mcp\RequestHandler;
 use Mcp\Util\Util;
 use Mcp\Middleware\AdminMiddleware;
+use Mcp\Util\TemplateVarArray;
 
 class ManageUsers extends RequestHandler
 {
@@ -18,30 +19,39 @@ class ManageUsers extends RequestHandler
 
     public function get(): void
     {
-        $table = '<table class="table"><thead><tr><th scope="col">Vorname</th><th scope="col">Nachname</th><th scope="col">Status</th><th scope="col">Aktionen</th></thead><tbody>';
-    
         // Only select current primary account
         $statement = $this->app->db()->prepare("SELECT FirstName,LastName,UserLevel,PrincipalID FROM UserAccounts JOIN auth ON auth.UUID = UserAccounts.PrincipalID ORDER BY Created ASC");
         $statement->execute();
     
         $statementIdent = $this->app->db()->prepare("SELECT FirstName,LastName,UserLevel,IdentityID FROM mcp_user_identities JOIN UserAccounts ON UserAccounts.PrincipalID = mcp_user_identities.IdentityID WHERE mcp_user_identities.PrincipalID = ? AND mcp_user_identities.PrincipalID != mcp_user_identities.IdentityID");
-        $csrf = $this->app->csrfField();
+        $res = new TemplateVarArray();
         while ($row = $statement->fetch()) {
-            $entry = '<tr><td>'.htmlspecialchars($row['FirstName']).'</td><td>'.htmlspecialchars($row['LastName']).'</td><td>'.htmlspecialchars(strval($row['UserLevel'])).'</td><td><form action="index.php?page=users" method="post">'.$csrf.'<input type="hidden" name="userid" value="'.htmlspecialchars($row['PrincipalID']).'"><button type="submit" name="genpw" class="btn btn-link btn-sm">PASSWORT ZURÜCKSETZEN</button> <button type="submit" name="deluser" class="btn btn-link btn-sm" style="color: red">LÖSCHEN</button></form></td></tr>';
+            $user = new TemplateVarArray();
+            $user['firstName'] = $row["FirstName"];
+            $user["lastName"] = $row["lastName"];
+            $user["level"] = strval($row["UserLevel"]);
+            $user["uuid"] = $row["PrincipalID"];
+            $user["identities"] = new TemplateVarArray();
             $statementIdent->execute([$row['PrincipalID']]);
             while ($identRow = $statementIdent->fetch()) {
-                $entry = $entry.'<tr class="ident-row"><td>'.htmlspecialchars($identRow['FirstName']).'</td><td>'.htmlspecialchars($identRow['LastName']).'</td><td>'.htmlspecialchars(strval($identRow['UserLevel'])).'</td><td><form action="index.php?page=users" method="post">'.$csrf.'<input type="hidden" name="userid" value="'.htmlspecialchars($row['PrincipalID']).'"><input type="hidden" name="identid" value="'.htmlspecialchars($identRow['IdentityID']).'"><button type="submit" name="delident" class="btn btn-link btn-sm">Identität löschen</button></form></td></tr>';
+                $ident = new TemplateVarArray();
+                $ident["firstName"] = $identRow["FirstName"];
+                $ident["lastName"] = $identRow["LastName"];
+                $ident["level"] = strval($identRow["UserLevel"]);
+                $ident["uuid"] = $identRow["IdentityID"];
+                $user["identities"][] = $ident;
             }
-            $table = $table.$entry;
+            $res[] = $user;
         }
     
         $tpl = $this->app->template('users.php')->parent('__dashboard.php')->vars([
             'title' => 'Benutzer',
-            'username' => $_SESSION['DISPLAYNAME']
-            ])->unsafeVar('user-list', $table.'</tbody></table>');
+            'username' => $_SESSION['DISPLAYNAME'],
+            'users' => $res
+            ]);
 
         if (isset($_SESSION['users-message'])) {
-            $tpl->unsafeVar('message', $_SESSION['users-message']);
+            $tpl->var('message', $_SESSION['users-message']);
             unset($_SESSION['users-message']);
         }
 

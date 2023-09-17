@@ -11,9 +11,8 @@ use Mcp\Util\Util;
 class ResetPassword extends \Mcp\RequestHandler
 {
 
-    private const MESSAGE = 'Hallo %%NAME%%,<br/><br/>das Passwort für deinen 4Creative-Account wurde soeben über die Funktion "Passwort vergessen" geändert.<br/><br/>Solltest du diese Änderung nicht selbst durchgeführt haben, wende dich bitte umgehend per E-Mail (info@4creative.net) oder über unseren Discord-Server an uns.';
     private const TOKEN_INVALID = 'Dieser Link zur Passwortzurücksetzung ist nicht gültig. Bitte klicke oder kopiere den Link aus der E-Mail, die du erhalten hast.';
-    private const TOKEN_EXPIRED = 'Dein Link zur Passwortzurücksetzung ist abgelaufen. Klicke <a href="index.php?page=forgot">hier</a>, um eine neue Anfrage zu senden.';
+    private const TOKEN_EXPIRED = 'Dein Link zur Passwortzurücksetzung ist abgelaufen. Bitte sende eine neue Anfrage.';
 
     public function __construct(\Mcp\Mcp $app)
     {
@@ -77,10 +76,11 @@ class ResetPassword extends \Mcp\RequestHandler
             $_SESSION['loginMessageColor'] = 'darkgreen';
 
             $smtp = $this->app->config('smtp');
-            $tplMail = $this->app->template('mail.php')->vars([
+            $tplMail = $this->app->template('password-reset-notification.php')->parent("mail.php")->vars([
                 'title' => 'Passwort geändert',
-                'preheader' => 'Das Passwort für deinen 4Creative-Account wurde soeben zurückgesetzt'
-            ])->unsafeVar('message', str_replace('%%NAME%%', $name, $this::MESSAGE));
+                'preheader' => 'Das Passwort für deinen Account wurde soeben zurückgesetzt',
+                'name' => $name
+            ]);
             (new SmtpClient($smtp['host'], intval($smtp['port']), $smtp['address'], $smtp['password']))->sendHtml($smtp['address'], $smtp['name'], $res['Email'], 'Passwort für '.$name.' zurückgesetzt', $tplMail);
 
             header('Location: index.php?page=login');

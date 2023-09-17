@@ -12,7 +12,6 @@ class SessionCleanup extends CronJob
 
     public function run(): bool
     {
-        error_log("Session GC");
         session_start();
         session_gc();
         return true;

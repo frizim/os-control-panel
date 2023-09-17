@@ -22,7 +22,10 @@ class Profile extends \Mcp\RequestHandler
         $iarRunning = false;
 
         if (isset($_SESSION['iar_created'])) {
-            $tpl->unsafeVar('iar-message', '<div class="alert alert-success" role="alert">Deine IAR wird jetzt erstellt und der Download Link wird dir per PM zugesendet.</div>');
+            $tpl->vars([
+                'iar-status' => 'success',
+                'iar-message' => 'Deine IAR wird jetzt erstellt und der Download Link wird dir per PM zugesendet.'
+            ]);
             unset($_SESSION['iar_created']);
             $iarRunning = true;
         } else {
@@ -30,11 +33,18 @@ class Profile extends \Mcp\RequestHandler
             $statementIARCheck->execute(['userID' => $_SESSION['UUID']]);
             if ($row = $statementIARCheck->fetch()) {
                 if ($row['state'] < 2) {
-                    $tpl->unsafeVar('iar-message', '<div class="alert alert-danger" role="alert">Aktuell wird eine IAR erstellt.<br>Warte bitte bis du eine PM bekommst.</div>');
+                    $tpl->vars([
+                        'iar-status' => 'danger',
+                        'iar-message' => 'Aktuell wird eine IAR erstellt.<br>Warte bitte bis du eine PM bekommst.'
+                    ]);
                     $iarRunning = true;
                 }
                 else {
-                    $tpl->unsafeVar('iar-message', '<div class="alert alert-success role="alert">Du kannst dir deine IAR (erstellt am '.date('d.m.Y', $row['created']).') <a href="https://'.$this->app->config('domain').'/index.php?api=downloadIar&id='.substr($row['iarfilename'], 0, strlen($row['iarfilename']) - 4).'">hier</a> herunterladen. Sie ist mit dem Passwort <i>password</i> geschützt.</div>');
+                    $tpl->vars([
+                        'iar-status' => 'success',
+                        'iar-message' => 'Du kannst dir deine IAR (erstellt am '.date('d.m.Y', $row['created']).') jetzt herunterladen. Sie ist mit dem Passwort password geschützt.',
+                        'iar-link' => 'https://'.$this->app->config('domain').'/index.php?api=downloadIar&id='.substr($row['iarfilename'], 0, strlen($row['iarfilename']) - 4)
+                    ]);
                 }
             }
             $statementIARCheck->closeCursor();
@@ -102,19 +112,19 @@ class Profile extends \Mcp\RequestHandler
         }
         elseif (isset($_POST['saveProfileData'])) {
             $validator = new FormValidator(array(
-                'formInputFeldVorname' => array('regex' => '/^[^\\/<>\s]{1,64}$/'),
-                'formInputFeldNachname' => array('regex' => '/^[^\\/<>\s]{1,64}$/'),
-                'formInputFeldEMail' => array('regex' => '/^\S{1,64}@\S{1,250}.\S{2,64}$/'),
-                'formInputFeldOfflineIM' => array('regex' => '/^(|on)$/'),
-                'formInputFeldPartnerName' => array('regex' => '/^[^\\/<>\s]{1,64} [^\\/<>\s]{1,64}$/')
+                'Vorname' => array('regex' => '/^[^\\/<>\s]{1,64}$/'),
+                'Nachname' => array('regex' => '/^[^\\/<>\s]{1,64}$/'),
+                'EMail' => array('regex' => '/^\S{1,64}@\S{1,250}.\S{2,64}$/'),
+                'OfflineIM' => array('regex' => '/^(|on)$/'),
+                'PartnerName' => array('regex' => '/^[^\\/<>\s]{1,64} [^\\/<>\s]{1,64}$/')
             ));
             
             if ($validator->isValid($_POST)) {
-                if(isset($_POST['formInputFeldVorname'])) {
-                    $newFirstName = trim($_POST['formInputFeldVorname']);
+                if(isset($_POST['Vorname'])) {
+                    $newFirstName = trim($_POST['Vorname']);
                     
                     if($newFirstName != "" && $_SESSION['FIRSTNAME'] != $newFirstName) {
-                        if($this->setNamePart('FirstName', $newFirstName, 'LastName', isset($_POST['formInputFeldNachname']) && strlen(trim($_POST['formInputFeldNachname'])) > 0 ? $_POST['formInputFeldNachname'] : $_SESSION['LASTNAME'])) {
+                        if($this->setNamePart('FirstName', $newFirstName, 'LastName', isset($_POST['Nachname']) && strlen(trim($_POST['Nachname'])) > 0 ? $_POST['Nachname'] : $_SESSION['LASTNAME'])) {
                             $_SESSION['FIRSTNAME'] = $newFirstName;
                             $_SESSION['USERNAME'] = $_SESSION['FIRSTNAME']." ".$_SESSION['LASTNAME'];
                             $_SESSION['DISPLAYNAME'] = strtoupper($_SESSION['USERNAME']);
@@ -125,11 +135,11 @@ class Profile extends \Mcp\RequestHandler
                     }
                 }
             
-                if (isset($_POST['formInputFeldNachname'])) {
-                    $newLastName = trim($_POST['formInputFeldNachname']);
+                if (isset($_POST['Nachname'])) {
+                    $newLastName = trim($_POST['Nachname']);
                     
                     if ($newLastName != "" && $_SESSION['LASTNAME'] != $newLastName) {
-                        if ($this->setNamePart('LastName', $newLastName, 'FirstName', isset($_POST['formInputFeldVorname']) && strlen(trim($_POST['formInputFeldVorname'])) > 0 ? $_POST['formInputFeldVorname'] : $_SESSION['FIRSTNAME'])) {
+                        if ($this->setNamePart('LastName', $newLastName, 'FirstName', isset($_POST['Vorname']) && strlen(trim($_POST['Vorname'])) > 0 ? $_POST['Vorname'] : $_SESSION['FIRSTNAME'])) {
                             $_SESSION['LASTNAME'] = $newLastName;
                             $_SESSION['USERNAME'] = $_SESSION['FIRSTNAME']." ".$_SESSION['LASTNAME'];
                             $_SESSION['DISPLAYNAME'] = strtoupper($_SESSION['USERNAME']);
@@ -139,8 +149,8 @@ class Profile extends \Mcp\RequestHandler
                     }
                 }
             
-                if (isset($_POST['formInputFeldEMail'])) {
-                    $newEmail = trim($_POST['formInputFeldEMail']);
+                if (isset($_POST['EMail'])) {
+                    $newEmail = trim($_POST['EMail']);
             
                     if ($newEmail != "" && $_SESSION['EMAIL'] != $newEmail) {
                         $statement = $this->app->db()->prepare('UPDATE UserAccounts SET Email = :Email WHERE PrincipalID = :PrincipalID');
@@ -153,7 +163,7 @@ class Profile extends \Mcp\RequestHandler
                     }
                 }
             
-                if (isset($_POST['formInputFeldOfflineIM']) && $_POST['formInputFeldOfflineIM'] == "on") {
+                if (isset($_POST['OfflineIM']) && $_POST['OfflineIM'] == "on") {
                     $statement = $this->app->db()->prepare('UPDATE usersettings SET imviaemail = :IMState WHERE useruuid = :PrincipalID');
                     $statement->execute(['IMState' => 'true', 'PrincipalID' => $_SESSION['UUID']]);
                 } else {
@@ -161,10 +171,10 @@ class Profile extends \Mcp\RequestHandler
                     $statement->execute(['IMState' => 'false', 'PrincipalID' => $_SESSION['UUID']]);
                 }
 
-                if (isset($_POST['formInputFeldPartnerName']) && $_POST['formInputFeldPartnerName'] != "") {
+                if (isset($_POST['PartnerName']) && $_POST['PartnerName'] != "") {
                     $opensim = new OpenSim($this->app->db());
 
-                    $newPartner = trim($_POST['formInputFeldPartnerName']);
+                    $newPartner = trim($_POST['PartnerName']);
                     $currentPartner = $opensim->getPartner($_SESSION['UUID']);
             
                     if ($currentPartner != "") {

@@ -57,7 +57,7 @@ class Login extends \Mcp\RequestHandler
                 $res = $rowUser;
             }
 
-            if (hash_equals(md5(md5($_POST['password']).":".$res['passwordSalt']), $res['passwordHash'])) {
+            if (hash_equals(md5(md5($_POST['password']).":".$res['passwordSalt']), $res['passwordHash'])) { // Unsafe password hashing, as (currently) implemented by OpenSimulator
                 session_abort();
                 session_set_cookie_params([
                     'lifetime' => 86400,

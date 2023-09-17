@@ -6,6 +6,7 @@ namespace Mcp\Page;
 use Mcp\FormValidator;
 use Mcp\OpenSim;
 use Mcp\Middleware\LoginRequiredMiddleware;
+use Mcp\Util\TemplateVarArray;
 
 class Friends extends \Mcp\RequestHandler
 {
@@ -16,15 +17,14 @@ class Friends extends \Mcp\RequestHandler
 
     public function get(): void
     {
-        $table = '<table class="table"><thead><tr><th scope="col">Name</th><th scope="col">Optionen</th></thead><tbody>';
-        
         $statement = $this->app->db()->prepare("SELECT PrincipalID,Friend FROM Friends WHERE PrincipalID = ? ORDER BY Friend ASC");
         $statement->execute([$_SESSION['UUID']]);
     
         $opensim = new OpenSim($this->app->db());
     
-        $csrf = $this->app->csrfField();
+        $res = new TemplateVarArray();
         while ($row = $statement->fetch()) {
+            $entry = new TemplateVarArray();
             $friendData = explode(";", $row['Friend']);
             $friend = $friendData[0];
     
@@ -35,14 +35,17 @@ class Friends extends \Mcp\RequestHandler
                 $friendData[1] = str_replace("/", "", $friendData[1]);
                 $name = $name.' @ '.strtolower($friendData[1]);
             }
-    
-            $table = $table.'<tr><td>'.htmlspecialchars($name).'</td><td><form action="index.php?page=friends" method="post">'.$csrf.'<input type="hidden" name="uuid" value="'.htmlspecialchars($row['Friend']).'"><button type="submit" name="remove" class="btn btn-danger btn-sm">LÖSCHEN</button></form></td></tr>';
+
+            $entry['uuid'] = $row['Friend'];
+            $entry['name'] = $name;
+            $res[] = $entry;
         }
     
-        $this->app->template('__dashboard.php')->vars([
+        $this->app->template('friends.php')->parent('__dashboard.php')->vars([
             'title' => 'Deine Freunde',
-            'username' => $_SESSION['DISPLAYNAME']
-        ])->unsafeVar('child-content', $table.'</tbody></table>')->render();
+            'username' => $_SESSION['DISPLAYNAME'],
+            'friends' => $res
+        ])->render();
     }
 
     public function post(): void

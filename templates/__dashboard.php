@@ -6,10 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>OpenSim - Kontrollzentrum - <?= $v['username'] ?> - <?= $v['title'] ?></title>
+    <title>MCP - <?= $v['username'] ?> - <?= $v['title'] ?></title>
 
-    <link href="./img/4Creative.ico" rel="icon">
-    <link href="./img/4Creative.ico" rel="apple-touch-icon">
     <link href="./style/sb-admin.min.css" rel="stylesheet"> <?= $v['custom-css'] ?>
 </head>
 
@@ -23,7 +21,7 @@
 
         <ul class="navbar-nav ml-auto ml-md-0">
             <li class="nav-item dropdown no-arrow">
-                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?= $v['username'] ?> <i class="fas fa-user-circle fa-fw"></i></a>
+                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?= $v['username'] ?> <i class="fas fa-user-circle fa-fw"></i></a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                     <a class="dropdown-item" href="?page=profile">Profil</a>
                     <div class="dropdown-divider"></div>
@@ -117,8 +115,8 @@
         </div>
     </div>
 
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Bist du sicher?</h5>

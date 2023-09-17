@@ -11,8 +11,6 @@ use Mcp\Util\Util;
 class ForgotPassword extends \Mcp\RequestHandler
 {
 
-    const MESSAGE = 'Hallo %%NAME%%,<br/><br/>wir haben soeben eine Anfrage zur Zurücksetzung des Passworts für deinen 4Creative-Account erhalten.<br/><br/>Klicke <a href="%%RESET_LINK%%">hier</a>, um ein neues Passwort festzulegen. Dieser Link läuft in 24 Stunden ab.<br/><br/>Falls du diese Anfrage nicht gesendet hast, ignoriere sie einfach. Bei weiteren Fragen kannst du uns unter info@4creative.net oder über unseren Discord-Server erreichen.';
-
     public function __construct(\Mcp\Mcp $app)
     {
         parent::__construct($app, new PreSessionMiddleware($app->config('domain')));
@@ -78,10 +76,12 @@ class ForgotPassword extends \Mcp\RequestHandler
                 $setToken->execute([$uuid, $token, time()]);
 
                 $smtp = $this->app->config('smtp');
-                $tplMail = $this->app->template('mail.php')->vars([
+                $tplMail = $this->app->template('password-reset.php')->parent('mail.php')->vars([
                     'title' => 'Dein Passwort zurücksetzen',
-                    'preheader' => 'So kannst du ein neues Passwort für deinen 4Creative-Account festlegen'
-                ])->unsafeVar('message', str_replace('%%NAME%%', $name, str_replace('%%RESET_LINK%%', 'https://'.$this->app->config('domain').'/index.php?page=reset-password&token='.$token, $this::MESSAGE)));
+                    'preheader' => 'So kannst du ein neues Passwort für deinen Account festlegen',
+                    'name' => $name,
+                    'reset-link' => "https://"-$this->app->config("domain").'/index.php?page=reset-password&token='.$token
+                ]);
                 (new SmtpClient($smtp['host'], intval($smtp['port']), $smtp['address'], $smtp['password']))->sendHtml($smtp['address'], $smtp['name'], $email, 'Zurücksetzung des Passworts für '.$name, $tplMail);
             }
         }

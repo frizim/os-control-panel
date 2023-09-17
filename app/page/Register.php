@@ -154,14 +154,15 @@ class Register extends RequestHandler
             'title' => 'Registrieren',
             'message' => $message,
             'tos-url' => $this->app->config('tos-url'),
-            'invcode' => $_REQUEST['code']
+            'invcode' => $_REQUEST['code'],
+            'avatars' => $this->app->config('default-avatar')
         ])->render();
     }
 
     private function checkInvite(): bool
     {
         if (!isset($_REQUEST['code'])) {
-            Util::displayError($this->app, "Du benötigst einen Einladungscode, um dich bei 4Creative zu registrieren.");
+            Util::displayError($this->app, "Du benötigst einen Einladungscode, um dich zu registrieren.");
         } elseif (strlen($_REQUEST['code']) != 32 || !preg_match('/^[a-f0-9]+$/', $_REQUEST['code'])) {
             Util::displayError($this->app, "Der angegebene Einladungscode ist nicht gültig. Nutze genau den Link, der dir zugeschickt wurde.");
         } else {

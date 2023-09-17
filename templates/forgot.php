@@ -18,7 +18,7 @@
     </div>
 
     <div class="container-login100-form-btn m-t-17">
-        <?= $v['csrf'] ?>
+        <?= $csrf ?>
         <button class="login100-form-btn" name="forgot-request">
             Absenden
         </button>

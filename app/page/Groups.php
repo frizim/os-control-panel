@@ -6,6 +6,7 @@ namespace Mcp\Page;
 use Mcp\FormValidator;
 use Mcp\OpenSim;
 use Mcp\Middleware\LoginRequiredMiddleware;
+use Mcp\Util\TemplateVarArray;
 
 class Groups extends \Mcp\RequestHandler
 {
@@ -18,20 +19,23 @@ class Groups extends \Mcp\RequestHandler
     {
         $opensim = new OpenSim($this->app->db());
 
-        $table = '<table class="table"><thead><tr><th scope="col">Name</th><th scope="col">Gründer</th><th scope="col">Aktionen</th></thead><tbody>';
-        
         $statementGroups = $this->app->db()->prepare("SELECT Name,FounderID,os_groups_membership.GroupID FROM os_groups_groups JOIN os_groups_membership ON os_groups_groups.GroupID = os_groups_membership.GroupID WHERE PrincipalID = ?");
         $statementGroups->execute(array($_SESSION['UUID']));
     
-        $csrf = $this->app->csrfField();
+        $res = new TemplateVarArray();
         while ($rowGroups = $statementGroups->fetch()) {
-            $table = $table.'<tr><td>'.htmlspecialchars($rowGroups['Name']).'</td><td>'.htmlspecialchars($opensim->getUserName($rowGroups['FounderID'])).'</td><td><form action="index.php?page=groups" method="post">'.$csrf.'<input type="hidden" name="group" value="'.htmlspecialchars($rowGroups['GroupID']).'"><button type="submit" name="leave" class="btn btn-danger btn-sm">VERLASSEN</button></form></td></tr>';
+            $group = new TemplateVarArray();
+            $group["name"] = $rowGroups["Name"];
+            $group["founder"] = $opensim->getUserName($rowGroups['FounderID']);
+            $group["uuid"] = $rowGroups["GroupID"];
+            $res[] = $group;
         }
     
-        $this->app->template('__dashboard.php')->vars([
+        $this->app->template('groups.php')->parent('__dashboard.php')->vars([
             'title' => 'Gruppen',
-            'username' => $_SESSION['DISPLAYNAME']
-        ])->unsafeVar('child-content', $table.'</tbody></table>')->render();
+            'username' => $_SESSION['DISPLAYNAME'],
+            'groups' => &$res
+        ])->render();
     }
 
     public function post(): void

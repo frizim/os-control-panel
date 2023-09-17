@@ -12,7 +12,7 @@ class TemplateVarArray implements \ArrayAccess
 
     private array $vars;
 
-    public function __construct(array $vars)
+    public function __construct(array &$vars = [])
     {
         $this->vars = $vars;
     }
@@ -24,10 +24,29 @@ class TemplateVarArray implements \ArrayAccess
 
     public function offsetGet(mixed $offset): mixed
     {
-        return isset($this->vars[$offset]) ? $this->vars[$offset] : '';
+        if(isset($this->vars[$offset])) {
+            return $this->vars[$offset];
+        }
+        return '';
     }
 
     public function offsetSet(mixed $offset, mixed $value): void
+    {
+        $actualVal = null;
+        if(gettype($value) === "array") {
+            $actualVal = new TemplateVarArray($value);
+        }
+        elseif(gettype($value) === "string") {
+            $actualVal = htmlspecialchars($value);
+        }
+        else {
+            $actualVal = htmlspecialchars(strval($value));
+        }
+
+        $this->vars[$offset] = $actualVal;
+    }
+
+    public function unsafeSet(mixed $offset, string $value): void
     {
         $this->vars[$offset] = $value;
     }
@@ -36,4 +55,5 @@ class TemplateVarArray implements \ArrayAccess
     {
         unset($this->vars[$offset]);
     }
+
 }

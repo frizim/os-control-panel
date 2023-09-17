@@ -8,6 +8,7 @@ use Mcp\OpenSim;
 use Mcp\Util\Util;
 use Mcp\Middleware\LoginRequiredMiddleware;
 use Mcp\Middleware\AdminMiddleware;
+use Mcp\Util\TemplateVarArray;
 
 class Regions extends \Mcp\RequestHandler
 {
@@ -21,7 +22,6 @@ class Regions extends \Mcp\RequestHandler
 
     public function get(): void
     {
-        $table = '<table class="table"><thead><tr><th scope="col">Region Name</th><th scope="col">Eigentümer</th><th scope="col">Position</th><th scope="col">Aktionen</th></thead><tbody>';
 
 
         $statement = $this->app->db()->prepare("SELECT uuid,regionName,owner_uuid,locX,locY FROM regions ".($this->showAll ? "ORDER BY owner_uuid ASC" : "WHERE owner_uuid = ? ORDER BY uuid ASC"));
@@ -29,17 +29,26 @@ class Regions extends \Mcp\RequestHandler
     
         $opensim = new OpenSim($this->app->db());
 
-        $csrf = $this->app->csrfField();
-        $urlShowall = $this->showAll ? '&SHOWALL=1' : '';
+        $regions = new TemplateVarArray();
         while ($row = $statement->fetch()) {
+            $region = new TemplateVarArray();
             $stats = $this->getRegionStatsData($row['uuid']);
-            $table = $table.'<tr><td>'.htmlspecialchars($row['regionName']).'<div class="blockquote-footer">'.(!empty($stats) ? 'Prims: '.$stats['Prims'].'; RAM-Nutzung: '.$stats['ProcMem'].'; SIM/PHYS FPS: '.$stats['SimFPS'].'/'.$stats['PhyFPS'].' ('.$stats['RegionVersion'].')' : 'Keine Statistik verfügbar').'</div></td><td>'.htmlspecialchars($opensim->getUserName($row['owner_uuid'])).'</td><td>'.Util::fillString(($row['locX'] / 256), 4).' / '.Util::fillString(($row['locY'] / 256), 4).'</td><td><form action="index.php?page=regions'.$urlShowall.'" method="post">'.$csrf.'<input type="hidden" name="region" value="'.$row['uuid'].'"><button type="submit" name="remove" class="btn btn-link btn-sm">LÖSCHEN</button></form></td></tr>';
+            $region['uuid'] = $row['uuid'];
+            $region['stats'] = $stats;
+            $region['name'] = $row['regionName'];
+            $region['owner_name'] = $opensim->getUserName($row['owner_uuid']);
+            $region['locX'] = Util::fillString(($row['locX'] / 256), 4);
+            $region['locY'] = Util::fillString(($row['locY'] / 256), 4);
+
+            $regions[] = $region;
         }
 
         $this->app->template('__dashboard.php')->vars([
             'title' => $this->showAll ? 'Regionen verwalten' : 'Deine Regionen',
-            'username' => $_SESSION['DISPLAYNAME']
-        ])->unsafeVar('child-content', $table.'</tbody></table>')->render();
+            'username' => $_SESSION['DISPLAYNAME'],
+            'showall' => $this->showAll ? '&SHOWALL=1' : '',
+            'regions' => $regions
+        ])->render();
     }
 
     public function post(): void

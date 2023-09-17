@@ -8,7 +8,34 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-6">
-            <?= $v['ident-list'] ?>
+        if ($row['IdentityID'] == $_SESSION['UUID']) {
+                $entry = '<tr><td>'.htmlspecialchars().' </td><td>-</td></tr>';
+            } else {
+                $entry = '<tr><td>'.htmlspecialchars(trim($opensim->getUserName($row['IdentityID']))).'</td></tr>';
+            }
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Aktionen</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach($v["identities"] as $identity): ?>
+                        <tr>
+                            <td><?= $identity["name"] ?></td>
+                            <?php if($identity["active"]): ?>
+                                <td><span class="badge badge-info">Aktiv</span></td>
+                            <?php else: ?>
+                                <td data-uuid="<?= $identity["uuid"] ?>">
+                                    <button name="enableIdent" class="btn btn-success btn-sm" data-toggle="modal" data-target="#isc">Aktivieren</button>
+                                    <button name="deleteIdent" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#idc">Löschen</button>
+                                </td>
+                            <?php endif ?>
+                        </tr>
+                    <?php endforeach ?>
+                </tbody>
+            </table>
         </div>
         <div class="col-md-6">
             <div style="width: 400px; margin: auto; left: 50%;">
@@ -26,7 +53,7 @@
 
                     <div class="row" style="margin-top: 15px;">
                         <div class="col">
-                            <?= $v['csrf'] ?>
+                            <?= $csrf ?>
                             <button type="submit" name="createIdent" class="btn btn-primary btn-lg">Erstelle Identität</button>
                         </div>
                     </div>
@@ -62,7 +89,7 @@
                 <div class="modal-footer">
                     <form action="index.php?page=identities" method="post">
                         <input type="hidden" value="" name="uuid" id="isc-ident-uuid">
-                        <?= $v['csrf'] ?>
+                        <?= $csrf ?>
                         <button type="submit" name="enableIdent" class="btn btn-primary btn-success">Identität wechseln</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
                     </form>
@@ -93,7 +120,7 @@
                 <div class="modal-footer">
                     <form action="index.php?page=identities" method="post">
                         <input type="hidden" value="" name="uuid" id="idc-ident-uuid">
-                        <?= $v['csrf'] ?>
+                        <?= $csrf ?>
                         <button type="submit" name="deleteIdent" class="btn btn-primary btn-danger">Identität löschen</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
                     </form>

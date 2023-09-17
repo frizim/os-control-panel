@@ -51,24 +51,28 @@ class OfflineIm extends CronJob
                 $xmlMessage = new SimpleXMLElement($row['Message']);
 
                 $imType = $this::IM_TYPE["" . $xmlMessage->dialog . ""];
-                $htmlMessage = "Du hast " . $imType . " in " . $this->app->config('grid')['name'] . " bekommen. <br><p><ul><li>" . htmlspecialchars($xmlMessage->message) . "</li></ul></p>Gesendet von: ";
 
+                $sender = 'unbekannt';
                 if (isset($xmlMessage->fromAgentName)) {
-                    $htmlMessage .= $xmlMessage->fromAgentName;
+                    $sender = $xmlMessage->fromAgentName;
                 }
 
                 if (isset($xmlMessage->RegionID) && isset($xmlMessage->Position)) {
-                    if ($xmlMessage->Position->X != 0 || $xmlMessage->Position->Y != 0 || $xmlMessage->Position->Z != 0) { //TODO
-                        $htmlMessage .= " @ " . $opensim->getRegionName($xmlMessage->RegionID) . "/" . $xmlMessage->Position->X . "/" . $xmlMessage->Position->Y . "/" . $xmlMessage->Position->Z;
+                    if ($xmlMessage->Position->X != 0 || $xmlMessage->Position->Y != 0 || $xmlMessage->Position->Z != 0) {
+                        $sender .= " @ " . $opensim->getRegionName($xmlMessage->RegionID) . "/" . $xmlMessage->Position->X . "/" . $xmlMessage->Position->Y . "/" . $xmlMessage->Position->Z;
                     } else {
-                        $htmlMessage .= " @ " . $opensim->getRegionName($xmlMessage->RegionID);
+                        $sender .= " @ " . $opensim->getRegionName($xmlMessage->RegionID);
                     }
                 }
 
-                $tpl = $this->app->template('mail.php')->vars([
-                    'title' => substr($imType, strpos($imType, ' '))
-                ])->unsafeVar('message', $htmlMessage);
-                $smtpClient->sendHtml($mailcfg['address'], $mailcfg['name'], $email, "Du hast " . $imType . " in " . $this->app->config('grid')['name'] . ".", $tpl);
+                $tpl = $this->app->template('offlineim.php')->parent('mail.php')->vars([
+                    'title' => substr($imType, strpos($imType, ' ')),
+                    'type' => $imType,
+                    'grid' => $this->app->config('grid')['name'],
+                    'message' => $xmlMessage->message,
+                    'sender' => $sender
+                ]);
+                $smtpClient->sendHtml($mailcfg['address'], $mailcfg['name'], $email, "Du hast " . $imType . " in " . $this->app->config('grid')['name'], $tpl);
             }
         }
         return true;

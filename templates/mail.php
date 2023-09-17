@@ -27,11 +27,11 @@
     <span class="preheader" style="display: none"><?= $v['preheader'] ?></span>
     <div class="container" style="background-color: #afafaf">
         <div class="header" style="background-color: #434343; height: 64px">
-            <img style="vertical-align: middle; height: 100%" src="https://4creative.net/images/4Creative-Logo-neu.png" alt="Logo">
+            <img style="vertical-align: middle; height: 100%" src="https://<?= $v["domain"] ?>/img/logo.png" alt="Logo">
             <h2 style="vertical-align: middle; color: #fff; font-weight: bold; margin: 0 0 0 10px; display: inline"><?= $v['title'] ?></h2>
         </div>
         <div class="content" style="background-color: #fff; padding: 2px">
-            <?= $v['message'] ?>
+            <?php if (strlen($v['child-template']) != 0) { require $v['child-template']; } else { echo $v['child-content']; } ?>
         </div>
     </div>
 </body>

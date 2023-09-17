@@ -26,7 +26,7 @@
 
     <div class="wrap-input100 validate-input m-b-16" data-validate="Bitte wähle einen Standardavatar aus.">
         <select class="input100" name="avatar">
-            <?php foreach($v['avatars'] as $k => $v): ?>
+            <?php foreach($v['avatars'] as $k => $val): ?>
                 <option value="<?= $k ?>"><?= $k ?></option>
             <?php endforeach ?>
         </select>

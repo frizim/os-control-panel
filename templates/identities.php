@@ -8,11 +8,6 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-6">
-        if ($row['IdentityID'] == $_SESSION['UUID']) {
-                $entry = '<tr><td>'.htmlspecialchars().' </td><td>-</td></tr>';
-            } else {
-                $entry = '<tr><td>'.htmlspecialchars(trim($opensim->getUserName($row['IdentityID']))).'</td></tr>';
-            }
             <table class="table">
                 <thead>
                     <tr>

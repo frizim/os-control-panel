@@ -8,7 +8,7 @@
 
     <title>MCP - <?= $v['username'] ?> - <?= $v['title'] ?></title>
 
-    <link href="./style/sb-admin.min.css" rel="stylesheet"> <?= $v['custom-css'] ?>
+    <link href="./css/dashboard.css" rel="stylesheet"> <?= $v['custom-css'] ?>
 </head>
 
 <body id="page-top">

@@ -25,7 +25,6 @@
                                 </form>
                             </td>
                         </tr>
-                        $entry = $entry.'<tr class="ident-row"><td>'.htmlspecialchars($identRow['FirstName']).'</td><td>'.htmlspecialchars($identRow['LastName']).'</td><td>'.htmlspecialchars(strval($identRow['UserLevel'])).'</td>
                         <td></td></tr>';
                         <?php foreach($user["identities"] as $identity): ?>
                             <tr class="ident-row">

@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<title><?= $v['title'] ?></title>
-		<link rel="stylesheet" type="text/css" href="./style/login.min.css">
+		<link rel="stylesheet" type="text/css" href="./css/presession.css">
 	</head>
 
 	<body>

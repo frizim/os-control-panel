@@ -1,12 +1,14 @@
-$('#isc').on('show.bs.modal', function(event) {
-    let identCol = $(event.relatedTarget).parent();
-    let uuid = identCol.data('uuid');
-    $('#isc-ident-uuid').attr('value', uuid);
-    $('#isc-ident-name').text(identCol.prev().text());
+document.getElementById("isc").addEventListener("show.bs.modal", event => {
+    let identCol = event.relatedTarget.parentElement;
+    let uuid = identCol.dataset.uuid;
+    document.getElementById("isc-ident-uuid").setAttribute("value", uuid);
+    document.getElementById("isc-ident-name").innerText = identCol.previousElementSibling.innerText;
+
 });
-$('#idc').on('show.bs.modal', function(event) {
-    let identCol = $(event.relatedTarget).parent();
-    let uuid = identCol.data('uuid');
-    $('#idc-ident-uuid').attr('value', uuid);
-    $('#idc-ident-name').text(identCol.prev().text());
+
+document.getElementById("idc").addEventListener("show.bs.modal", event => {
+    let identCol = event.relatedTarget.parentElement;
+    let uuid = identCol.dataset.uuid;
+    document.getElementById("idc-ident-uuid").setAttribute("value", uuid);
+    document.getElementById("idc-ident-name").innerText = identCol.previousElementSibling.innerText;
 });

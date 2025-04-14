@@ -1,60 +1,46 @@
-require("../scss/login/login.scss");
-require("bootstrap/dist/js/bootstrap.bundle.min.js");
-const $ = require("jquery");
+"use strict";
 
-(function ($) {
-    "use strict";
+import "../scss/login/login.scss";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
+let input = document.querySelectorAll('.validate-input .input100');
 
-    /*==================================================================
-    [ Validate ]*/
-    var input = $('.validate-input .input100');
+document.querySelector(".validate-form").addEventListener("submit", e => {
+    let check = true;
 
-    $('.validate-form').on('submit',function(){
-        var check = true;
-
-        for(let i=0; i<input.length; i++) {
-            if(validate(input[i]) == false){
-                showValidate(input[i]);
-                check=false;
-            }
+    for(const field of input) {
+        if(!validate(field)){
+            showValidate(field);
+            check=false;
         }
+    }
 
-        return check;
+    if(!check) {
+        e.preventDefault();
+    }
+});
+
+input.forEach(el => {
+    el.addEventListener("focus", e => {
+        hideValidate(e.target);
     });
+})
 
-
-    $('.validate-form .input100').each(function(){
-        $(this).focus(function(){
-           hideValidate(this);
-        });
-    });
-
-    function validate (input) {
-        if($(input).attr('type') == 'email' || $(input).attr('name') == 'email') {
-            if($(input).val().trim().match(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{1,5}|[0-9]{1,3})(\]?)$/) == null) {
-                return false;
-            }
-        }
-        else {
-            if($(input).val().trim() == ''){
-                return false;
-            }
+function validate(input) {
+    if(input.getAttribute("type") === "email" || input.getAttribute("name") === "email") {
+        if(input.value.trim().match(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{1,5}|[0-9]{1,3})(\]?)$/) == null) {
+            return false;
         }
     }
-
-    function showValidate(input) {
-        var thisAlert = $(input).parent();
-
-        $(thisAlert).addClass('alert-validate');
+    else if(input.value.trim() == ''){
+        return false;
     }
+}
 
-    function hideValidate(input) {
-        var thisAlert = $(input).parent();
+function showValidate(input) {
+    input.parentElement.classList.add("alert-validate");
+}
 
-        $(thisAlert).removeClass('alert-validate');
-    }
-    
-    
-
-})(jQuery);
+function hideValidate(input) {
+    input.parentElement.classList.remove("alert-validate");
+}

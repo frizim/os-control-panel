@@ -1,8 +1,9 @@
 {
+    "name": "frizim/mcp",
     "type": "project",
     "license": "MIT",
     "require": {
-        "phpmailer/phpmailer": "^6.8.1",
+        "phpmailer/phpmailer": "^6.9.3",
         "ext-mbstring": "*",
         "ext-curl": "*",
         "ext-xml": "*",

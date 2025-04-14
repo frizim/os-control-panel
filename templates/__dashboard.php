@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="de">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,25 +9,20 @@
 
     <link href="./css/dashboard.css" rel="stylesheet"> <?= $v['custom-css'] ?>
 </head>
-
 <body id="page-top">
     <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
         <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle">
             <i class="fas fa-bars"></i>
         </button>
 
-        <div class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0"></div>
-
-        <ul class="navbar-nav ml-auto ml-md-0">
-            <li class="nav-item dropdown no-arrow">
-                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?= $v['username'] ?> <i class="fas fa-user-circle fa-fw"></i></a>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                    <a class="dropdown-item" href="?page=profile">Profil</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">Logout</a>
-                </div>
-            </li>
-        </ul>
+        <div class="dropdown ms-auto px-2">
+            <a class="bg-dark btn btn-dark dropdown-toggle" href="#" id="userDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?= $v['username'] ?> <i class="fas fa-user-circle fa-fw"></i></a>
+            <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                <li><a class="dropdown-item" href="?page=profile">Profil</a></li>
+                <li><div class="dropdown-divider"></div></li>
+                <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout</a></li>
+            </ul>
+        </div>
     </nav>
 
     <div id="wrapper">
@@ -120,20 +114,20 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Bist du sicher?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
                 <div class="modal-body">Wähle 'Logout' wenn du dich wirklich abmelden möchtest.</div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Abbrechen</button>
+                    <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Abbrechen</button>
                     <a class="btn btn-primary" href="index.php?logout=1">Logout</a>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="./js/dashboard.js"></script>
+    <script src="./js/dashboard.js" defer></script>
     <?= $v['custom-js'] ?>
 </body>
 </html>

@@ -23,8 +23,8 @@
                                 <td><span class="badge badge-info">Aktiv</span></td>
                             <?php else: ?>
                                 <td data-uuid="<?= $identity["uuid"] ?>">
-                                    <button name="enableIdent" class="btn btn-success btn-sm" data-toggle="modal" data-target="#isc">Aktivieren</button>
-                                    <button name="deleteIdent" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#idc">Löschen</button>
+                                    <button name="enableIdent" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#isc">Aktivieren</button>
+                                    <button name="deleteIdent" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#idc">Löschen</button>
                                 </td>
                             <?php endif ?>
                         </tr>
@@ -61,9 +61,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="iscLabel">Identitätswechsel bestätigen</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     Folgende Daten sind für alle deine Identitäten gleich:
@@ -86,7 +84,7 @@
                         <input type="hidden" value="" name="uuid" id="isc-ident-uuid">
                         <?= $csrf ?>
                         <button type="submit" name="enableIdent" class="btn btn-primary btn-success">Identität wechseln</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
                     </form>
                 </div>
             </div>
@@ -97,9 +95,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="idcLabel">Löschung der Identität bestätigen</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     Wenn du eine Identität löschst, werden folgende zu dieser zugehörige Daten gelöscht:
@@ -117,11 +113,11 @@
                         <input type="hidden" value="" name="uuid" id="idc-ident-uuid">
                         <?= $csrf ?>
                         <button type="submit" name="deleteIdent" class="btn btn-primary btn-danger">Identität löschen</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<?php $v['custom-js'] = '<script src="./js/identities.js"></script>' ?>
+<script src="./js/identities.js" defer></script>

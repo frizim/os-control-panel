@@ -1,0 +1,55 @@
+$primary: #224faa;
+$font-family-base: 'Ubuntu', sans-serif;
+$primary: $primary;
+$input-border-color: transparent;
+$input-focus-border-color: $primary;
+$input-focus-box-shadow: unset;
+$input-bg: #efefef;
+$input-padding-y-lg: 8px;
+$input-border-radius-lg: 2px;
+
+$breadcrumb-active-color: #0f0f0f;
+
+@import "@fontsource/ubuntu/latin.css";
+
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/maps";
+@import "bootstrap/scss/mixins";
+@import "bootstrap/scss/utilities";
+
+@import "bootstrap/scss/root";
+@import "bootstrap/scss/reboot";
+@import "bootstrap/scss/type";
+@import "bootstrap/scss/containers";
+@import "bootstrap/scss/grid";
+
+input:user-invalid {
+    border-color: $danger;
+}
+
+.validate-input {
+    position: relative;
+}
+
+.warn-invalid {
+    position: absolute;
+    display: inline;
+    top: 50%;
+    right: 18px;
+}
+
+input:user-invalid + .warn-invalid::after {
+    content: "!";
+    font-weight: 900;
+    font-size: 18px;
+    display: block;
+    position: absolute;
+    color: $danger;
+    transform: translateY(-50%);
+}
+
+form:has(input:invalid) button[type="submit"] {
+    background-color: $gray-500;
+    border-color: $gray-500;
+}

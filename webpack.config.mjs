@@ -49,8 +49,8 @@ const config = {
                     }
                 ],
                 include: [
-                    path.resolve("./scss/dashboard/sb-admin.scss"),
-                    path.resolve("./scss/login/login.scss"),
+                    path.resolve("./scss/dashboard.scss"),
+                    path.resolve("./scss/login.scss"),
                     path.resolve("./scss/online-display.scss")
                 ],
                 sideEffects: true

@@ -1,36 +1,17 @@
-<form class="login100-form validate-form flex-sb flex-w" action="index.php?page=login" method="post">
-    <span class="login100-form-title p-b-51">
-        Login
-    </span>
+<form class="validate-form" action="index.php?page=login" method="post">
+    <h1 class="text-center text-uppercase fw-bold mt-5 mb-5">Login</h1>
 
-    <div class="flex-sb-m w-full p-t-3 p-b-24" style="color: <?= $v['message-color'] ?>;">
-        <?= $v['message'] ?>
+    <div class="mb-3 validate-input">
+        <input class="form-control form-control-lg" type="text" name="username" value="<?= $v['last-username'] ?>" placeholder="Benutzername" required minlength="2">
+        <span class="warn-invalid"></span>
     </div>
 
-    <div class="wrap-input100 validate-input m-b-16" data-validate="Bitte gebe dein Benutzernamen an.">
-        <input class="input100" type="text" name="username" value="<?= $v['last-username'] ?>" placeholder="Benutzername">
-        <span class="focus-input100"></span>
+    <div class="validate-input">
+        <input class="form-control form-control-lg" type="password" name="password" placeholder="Passwort" required minlength="6">
+        <span class="warn-invalid"></span>
     </div>
+    <a href="index.php?page=forgot" class="btn btn-link text-decoration-none ms-auto">Passwort vergessen?</a>
 
-    <div class="wrap-input100 validate-input m-b-16" data-validate="Bitte gebe dein Passwort ein.">
-        <input class="input100" type="password" name="password" placeholder="Passwort">
-        <span class="focus-input100"></span>
-    </div>
-
-    <div class="flex-sb-m w-full p-t-3 p-b-24">
-        <div>
-             
-        </div>
-
-        <div>
-            <a href="index.php?page=forgot" class="txt1">Passwort vergessen?</a>
-        </div>
-    </div>
-
-    <div class="container-login100-form-btn m-t-17">
-        <?= $csrf ?>
-        <button class="login100-form-btn" name="login">
-            Anmelden
-        </button>
-    </div>
+    <?= $csrf ?>
+    <button type="submit" class="btn btn-primary w-100 mt-4 pt-3 pb-3 text-uppercase fw-bold text-light fs-5" name="login">Anmelden</button>
 </form>

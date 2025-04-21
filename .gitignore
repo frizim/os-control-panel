@@ -5,3 +5,4 @@ public/js
 config.ini
 vendor/
 composer.phar
+data/migrate_ver

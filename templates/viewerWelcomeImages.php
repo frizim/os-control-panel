@@ -6,33 +6,39 @@
         @keyframes fade {
             0% {
                 opacity: 0;
+                transform: translate(0, 0) scale(100%);
             }
 
-            11.11% {
+            2% {
                 opacity: 1;
+                transform: translate(10%, 10%) scale(125%);
             }
 
-            33.33% {
+            20% {
                 opacity: 1;
+                transform: translate(-10%, -10%) scale(125%);
             }
 
-            44.44% {
-                opacity: 0;
+            98% {
+                opacity: 1;
+                transform: translate(10%, 10%) scale(125%);
             }
 
             100% {
                 opacity: 0;
+                transform: translate(0, 0) scale(100%);
             }
         }
 
-        .auto-slideshow {
+        body {
             overflow: hidden;
             display: grid;
             height: 600px;
             margin: 0 auto;
+            background-color: #000000;
         }
 
-        .auto-slideshow img {
+        body img {
             width: 100%;
             height: 100%;
             grid-row: 1;
@@ -40,16 +46,29 @@
             opacity: 0;
             animation-name: fade;
             animation-iteration-count: infinite;
-            animation-duration: 3s;
+            animation-duration: <?= strval(count($v['images']) * 3 * 10) ?>s;
         }
 
-        .auto-slideshow {
+        body {
             height: auto;
             width: 100%;
         }
 
+        h1 {
+            font-size: 18px;
+            font-weight: bold;
+            width: 100%;
+            padding-bottom: 4px;
+            border-bottom: 1px dashed #fafafa;
+        }
+
         .info-box {
+            font-family: sans-serif;
             position: absolute;
+            color: #fafafa;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            min-width: 200px;
         }
 
         .info-box.top-right {
@@ -63,27 +82,26 @@
         }
 
         <?php for($i = 0; $i < count($v['images']); $i++): ?>
-            .auto-slideshow img:nth-child(<?= strval($i + 1) ?>) {
-                animation-delay: <?= strval($i * 3) ?>s;
+            body img:nth-child(<?= strval($i + 1) ?>) {
+                animation-delay: <?= strval($i * 10) ?>s;
             }
         <?php endfor ?>
     </style>
+    <script src="./js/"></script>
 </head>
 <body>
     <?php foreach($v['images'] as $image): ?>
         <img loading="lazy" src="<?= $image ?>" alt="" />
     <?php endforeach ?>
     <div class="info-box top-right">
-        <div><?= $v['grid-name'] ?></div>
+        <h1><?= $v['grid-name'] ?></h1>
         Willkommen<br />
         Melde dich an, um <?= $v['grid-name'] ?> zu betreten.<br />
         <br />
         <?= $v['news'] ?>
     </div>
     <div class="info-box bottom-left">
-        <div>
-            Status: <span style='color: rgb(0, 255, 0);'>Online</span>
-        </div>
+        <h1>Status: <span style='color: rgb(0, 255, 0);'>Online</span></h1>
         Registrierte User: <?= $v['registered'] ?><br />
         Regionen: <?= $v['regions'] ?><br />
         Aktuell online: <?= $v['online'] ?>

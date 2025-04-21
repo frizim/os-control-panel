@@ -1,26 +1,16 @@
-<form class="login100-form validate-form flex-sb flex-w" action="index.php?page=forgot" method="post">
-    <span class="login100-form-title p-b-51">
-        Passwort vergessen
-    </span>
+<form class="validate-form" action="index.php?page=forgot" method="post">
+    <h1 class="text-center text-uppercase fw-bold mt-5 mb-5">Passwort vergessen</h1>
 
-    <div class="flex-sb-m w-full p-t-3 p-b-24" style="color: <?= $v['message-color'] ?>;">
-        <?= $v['message'] ?>
+    <div class="mb-3 validate-input">
+        <input class="form-control form-control-lg" type="text" name="username" value="<?= $v['last-username'] ?>" placeholder="Benutzername" required minlength="2">
+        <span class="warn-invalid"></span>
     </div>
 
-    <div class="wrap-input100 validate-input m-b-16" data-validate="Bitte gebe deinen Benutzernamen an.">
-        <input class="input100" type="text" name="username" placeholder="Benutzername">
-        <span class="focus-input100"></span>
+    <div class="mb-3 validate-input">
+        <input class="form-control form-control-lg" type="text" name="email" placeholder="E-Mail" required minlength="5" maxlength="320">
+        <span class="warn-invalid"></span>
     </div>
-
-    <div class="wrap-input100 validate-input m-b-16" data-validate="Bitte gebe deine E-Mail-Adresse ein.">
-        <input class="input100" type="email" name="email" placeholder="E-Mail">
-        <span class="focus-input100"></span>
-    </div>
-
-    <div class="container-login100-form-btn m-t-17">
-        <?= $csrf ?>
-        <button class="login100-form-btn" name="forgot-request">
-            Absenden
-        </button>
-    </div>
+    
+    <?= $csrf ?>
+    <button type="submit" class="btn btn-primary w-100 mt-4 pt-3 pb-3 text-uppercase fw-bold text-light fs-5" name="forgot-request">Absenden</button>
 </form>

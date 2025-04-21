@@ -1,13 +1,9 @@
 <div class="login100-form flex-sb flex-w">
-	<span class="login100-form-title p-b-51">
-		Fehler
-	</span>
+    <h1 class="text-center text-uppercase fw-bold mt-5 mb-5">Fehler</h1>
 
-	<div class="flex-sb-m w-full p-t-3 p-b-24" style="color: red;">
-		<?= $v['error-message'] ?>
-	</div>
+    <div class="alert alert-danger">
+        <?= $v['error-message'] ?>
+    </div>
 
-	<div class="container-login100-form-btn m-t-17">
-		<a class="login100-form-btn" href="index.php?page=login">Zurück zum Login</a>
-	</div>
+    <a class="btn btn-primary w-100 mt-4 pt-3 pb-3 text-uppercase fw-bold text-light fs-5" href="index.php?page=login">Zurück zum Login</a>
 </div>

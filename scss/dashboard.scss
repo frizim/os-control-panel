@@ -1,0 +1,98 @@
+@import "common.scss";
+@import "bootstrap/scss/breadcrumb";
+@import "bootstrap/scss/tables";
+@import "bootstrap/scss/forms";
+@import "bootstrap/scss/buttons";
+@import "bootstrap/scss/dropdown";
+@import "bootstrap/scss/nav";
+@import "bootstrap/scss/navbar";
+@import "bootstrap/scss/card";
+@import "bootstrap/scss/alert";
+@import "bootstrap/scss/modal";
+
+@import "bootstrap/scss/helpers";
+@import "bootstrap/scss/utilities/api";
+
+@import "fontawesome.scss";
+
+html, body {
+    min-height: 100vh;
+}
+
+#wrapper {
+    display: flex;
+    flex-direction: row;
+    min-height: 100vh;
+}
+
+#content-wrapper {
+    flex-grow: 1;
+}
+
+.btn.btn-primary {
+    color: #efefef !important;
+}
+
+form button {
+    display: block;
+    margin: 0 auto;
+    margin-top: 8px;
+}
+
+.sidebar {
+    min-width: 90px;
+    max-width: 250px;
+    color: $gray-500;
+}
+
+.sidebar.toggled {
+    width: 90px;
+    font-size: 0.8rem;
+}
+
+.sidebar .nav-link {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 8px;
+}
+
+.sidebar .nav-link:hover {
+    color: $gray-200;
+}
+
+.card-body {
+    position: relative;
+}
+
+.card-body-icon {
+    position: absolute;
+    top: 10%;
+    right: 8px;
+    opacity: 0.5;
+    font-size: 200%;
+}
+
+.ident-row td {
+    border-top: none;
+    padding-left: 2rem;
+    padding-top: 0;
+}
+
+tr:has(+ .ident-row) {
+    border-bottom: 1px solid transparent;
+}
+
+@media screen and (min-width: 768px) {
+    .sidebar:not(.toggled) .nav-link {
+        flex-direction: row;
+        align-items: center;
+        padding: 1rem;
+    }
+
+    .sidebar:not(.toggled) .nav-link i {
+        padding-right: 16px;
+    }
+}

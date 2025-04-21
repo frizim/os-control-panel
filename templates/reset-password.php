@@ -1,27 +1,17 @@
-<form class="login100-form validate-form flex-sb flex-w" action="index.php?page=reset-password&token=<?= $v['reset-token'] ?>" method="post">
-	<span class="login100-form-title p-b-51">
-		Neues Passwort festlegen
-	</span>
+<form class="validate-form" action="index.php?page=reset-password&token=<?= $v['reset-token'] ?>" method="post">
+    <h1 class="text-center text-uppercase fw-bold mt-5 mb-5">Neues Passwort festlegen</h1>
 
-	<div class="flex-sb-m w-full p-t-3 p-b-24" style="color: red;">
-		<?= $v['message'] ?>
-	</div>
+    <div class="mb-3 validate-input">
+        <input class="form-control form-control-lg" type="password" name="password" placeholder="Passwort" required minlength="6" maxlength="500">
+        <span class="warn-invalid"></span>
+    </div>
 
-	<div class="wrap-input100 validate-input m-b-16" data-validate="Bitte gib dein neues Passwort ein">
-		<input class="input100" type="password" name="password" placeholder="Passwort">
-		<span class="focus-input100"></span>
-	</div>
+    <div class="mb-3 validate-input">
+        <input class="form-control form-control-lg" type="password" name="passwordRepeat" placeholder="Passwort wiederholen" required minlength="6" maxlength="500">
+        <span class="warn-invalid"></span>
+    </div>
 
-	<div class="wrap-input100 validate-input m-b-16" data-validate="Bitte gib das Passwort erneut ein">
-		<input class="input100" type="password" name="passwordRepeat" placeholder="Passwort wiederholen">
-		<span class="focus-input100"></span>
-	</div>
-
-	<div class="container-login100-form-btn m-t-17">
-		<?= $csrf ?>
-		<input type="hidden" name="resetToken" value="<?= $v['reset-token'] ?>">
-		<button class="login100-form-btn" name="reset-password">
-			Passwort ändern
-		</button>
-	</div>
+    <?= $csrf ?>
+    <input type="hidden" name="resetToken" value="<?= $v['reset-token'] ?>">
+    <button type="submit" class="btn btn-primary w-100 mt-4 pt-3 pb-3 text-uppercase fw-bold text-light fs-5" name="reset-password">Passwort ändern</button>
 </form>

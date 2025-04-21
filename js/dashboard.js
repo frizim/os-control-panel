@@ -1,7 +1,6 @@
 "use strict";
 
-import "@fontsource/ubuntu/latin.css";
-import "../scss/dashboard/sb-admin.scss";
+import "../scss/dashboard.scss";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 const body = document.getElementsByTagName("body")[0];

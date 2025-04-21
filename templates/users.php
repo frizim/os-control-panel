@@ -1,7 +1,6 @@
 <div class="container-fluid">
-	<div class="row">
-        <div class="col-md-6">
-            <?= strlen($v['message']) == 0 ? '' : '<div class="alert alert-danger" role="alert">'.$v['message'].'</div>'?>
+    <div class="row">
+        <div class="col-md-8">
             <table class="table">
                 <thead>
                     <tr>
@@ -21,11 +20,10 @@
                                 <form action="index.php?page=users" method="post">
                                     <?= $v["csrf"] ?>
                                     <input type="hidden" name="userid" value="<?= $user["uuid"] ?>">
-                                    <button type="submit" name="genpw" class="btn btn-link btn-sm">PASSWORT ZURÜCKSETZEN</button> <button type="submit" name="deluser" class="btn btn-link btn-sm" style="color: red">LÖSCHEN</button>
+                                    <button type="submit" name="genpw" class="btn btn-link btn-sm">PASSWORT ZURÜCKSETZEN</button> <button type="submit" name="deluser" class="btn btn-link btn-sm text-danger">LÖSCHEN</button>
                                 </form>
                             </td>
                         </tr>
-                        <td></td></tr>';
                         <?php foreach($user["identities"] as $identity): ?>
                             <tr class="ident-row">
                                 <td><?= $identity["firstName"] ?></td>
@@ -45,24 +43,23 @@
                 </tbody>
             </table>
         </div>
-		<div class="col-md-6">
-            <div style="width: 400px; margin: auto; left: 50%;">
-                Hier kannst du einen Invite-Link erstellen.<br>
-                Jeder der solch einen Link bekommt, kann sich im Grid registrieren.
-                Der Link ist einzigartig und funktioniert nur einmalig.<br>
-                Nach Aufruf des Links muss ein Name, Passwort und Standardavatar ausgewählt werden.
+        <div class="col-md-4">
+            <div>
+                Hier kannst du einen Invite-Link erstellen.<br />
+                Jeder der solch einen Link bekommt, kann sich im Grid registrieren.<br/>
+                Der Link ist einzigartig und funktioniert nur einmalig.
             </div>
             
-            <div style="width: 400px; margin: auto; left: 50%;">
+            <div>
                 <form action="index.php?page=users" method="post">
-                    <div class="row" style="margin-top: 15px;">
+                    <div class="row mt-2">
                         <div class="col">
-                            <label for="linkOutput">Invite-Link:</label>
+                            <label class="form-label" for="linkOutput">Invite-Link</label>
                             <input type="text" class="form-control" id="linkOutput" name="formLink" value="<?= $v['invite-link'] ?>">
                         </div>
                     </div>
             
-                    <div class="row" style="margin-top: 15px;">
+                    <div class="row mt-2">
                         <div class="col">
                             <?= $csrf ?>
                             <button type="submit" name="generateLink" class="btn btn-primary btn-lg">Link Generieren</button>
@@ -70,6 +67,6 @@
                     </div>
                 </form>
             </div>
-		</div>
-	</div>
+        </div>
+    </div>
 </div>

@@ -1,23 +1,19 @@
-<!DOCTYPE html>
-<html lang="de">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<title><?= $v['title'] ?></title>
-		<link rel="stylesheet" type="text/css" href="./css/presession.css">
-	</head>
+    <?php require '__head.php'; ?>
+    <link rel="stylesheet" type="text/css" href="./css/presession.css">
+    </head>
 
-	<body>
-		<div class="limiter">
-			<div class="container-login100">
-				<div class="wrap-login100 p-t-50 p-b-90">
-					<?php if (strlen($v['child-template']) != 0) { require $v['child-template']; } else { echo $v['child-content']; } ?>
-				</div>
-			</div>
-		</div>
-
-		<div id="dropDownSelect1"></div>
-
-		<script src="./js/presession.js" defer></script>
-	</body>
+    <body>
+        <div class="container-sm">
+            <div class="row">
+                <div class="col">
+                    <?php if(strlen($v['message']) > 0 ): ?>
+                        <div class="alert alert-danger" role="alert">
+                            <?= $v['message'] ?>
+                        </div>
+                    <?php endif ?>
+                    <?php require $v['child-template']; ?>
+                </div>
+            </div>
+        </div>
+    </body>
 </html>

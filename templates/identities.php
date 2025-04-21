@@ -1,10 +1,8 @@
 <div>
-    Hier kannst du die UUID von deinem Avatar ändern und später jederzeit wieder zurückwechseln. <br>
-    Inventar und Gruppen bleiben dabei erhalten. <br>
+    Hier kannst du die UUID von deinem Avatar ändern und später jederzeit wieder zurückwechseln. <br/>
+    Inventar und Gruppen bleiben dabei erhalten. <br/>
     Jede Identität hat ein eigenes Aussehen, ein eigenes Profil und eine eigene Freundesliste.
 </div>
-<br><?= $v['message'] ?><br>
-
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-6">
@@ -33,25 +31,15 @@
             </table>
         </div>
         <div class="col-md-6">
-            <div style="width: 400px; margin: auto; left: 50%;">
-                Hier kannst du eine neue Identität erstellen.
-            </div>
-
-            <div style="width: 400px; margin: auto; left: 50%;">
+            <p>Hier kannst du eine neue Identität erstellen.</p>
+            <div>
                 <form action="index.php?page=identities" method="post">
-                    <div class="row" style="margin-top: 15px;">
-                        <div class="col">
-                            <label for="newName">Name</label>
-                            <input type="text" class="form-control" id="newName" name="newName" placeholder="Name">
-                        </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="username">Name</label>
+                        <input class="form-control" type="text" name="username" id="username" placeholder="Name" required minlength="2" autocomplete="off">
                     </div>
-
-                    <div class="row" style="margin-top: 15px;">
-                        <div class="col">
-                            <?= $csrf ?>
-                            <button type="submit" name="createIdent" class="btn btn-primary btn-lg">Erstelle Identität</button>
-                        </div>
-                    </div>
+                    <?= $csrf ?>
+                    <button type="submit" name="createIdent" class="btn btn-primary btn-lg">Erstelle Identität</button>
                 </form>
             </div>
         </div>
@@ -61,7 +49,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="iscLabel">Identitätswechsel bestätigen</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <a class="btn btn-close text-danger fs-2" href="#" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></a>
                 </div>
                 <div class="modal-body">
                     Folgende Daten sind für alle deine Identitäten gleich:
@@ -95,7 +83,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="idcLabel">Löschung der Identität bestätigen</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <a class="btn btn-close text-danger fs-2" href="#" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></a>
                 </div>
                 <div class="modal-body">
                     Wenn du eine Identität löschst, werden folgende zu dieser zugehörige Daten gelöscht:

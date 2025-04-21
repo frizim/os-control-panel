@@ -43,7 +43,7 @@ class Regions extends \Mcp\RequestHandler
             $regions[] = $region;
         }
 
-        $this->app->template('__dashboard.php')->vars([
+        $this->app->template('regions.php')->parent('__dashboard.php')->vars([
             'title' => $this->showAll ? 'Regionen verwalten' : 'Deine Regionen',
             'username' => $_SESSION['DISPLAYNAME'],
             'showall' => $this->showAll ? '&SHOWALL=1' : '',

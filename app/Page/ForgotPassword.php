@@ -62,7 +62,10 @@ class ForgotPassword extends \Mcp\RequestHandler
                 'message' => 'Falls Name und E-Mail-Adresse bei uns registriert sind, erhältst du in Kürze eine E-Mail mit weiteren Informationen.',
                 'message-color' => 'green'
             ])->render();
-            fastcgi_finish_request();
+
+            if(function_exists('fastcgi_finish_request')) {
+                fastcgi_finish_request();
+            }
 
             if ($validRequest) {
                 $getReqTime = $this->app->db()->prepare('SELECT RequestTime FROM mcp_password_reset WHERE PrincipalID=?');
@@ -80,7 +83,7 @@ class ForgotPassword extends \Mcp\RequestHandler
                     'title' => 'Dein Passwort zurücksetzen',
                     'preheader' => 'So kannst du ein neues Passwort für deinen Account festlegen',
                     'name' => $name,
-                    'reset-link' => "https://"-$this->app->config("domain").'/index.php?page=reset-password&token='.$token
+                    'reset-link' => "https://".$this->app->config("domain").'/index.php?page=reset-password&token='.$token
                 ]);
                 (new SmtpClient($smtp['host'], intval($smtp['port']), $smtp['address'], $smtp['password']))->sendHtml($smtp['address'], $smtp['name'], $email, 'Zurücksetzung des Passworts für '.$name, $tplMail);
             }

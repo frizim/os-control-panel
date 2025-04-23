@@ -1,6 +1,4 @@
 <form class="validate-form" action="index.php?page=reset-password&token=<?= $v['reset-token'] ?>" method="post">
-    <h1 class="text-center text-uppercase fw-bold mt-5 mb-5">Neues Passwort festlegen</h1>
-
     <div class="mb-3 validate-input">
         <input class="form-control form-control-lg" type="password" name="password" placeholder="Passwort" required minlength="6" maxlength="500">
         <span class="warn-invalid"></span>

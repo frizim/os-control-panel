@@ -1,6 +1,4 @@
-<div class="login100-form flex-sb flex-w">
-    <h1 class="text-center text-uppercase fw-bold mt-5 mb-5">Fehler</h1>
-
+<div>
     <div class="alert alert-danger">
         <?= $v['error-message'] ?>
     </div>

@@ -1,6 +1,4 @@
 <form class="validate-form" action="index.php?page=register" method="post">
-    <h1 class="text-center text-uppercase fw-bold mt-5 mb-5">Registrieren</h1>
-
     <div class="mb-3 validate-input">
         <input class="form-control form-control-lg" type="text" name="username" placeholder="Benutzername" required minlength="2" maxlength="200">
         <span class="warn-invalid"></span>

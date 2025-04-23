@@ -29,7 +29,9 @@ RUN apk add curl dcron libcap \
 COPY --chown=nginx:nginx --chmod=700 deploy/nginx /etc/nginx
 
 COPY --chown=root:nginx --chmod=550 deploy/php.ini /etc/php84/php.ini
-RUN sed -iE 's/^listen =.*/listen = \/run\/php\/php-fpm.sock/' /etc/php84/php-fpm.d/www.conf && \
+RUN sed -iE 's/^;error_log.*/error_log=\/dev\/stderr/' /etc/php84/php-fpm.conf && \
+    sed -iE 's/^listen =.*/listen = \/run\/php\/php-fpm.sock/' /etc/php84/php-fpm.d/www.conf && \
+    echo "catch_workers_output = yes" >> /etc/php84/php-fpm.d/www.conf && \
     chattr +i /etc/php84/php.ini && chattr +i /etc/php84/php-fpm.d/www.conf && \
     echo $'#!/bin/sh \n\
       if [ -f "config.ini" ]; then \n\
@@ -55,7 +57,7 @@ RUN sed -iE 's/^listen =.*/listen = \/run\/php\/php-fpm.sock/' /etc/php84/php-fp
     chown root:nginx /docker-entrypoint.d/* && chmod 750 /docker-entrypoint.d/*
 
 # ------------- COPY CONFIG TEMPLATE & APP FILES --------------
-COPY deploy/config.ini.template .
+COPY --chown=root:nginx --chmod=550 deploy/config.ini.template .
 COPY --chown=root:nginx --chmod=550 templates ./templates
 COPY --chown=root:nginx --chmod=550 --from=build-frontend public ./public
 COPY --chown=root:nginx --chmod=550 public/index.php ./public/index.php

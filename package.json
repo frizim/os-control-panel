@@ -19,13 +19,13 @@
         "css-loader": "^7.1.2",
         "css-minimizer-webpack-plugin": "^7.0.2",
         "mini-css-extract-plugin": "^2.7.6",
-        "nodemon": "^3.0.1",
+        "nodemon": "^3.1.10",
         "postcss": "^8.4.24",
         "postcss-cli": "^11.0.1",
         "postcss-loader": "^8.1.1",
-        "sass": "^1.63.6",
+        "sass": "^1.87.0",
         "sass-loader": "^16.0.5",
-        "webpack": "^5.99.5",
+        "webpack": "^5.99.6",
         "webpack-cli": "^6.0.1"
     }
 }

@@ -1,0 +1,30 @@
+server {
+    listen       8080 backlog=512 fastopen=256 so_keepalive=15m:: default_server;
+    listen  [::]:8080 backlog=512 fastopen=256 so_keepalive=15m:: default_server;
+    server_name  ${DOMAIN};
+    port_in_redirect off;
+
+    root /app/public;
+
+    location / {
+        index index.php;
+	    try_files $uri $uri/ =404;
+    }
+
+    # pass the PHP scripts to integrated FastCGI server
+    location ~ \.php$ {
+        fastcgi_index  index.php;
+	    fastcgi_split_path_info ^(.+?\.php)(/.*)$;
+	    try_files $fastcgi_script_name =404;
+	    set $path_info $fastcgi_path_info;
+
+	    fastcgi_param  PATH_INFO $path_info;
+        fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+        include        fastcgi_params;
+        fastcgi_pass   unix:/run/php/php-fpm.sock;
+    }
+
+    location ~ \.ini$ {
+        deny all;
+    }
+}

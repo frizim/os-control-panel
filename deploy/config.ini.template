@@ -1,0 +1,40 @@
+[general]
+domain = ${DOMAIN}
+password-min-length = ${PASSWORD_MIN_LENGTH}
+tos-url = ${TOS_URL}
+default-avatar[${DEFAULT_AVATAR_NAME}] = ${DEFAULT_AVATAR_UUID}
+reset-blocked-domains[] = example.com
+reset-blocked-domains[] = example.net
+cron-restriction = key
+cron-key = ${CRON_KEY}
+
+; This has to be the same as the R.O.B.U.S.T. database
+[mysql]
+host = ${DB_HOST}
+db = ${DB_DATABASE}
+user = ${DB_USER}
+password = ${DB_PASSWORD}
+
+[smtp]
+host = ${SMTP_HOST}
+port = ${SMTP_PORT}
+address = ${SMTP_SENDER}
+; Sender display name
+name = ${SMTP_SENDER_DISPLAY}
+password = ${SMTP_PASS}
+
+; Shown on the welcome page
+[grid]
+name = ${GRID_NAME}
+main-news = ${GRID_DESCRIPTION}
+homeurl = ${GRID_URL}
+
+; REST console parameters, used for fetching IAR files
+; See http://opensimulator.org/wiki/RestConsole
+[iarfetcher]
+host = ${RESTCONSOLE_HOST}
+port = ${RESTCONSOLE_PORT} ; console_port
+user = ${RESTCONSOLE_USER}
+password = ${RESTCONSOLE_PASSWORD}
+; IAR directory path within the OpenSim server/container
+os-iar-path = /opt/opensim/iars/

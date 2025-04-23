@@ -37,4 +37,4 @@ port = ${RESTCONSOLE_PORT} ; console_port
 user = ${RESTCONSOLE_USER}
 password = ${RESTCONSOLE_PASSWORD}
 ; IAR directory path within the OpenSim server/container
-os-iar-path = /opt/opensim/iars/
+os-iar-path = ${RESTCONSOLE_IAR_PATH}

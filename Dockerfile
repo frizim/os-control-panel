@@ -39,10 +39,8 @@ RUN sed -iE 's/^listen =.*/listen = \/run\/php\/php-fpm.sock/' /etc/php84/php-fp
       export CRON_KEY="${CRON_KEY:-$(tr -dc A-Za-z0-9 </dev/urandom | head -c 32; echo)}" \n\
       export GRID_URL="${GRID_URL:-http://${DOMAIN}:8002}" \n\
       export TOS_URL="${TOS_URL:-https://${DOMAIN}/tos.html}" \n\
-      export SMTP_HOST="${SMTP_HOST:-${DOMAIN}}" \n\
       export SMTP_SENDER="${SMTP_SENDER:-noreply@${DOMAIN}}" \n\
       export SMTP_SENDER_DISPLAY="${SMTP_SENDER_DISPLAY:-${GRID_NAME} Support}" \n\
-      export RESTCONSOLE_HOST="${RESTCONSOLE_HOST:-${DOMAIN}}" \n\
       \n\
       echo "${CRON_KEY}" > /tmp/cronkey \n\
       envsubst < ./config.ini.template > ./config.ini' > /docker-entrypoint.d/80-mcp-config.sh && \

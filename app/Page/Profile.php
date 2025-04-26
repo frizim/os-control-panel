@@ -24,7 +24,7 @@ class Profile extends \Mcp\RequestHandler
         if (isset($_SESSION['iar_created'])) {
             $tpl->vars([
                 'iar-status' => 'success',
-                'iar-message' => 'Deine IAR wird jetzt erstellt und der Download Link wird dir per PM zugesendet.'
+                'iar-message' => 'dashboard.profile.iar.started'
             ]);
             unset($_SESSION['iar_created']);
             $iarRunning = true;
@@ -34,16 +34,19 @@ class Profile extends \Mcp\RequestHandler
             if ($row = $statementIARCheck->fetch()) {
                 if ($row['state'] < 2) {
                     $tpl->vars([
-                        'iar-status' => 'danger',
-                        'iar-message' => 'Aktuell wird eine IAR erstellt.<br>Warte bitte bis du eine PM bekommst.'
+                        'iar-status' => 'warning',
+                        'iar-message' => 'dashboard.profile.iar.inprogress'
                     ]);
                     $iarRunning = true;
                 }
                 else {
                     $tpl->vars([
                         'iar-status' => 'success',
-                        'iar-message' => 'Du kannst dir deine IAR (erstellt am '.date('d.m.Y', $row['created']).') jetzt herunterladen. Sie ist mit dem Passwort password geschützt.',
-                        'iar-link' => 'https://'.$this->app->config('domain').'/index.php?api=downloadIar&id='.substr($row['iarfilename'], 0, strlen($row['iarfilename']) - 4)
+                        'iar-message' => 'dashboard.profile.iar.done',
+                        'iar-message-params' => [
+                            'created' => date('d.m.Y', $row['created']),
+                            'iar-link' => 'https://'.$this->app->config('domain').'/index.php?api=downloadIar&id='.substr($row['iarfilename'], 0, strlen($row['iarfilename']) - 4)
+                        ]
                     ]);
                 }
             }
@@ -64,21 +67,24 @@ class Profile extends \Mcp\RequestHandler
         }
     
         $profileInfo = '';
+        $profileInfoParams = null;
         if (isset($_SESSION['profile_info'])) {
             $profileInfo = $_SESSION['profile_info'];
+            $profileInfoParams = $_SESSION['profile_info_params'];
             unset($_SESSION['profile_info']);
+            unset($_SESSION['profile_info_params']);
         }
 
         $tpl->vars([
-            'title' => 'Dein Profil',
+            'title' => 'dashboard.profile.title',
             'offline-im-state' => $opensim->allowOfflineIM($_SESSION['UUID']) == "TRUE" ? ' checked' : ' ',
             'firstname' => $_SESSION['FIRSTNAME'],
             'lastname' => $_SESSION['LASTNAME'],
             'username' => $_SESSION['DISPLAYNAME'],
             'partner' => $partnerName,
             'email' => $opensim->getUserMail($_SESSION['UUID']),
-            'residents-js-array' => '',
-            'message' => $profileInfo
+            'message' => $profileInfo,
+            'message-params' => $profileInfoParams
         ])->render();
     }
 
@@ -130,7 +136,7 @@ class Profile extends \Mcp\RequestHandler
                             $_SESSION['DISPLAYNAME'] = strtoupper($_SESSION['USERNAME']);
                         }
                         else {
-                            $_SESSION['profile_info'] = 'Der gewählte Name ist bereits vergeben.';
+                            $_SESSION['profile_info'] = 'dashboard.profile.error.nameTaken';
                         }
                     }
                 }
@@ -144,7 +150,7 @@ class Profile extends \Mcp\RequestHandler
                             $_SESSION['USERNAME'] = $_SESSION['FIRSTNAME']." ".$_SESSION['LASTNAME'];
                             $_SESSION['DISPLAYNAME'] = strtoupper($_SESSION['USERNAME']);
                         } else {
-                            $_SESSION['profile_info'] = 'Der gewählte Name ist bereits vergeben.';
+                            $_SESSION['profile_info'] = 'dashboard.profile.error.nameTaken';
                         }
                     }
                 }
@@ -211,18 +217,19 @@ class Profile extends \Mcp\RequestHandler
                             $statement->execute(['PasswordHash' => $hash, 'PasswordSalt' => $salt, 'PrincipalID' => $_SESSION['UUID']]);
                             $_SESSION['PASSWORD'] = $hash;
                             $_SESSION['SALT'] = $salt;
-                            $_SESSION['profile_info'] = 'Neues Passwort gespeichert.';
+                            $_SESSION['profile_info'] = 'dashboard.profile.passwordChanged';
                         } else {
-                            $_SESSION['profile_info'] = 'Das alte Passwort ist nicht richtig!';
+                            $_SESSION['profile_info'] = 'dashboard.profile.error.invalidCredentials';
                         }
                     } else {
-                        $_SESSION['profile_info'] = 'Das neue Passwort muss mindestens '.$this->app->config('password-min-length').' Zeichen lang sein.';
+                        $_SESSION['profile_info'] = 'register.error.passwordTooShort';
+                        $_SESSION['profile_info_params'] = ['length' => $this->app->config('password-min-length')];
                     }
                 } else {
-                    $_SESSION['profile_info'] = 'Die neuen Passwörter stimmen nicht überein!';
+                    $_SESSION['profile_info'] = 'dashboard.profile.error.passwordsNotMatching';
                 }
             } else {
-                $_SESSION['profile_info'] = 'Bitte fülle das Formular vollständig aus.';
+                $_SESSION['profile_info'] = 'dashboard.profile.error.passwordChangeInvalid';
             }
         } elseif (isset($_POST['deleteAccount'])) {
             $validator = new FormValidator(array(
@@ -239,15 +246,15 @@ class Profile extends \Mcp\RequestHandler
                         header('Location: index.php');
                         die();
                     } else {
-                        $_SESSION['profile_info'] = 'Bei der Accountlöschung ist ein Fehler aufgetreten. Bitte versuche es später erneut.';
+                        $_SESSION['profile_info'] = 'dashboard.profile.delete.error.serverError';
                     }
                 }
                 else {
-                    $_SESSION['profile_info'] = 'Zur Bestätigung der Accountlöschung musst du dein Passwort richtig eingeben.';
+                    $_SESSION['profile_info'] = 'dashboard.profile.delete.error.invalidCredentials';
                 }
             }
             else {
-                $_SESSION['profile_info'] = 'Um deinen Account zu löschen, ist dein aktuelles Passwort und die Bestätigung des Vorgangs erforderlich.';
+                $_SESSION['profile_info'] = 'dashboard.profile.delete.error.invalid';
             }
         }
 

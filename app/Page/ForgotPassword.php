@@ -6,6 +6,7 @@ namespace Mcp\Page;
 use Mcp\FormValidator;
 use Mcp\Middleware\PreSessionMiddleware;
 use Mcp\Util\SmtpClient;
+use Mcp\Util\TemplateVarArray;
 use Mcp\Util\Util;
 
 class ForgotPassword extends \Mcp\RequestHandler
@@ -19,7 +20,7 @@ class ForgotPassword extends \Mcp\RequestHandler
     public function get(): void
     {
         $this->app->template('forgot.php')->parent('__presession.php')->vars([
-            'title' => 'Passwort vergessen',
+            'title' => 'forgotPassword.title',
             'message-color' => 'red'
         ])->render();
     }
@@ -30,11 +31,11 @@ class ForgotPassword extends \Mcp\RequestHandler
             'username' => array('required' => true, 'regex' => '/^[^\\/<>\s]{1,64} [^\\/<>\s]{1,64}$/'),
             'email' => array('required' => true, 'regex' => '/^\S{1,64}@\S{1,250}.\S{2,64}$/')
         ));
-        $tpl = $this->app->template('forgot.php')->parent('__presession.php')->var('title', 'Passwort vergessen');
+        $tpl = $this->app->template('forgot.php')->parent('__presession.php')->var('title', 'forgotPassword.title');
         
         if (!$validator->isValid($_POST)) {
             $tpl->vars([
-                'message' => 'Bitte gebe deinen Benutzernamen (Vor- und Nachname) und die dazugehörige E-Mail-Adresse ein',
+                'message' => 'forgotPassword.invalid',
                 'message-color' => 'red'
             ])->render();
         } else {
@@ -59,7 +60,7 @@ class ForgotPassword extends \Mcp\RequestHandler
             }
 
             $tpl->vars([
-                'message' => 'Falls Name und E-Mail-Adresse bei uns registriert sind, erhältst du in Kürze eine E-Mail mit weiteren Informationen.',
+                'message' => 'forgotPassword.success',
                 'message-color' => 'green'
             ])->render();
 
@@ -79,13 +80,16 @@ class ForgotPassword extends \Mcp\RequestHandler
                 $setToken->execute([$uuid, $token, time()]);
 
                 $smtp = $this->app->config('smtp');
-                $tplMail = $this->app->template('password-reset.php')->parent('mail.php')->vars([
-                    'title' => 'Dein Passwort zurücksetzen',
-                    'preheader' => 'So kannst du ein neues Passwort für deinen Account festlegen',
+
+                $tplMail = $this->app->template('password-reset.php')->parent('mail.php');
+                $subject = $tplMail->getI18n()->t('email.passwordReset.subject', new TemplateVarArray(['name' => $name]));
+                $tplMail->vars([
+                    'title' => $subject,
+                    'preheader' => 'email.passwordReset.preheader',
                     'name' => $name,
                     'reset-link' => "https://".$this->app->config("domain").'/index.php?page=reset-password&token='.$token
                 ]);
-                (new SmtpClient($smtp['host'], intval($smtp['port']), $smtp['address'], $smtp['password']))->sendHtml($smtp['address'], $smtp['name'], $email, 'Zurücksetzung des Passworts für '.$name, $tplMail);
+                (new SmtpClient($smtp['host'], intval($smtp['port']), $smtp['address'], $smtp['password']))->sendHtml($smtp['address'], $smtp['name'], $email, $subject, $tplMail);
             }
         }
     }

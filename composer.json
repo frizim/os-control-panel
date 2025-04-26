@@ -8,7 +8,8 @@
         "ext-curl": "*",
         "ext-xml": "*",
         "ext-simplexml": "*",
-        "ext-pdo": "*"
+        "ext-pdo": "*",
+        "ext-intl": "*"
     },
     "autoload": {
         "psr-4": {"Mcp\\": "app/"}

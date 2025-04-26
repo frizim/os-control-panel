@@ -95,16 +95,13 @@
     <?php endforeach ?>
     <div class="info-box top-right">
         <h1><?= $v['grid-name'] ?></h1>
-        Willkommen<br />
-        Melde dich an, um <?= $v['grid-name'] ?> zu betreten.<br />
-        <br />
-        <?= $v['news'] ?>
+        <?= $t('splash.welcome', ['grid' => $v['grid-name'], 'news' => $v['news']]) ?>
     </div>
     <div class="info-box bottom-left">
-        <h1>Status: <span style='color: rgb(0, 255, 0);'>Online</span></h1>
-        Registrierte User: <?= $v['registered'] ?><br />
-        Regionen: <?= $v['regions'] ?><br />
-        Aktuell online: <?= $v['online'] ?>
+        <h1><?= $t('splash.status', ['status' => '<span style="color: rgb(0, 255, 0);">'.$t('splash.status.online').'</span>']) ?></h1>
+        <?= $t('splash.registered', ['registered' => $v['registered']]) ?><br />
+        <?= $t('splash.regions', ['regions' => $v['regions']]) ?><br />
+        <?= $t('splash.online', ['online' => $v['online']]) ?><br />
     </div>
 </body>
 </html>

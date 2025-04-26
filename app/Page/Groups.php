@@ -25,14 +25,14 @@ class Groups extends \Mcp\RequestHandler
         $res = new TemplateVarArray();
         while ($rowGroups = $statementGroups->fetch()) {
             $group = new TemplateVarArray();
-            $group["name"] = $rowGroups["Name"];
-            $group["founder"] = $opensim->getUserName($rowGroups['FounderID']);
-            $group["uuid"] = $rowGroups["GroupID"];
+            $group['name'] = $rowGroups['Name'];
+            $group['founder'] = $opensim->getUserName($rowGroups['FounderID']);
+            $group['uuid'] = $rowGroups['GroupID'];
             $res[] = $group;
         }
     
         $this->app->template('groups.php')->parent('__dashboard.php')->vars([
-            'title' => 'Gruppen',
+            'title' => 'dashboard.groups.title',
             'username' => $_SESSION['DISPLAYNAME'],
             'groups' => &$res
         ])->render();

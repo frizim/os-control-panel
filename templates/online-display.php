@@ -1,11 +1,11 @@
 <?php if (count($v['online-users']) == 0): ?>
-            <h1>Es ist niemand online!</h1>
+    <h1><?= $t('dashboard.user-online-state.noUsers') ?></h1>
 <?php else: ?>
-    <table>
+    <table class="table">
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Region</th>
+                <th><?= $t('properties.name') ?></th>
+                <th><?= $t('properties.region') ?></th>
             </tr>
         </thead>
         <tbody>

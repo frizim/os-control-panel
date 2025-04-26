@@ -3,6 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title><?= $v['subject'] ?></title>
     <style>
         img {
             border: none;
@@ -24,14 +25,14 @@
     </style>
 </head>
 <body>
-    <span class="preheader" style="display: none"><?= $v['preheader'] ?></span>
+    <span class="preheader" style="display: none"><?= $t($v['preheader']) ?></span>
     <div class="container" style="background-color: #afafaf">
         <div class="header" style="background-color: #434343; height: 64px">
-            <img style="vertical-align: middle; height: 100%" src="https://<?= $v["domain"] ?>/img/logo.png" alt="Logo">
+            <img style="vertical-align: middle; height: 100%" src="https://<?= $v['domain'] ?>/img/logo.png" alt="Logo">
             <h2 style="vertical-align: middle; color: #fff; font-weight: bold; margin: 0 0 0 10px; display: inline"><?= $v['title'] ?></h2>
         </div>
         <div class="content" style="background-color: #fff; padding: 2px">
-            <?php if (strlen($v['child-template']) != 0) { require $v['child-template']; } else { echo $v['child-content']; } ?>
+            <?php require $v['child-template']; ?>
         </div>
     </div>
 </body>

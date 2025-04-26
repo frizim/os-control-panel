@@ -15,7 +15,7 @@ class Login extends \Mcp\RequestHandler
 
     public function get(): void
     {
-        $tpl = $this->app->template('login.php')->parent('__presession.php')->var('title', 'Login')->var('last-username', '');
+        $tpl = $this->app->template('login.php')->parent('__presession.php')->var('title', 'login.title')->var('last-username', '');
 
         if (isset($_SESSION) && isset($_SESSION['loginMessage'])) {
             $tpl->vars([
@@ -44,9 +44,9 @@ class Login extends \Mcp\RequestHandler
         $tpl = $this->app->template('login.php')->parent('__presession.php')->var('title', 'Login');
         if (!$validator->isValid($_POST)) {
             $tpl->vars([
-                'message' => 'Bitte gebe Benutzername (Vor- und Nachname) und Passwort ein.',
+                'message' => 'login.error.invalid',
                 'message-color' => 'red',
-                'last-username'=> ''
+                'last-username'=> $_POST['username']
             ])->render();
         } else {
             $statementUser = $this->app->db()->prepare("SELECT PrincipalID,FirstName,LastName,Email,UserLevel,passwordHash,passwordSalt FROM UserAccounts JOIN auth ON UserAccounts.PrincipalID = auth.UUID WHERE FirstName = ? AND LastName = ? LIMIT 1");
@@ -84,7 +84,7 @@ class Login extends \Mcp\RequestHandler
             }
 
             $tpl->vars([
-                'message' => 'Benutzername und/oder Passwort falsch.',
+                'message' => 'login.error.invalidCredentials',
                 'message-color' => 'red',
                 'last-username' => $_POST['username']
             ])->render();

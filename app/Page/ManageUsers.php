@@ -27,19 +27,19 @@ class ManageUsers extends RequestHandler
         $res = new TemplateVarArray();
         while ($row = $statement->fetch()) {
             $user = new TemplateVarArray();
-            $user['firstName'] = $row["FirstName"];
-            $user["lastName"] = $row["LastName"];
-            $user["level"] = strval($row["UserLevel"]);
-            $user["uuid"] = $row["PrincipalID"];
-            $user["identities"] = new TemplateVarArray();
+            $user['firstName'] = $row['FirstName'];
+            $user['lastName'] = $row['LastName'];
+            $user['level'] = $row['UserLevel'];
+            $user['uuid'] = $row['PrincipalID'];
+            $user['identities'] = new TemplateVarArray();
             $statementIdent->execute([$row['PrincipalID']]);
             while ($identRow = $statementIdent->fetch()) {
                 $ident = new TemplateVarArray();
-                $ident["firstName"] = $identRow["FirstName"];
-                $ident["lastName"] = $identRow["LastName"];
-                $ident["level"] = strval($identRow["UserLevel"]);
-                $ident["uuid"] = $identRow["IdentityID"];
-                $user["identities"][] = $ident;
+                $ident['firstName'] = $identRow['FirstName'];
+                $ident['lastName'] = $identRow['LastName'];
+                $ident['level'] = strval($identRow['UserLevel']);
+                $ident['uuid'] = $identRow['IdentityID'];
+                $user['identities'][] = $ident;
             }
             $res[] = $user;
         }
@@ -51,8 +51,9 @@ class ManageUsers extends RequestHandler
             ]);
 
         if (isset($_SESSION['users-message'])) {
-            $tpl->var('message', $_SESSION['users-message']);
+            $tpl->var('message', $_SESSION['users-message'])->var('message-params', $_SESSION['users-message-params']);
             unset($_SESSION['users-message']);
+            unset($_SESSION['users-message-params']);
         }
 
         if (isset($_SESSION['invite-id'])) {
@@ -87,9 +88,11 @@ class ManageUsers extends RequestHandler
                 $identName = $os->getUserName($_POST['identid']);
                 $userName = $os->getUserName($_POST['userid']);
                 if ($os->deleteIdentity($_POST['userid'], $_POST['identid'])) {
-                    $_SESSION['users-message'] = 'Identität <b>'.$identName.'</b> von <b>'.$userName.'</b> wurde gelöscht.';
+                    $_SESSION['users-message'] = 'dashboard.admin.identities.delete.success';
+                    $_SESSION['users-message-params'] = ['identityName' => $identName, 'userName' => $userName];
                 } else {
-                    $_SESSION['users-message'] = 'Identität <b>'.$identName.'</b> konnte nicht gelöscht werden.';
+                    $_SESSION['users-message'] = 'dashboard.admin.identities.delete.error';
+                    $_SESSION['users-message-params'] = ['identityName' => $identName];
                 }
             }
         } else {
@@ -105,13 +108,16 @@ class ManageUsers extends RequestHandler
                     $setToken->execute([$_POST['userid'], $token, time()]);
                     $resetLink = "https://".$this->app->config('domain').'/index.php?page=reset-password&token='.$token;
 
-                    $_SESSION['users-message'] = 'Das Passwort für '.htmlspecialchars($opensim->getUserName($_POST['userid'])).' kann in den nächsten 24 Stunden über diesen Link zurückgesetzt werden: <b>'.$resetLink.'</b>';
+                    $_SESSION['users-message'] = 'dashboard.admin.users.resetPassword.success';
+                    $_SESSION['users-message-params'] = ['name' => $opensim->getUserName($_POST['userid']), 'resetLink' => $resetLink];
                 } elseif (isset($_POST['deluser'])) {
                     $name = $opensim->getUserName($_POST['userid']);
                     if ($opensim->deleteUser($_POST['userid'])) {
-                        $_SESSION['users-message'] = 'Der Account <b>'.$name.'</b> wurde gelöscht.';
+                        $_SESSION['users-message'] = 'dashboard.admin.users.delete.error';
+                        $_SESSION['users-message-params'] = ['name' => $name];
                     } else {
-                        $_SESSION['users-message'] = 'Der Account <b>'.$name.'</b> konnte nicht gelöscht werden.';
+                        $_SESSION['users-message'] = 'dashboard.admin.users.delete.success';
+                        $_SESSION['users-message-params'] = ['name' => $name];
                     }
                 }
             }

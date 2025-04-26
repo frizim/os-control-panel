@@ -33,20 +33,20 @@ class Identities extends \Mcp\RequestHandler
     
         while ($row = $statement->fetch()) {
             $ident = new TemplateVarArray();
-            $ident["uuid"] = $row["IdentityID"];
-            $ident["name"] = trim($opensim->getUserName($row['IdentityID']));
-            $ident["active"] = $row['IdentityID'] == $_SESSION['UUID'];
+            $ident['uuid'] = $row['IdentityID'];
+            $ident['name'] = trim($opensim->getUserName($row['IdentityID']));
+            $ident['active'] = $row['IdentityID'] == $_SESSION['UUID'];
             $res[] = $ident;
         }
     
         $message = '';
         if (isset($_SESSION['identities_err'])) {
-            $message = '<div class="alert alert-danger" role="alert">'.$_SESSION['identities_err'].'</div>';
+            $message = $_SESSION['identities_err'];
             unset($_SESSION['identities_err']);
         }
         
         $this->app->template('identities.php')->parent('__dashboard.php')->vars([
-            'title' => 'Identitäten',
+            'title' => 'dashboard.identities.title',
             'username' => $_SESSION['DISPLAYNAME'],
             'activeIdent' => $_SESSION['FIRSTNAME'].' '.$_SESSION['LASTNAME'],
             'activeUuid' => $_SESSION['UUID'],
@@ -79,12 +79,9 @@ class Identities extends \Mcp\RequestHandler
         
                         $statementFriends = $this->app->db()->prepare('UPDATE Friends SET PrincipalID = :IdentityID WHERE PrincipalID = :PrincipalID');
                         $statementFriends->execute(['IdentityID' => $_POST['uuid'], 'PrincipalID' => $_SESSION['UUID']]);
-        
-                        //$statementReFriends = $this->app->db()->prepare('UPDATE Friends SET Friend = :IdentityID WHERE Friend = :PrincipalID');
-                        //$statementReFriends->execute(['IdentityID' => $_POST['uuid'], 'PrincipalID' => $_SESSION['UUID']]);
-        
-                        $statementInventoryFolders = $this->app->db()->prepare('UPDATE inventoryfolders SET agentID = :IdentityID WHERE agentID = :PrincipalID AND type != :InventarTyp');
-                        $statementInventoryFolders->execute(['IdentityID' => $_POST['uuid'], 'PrincipalID' => $_SESSION['UUID'], 'InventarTyp' => 46]);
+
+                        $statementInventoryFolders = $this->app->db()->prepare('UPDATE inventoryfolders SET agentID = :IdentityID WHERE agentID = :PrincipalID AND type != :InvType');
+                        $statementInventoryFolders->execute(['IdentityID' => $_POST['uuid'], 'PrincipalID' => $_SESSION['UUID'], 'InvType' => 46]);
         
                         $statementInventoryItems = $this->app->db()->prepare('UPDATE inventoryitems SET avatarID = :IdentityID WHERE avatarID = :PrincipalID');
                         $statementInventoryItems->execute(['IdentityID' => $_POST['uuid'], 'PrincipalID' => $_SESSION['UUID']]);
@@ -102,7 +99,7 @@ class Identities extends \Mcp\RequestHandler
                         session_destroy();
                     }
                 } else {
-                    $_SESSION['identities_err'] = 'Du kannst die Identität nicht ändern, während du angemeldet bist. Bitte schließe den Viewer.';
+                    $_SESSION['identities_err'] = 'dashboard.identities.error.loggedin';
                 }
             }
         } elseif (isset($_POST['createIdent'])) {
@@ -129,10 +126,10 @@ class Identities extends \Mcp\RequestHandler
                         $statementUserIdentitys = $this->app->db()->prepare('INSERT INTO mcp_user_identities (PrincipalID, IdentityID) VALUES (:PrincipalID, :IdentityID)');
                         $statementUserIdentitys->execute(['PrincipalID' => $_SESSION['UUID'], 'IdentityID' => $avatarUUID]);
                     } else {
-                        $_SESSION['identities_err'] = 'Dieser Name ist schon in Benutzung.';
+                        $_SESSION['identities_err'] = 'dashboard.identities.error.nameTaken';
                     }
                 } else {
-                    $_SESSION['identities_err'] = 'Der Name muss aus einem Vor- und einem Nachnamen bestehen.';
+                    $_SESSION['identities_err'] = 'dashboard.identities.error.nameInvalid';
                 }
             }
         }

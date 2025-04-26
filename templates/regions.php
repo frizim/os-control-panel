@@ -1,27 +1,27 @@
-<table class="table">
+<table class="table align-middle">
     <thead>
         <tr>
-            <th scope="col">Region Name</th>
-            <th scope="col">Eigentümer</th>
-            <th scope="col">Position</th>
-            <th scope="col">Aktionen</th>
+            <th scope="col"><?= $t('dashboard.regions.name') ?></th>
+            <th scope="col"><?= $t('dashboard.regions.owner') ?></th>
+            <th scope="col"><?= $t('dashboard.regions.position') ?></th>
+            <th scope="col"><?= $t('properties.actions') ?></th>
         </tr>
     </thead>
     <tbody>
         <?php foreach($v['regions'] as $region): ?>
             <tr>
                 <td><?= $region['name']?>
-                    <div class="blockquote-footer">
+                    <div class="blockquote-footer mt-1 mb-0">
                         <?php if(!empty($region['stats'])): ?>
-                            Prims: <?= $region['stats']['Prims'] ?>; RAM-Nutzung: <?= $region['stats']['ProcMem'] ?>; SIM/PHYS FPS: <?= $region['stats']['SimFPS'] ?> / <?= $region['stats']['PhyFPS'] ?> (<?= $stats['RegionVersion'] ?>)
+                            <?= $t('dashboard.regions.stats', $region['stats']) ?>
                         <?php else: ?>
-                            Keine Statistik verfügbar
+                            <?= $t('dashboard.regions.noStats') ?>
                         <?php endif ?>
                     </div>
                 </td>
                 <td><?= $region['owner_name'] ?></td>
                 <td><?= $region['locX'] ?> / <?= $region['locY'] ?></td>
-                <td><form action="index.php?page=regions<?= $v['showall'] ?>" method="post"><?= $csrf ?><input type="hidden" name="region" value="<?= $region['uuid'] ?>"><button type="submit" name="remove" class="btn btn-link btn-sm">LÖSCHEN</button></form></td>
+                <td><form action="index.php?page=regions<?= $v['showall'] ?>" method="post"><?= $csrf ?><input type="hidden" name="region" value="<?= $region['uuid'] ?>"><button type="submit" name="remove" class="btn btn-link btn-sm p-0 mt-0"><?= $t('dashboard.regions.delete') ?></button></form></td>
             </tr>
         <?php endforeach ?>
     </tbody>

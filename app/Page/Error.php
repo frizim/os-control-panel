@@ -10,6 +10,6 @@ class Error extends \Mcp\RequestHandler
     public function get(): void
     {
         http_response_code(404);
-        Util::displayError($this->app, 'Die gewünschte Seite wurde nicht gefunden.');
+        Util::displayError($this->app, 'common.error.404');
     }
 }

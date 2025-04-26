@@ -7,7 +7,7 @@
                 </div>
                 <div class="mr-5"><?= $v['global-user-count'] ?></div>
             </div>
-            <span class="card-footer text-light small z-1">Benutzer / Online</span>
+            <span class="card-footer text-light small z-1"><?= $t('dashboard.home.usersOnline') ?></span>
         </div>
     </div>
 
@@ -19,7 +19,7 @@
                 </div>
                 <div class="mr-5"><?= $v['global-region-count'] ?></div>
             </div>
-            <span class="card-footer text-light small z-1">Regionen</span>
+            <span class="card-footer text-light small z-1"><?= $t('dashboard.home.regions') ?></span>
         </div>
     </div>
 </div>

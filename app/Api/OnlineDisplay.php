@@ -19,7 +19,7 @@ class OnlineDisplay extends \Mcp\RequestHandler
 
     public function get(): void
     {
-        $statement = $this->app->db()->prepare("SELECT FirstName,LastName,regionName FROM Presence JOIN UserAccounts ON Presence.UserID = UserAccounts.PrincipalID JOIN regions ON Presence.RegionID = regions.uuid WHERE RegionID != '00000000-0000-0000-0000-000000000000' ORDER BY regionName ASC");
+        $statement = $this->app->db()->prepare('SELECT FirstName,LastName,regionName FROM Presence JOIN UserAccounts ON Presence.UserID = UserAccounts.PrincipalID JOIN regions ON Presence.RegionID = regions.uuid WHERE RegionID != \'00000000-0000-0000-0000-000000000000\' ORDER BY regionName ASC');
         $statement->execute();
 
         $tpl = $this->app->template('online-display.php')->parent($this->layout);
@@ -32,6 +32,9 @@ class OnlineDisplay extends \Mcp\RequestHandler
             $res[] = $entry;
         }
 
-        $tpl->var('online-users', $res)->render();
+        $tpl->vars([
+            'online-users' => $res,
+            'title' => 'dashboard.user-online-state.title'
+        ])->render();
     }
 }

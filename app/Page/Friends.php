@@ -42,7 +42,7 @@ class Friends extends \Mcp\RequestHandler
         }
     
         $this->app->template('friends.php')->parent('__dashboard.php')->vars([
-            'title' => 'Deine Freunde',
+            'title' => 'dashboard.friends.title',
             'username' => $_SESSION['DISPLAYNAME'],
             'friends' => $res
         ])->render();

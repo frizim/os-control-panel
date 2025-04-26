@@ -6,13 +6,10 @@ namespace Mcp\Page;
 use Mcp\FormValidator;
 use Mcp\Middleware\PreSessionMiddleware;
 use Mcp\Util\SmtpClient;
-use Mcp\Util\Util;
+use Mcp\Util\TemplateVarArray;
 
 class ResetPassword extends \Mcp\RequestHandler
 {
-
-    private const TOKEN_INVALID = 'Dieser Link zur Passwortzurücksetzung ist nicht gültig. Bitte klicke oder kopiere den Link aus der E-Mail, die du erhalten hast.';
-    private const TOKEN_EXPIRED = 'Dein Link zur Passwortzurücksetzung ist abgelaufen. Bitte sende eine neue Anfrage.';
 
     public function __construct(\Mcp\Mcp $app)
     {
@@ -34,12 +31,12 @@ class ResetPassword extends \Mcp\RequestHandler
 
         if ($validator->isValid($_POST)) {
             if ($_POST['password'] !== $_POST['passwordRepeat']) {
-                $this->displayPage('Du musst in beiden Feldern das gleiche Passwort eingeben');
+                $this->displayPage('resetPassword.error.passwordsNotMatching');
                 return;
             }
 
             if (strlen($_POST['password']) < $this->app->config('password-min-length')) {
-                $this->displayPage('Dein Passwort muss mindestens '.$this->app->config('password-min-length').' Zeichen lang sein.');
+                $this->displayPage('register.error.passwordTooShort', [$this->app->config('password-min-length')]);
                 return;
             }
 
@@ -48,7 +45,7 @@ class ResetPassword extends \Mcp\RequestHandler
             $res = $getReq->fetch();
 
             if (!$res || !hash_equals($res['Token'], $_POST['resetToken'])) {
-                $this->displayTokenError($this::TOKEN_INVALID);
+                $this->displayTokenError('resetPassword.error.tokenInvalid');
                 return;
             }
 
@@ -57,12 +54,12 @@ class ResetPassword extends \Mcp\RequestHandler
             $getToken = $this->app->db()->prepare('DELETE FROM mcp_password_reset WHERE PrincipalID = ? AND Token = ?');
             $getToken->execute([$uuid, $_POST['resetToken']]);
             if ($getToken->rowCount() == 0) {
-                $this->displayTokenError($this::TOKEN_INVALID);
+                $this->displayTokenError('resetPassword.error.tokenInvalid');
                 return;
             }
 
             if (time() - $res['RequestTime'] > 86400) {
-                $this->displayTokenError($this::TOKEN_EXPIRED);
+                $this->displayTokenError('resetPassword.error.tokenExpired');
                 return;
             }
 
@@ -72,16 +69,20 @@ class ResetPassword extends \Mcp\RequestHandler
             $statement->execute(['PasswordHash' => $hash, 'PasswordSalt' => $salt, 'PrincipalID' => $uuid]);
 
             session_unset();
-            $_SESSION['loginMessage'] = 'Du kannst dich jetzt mit deinem neuen Passwort einloggen!';
+            $_SESSION['loginMessage'] = 'resetPassword.success';
             $_SESSION['loginMessageColor'] = 'darkgreen';
 
             $smtp = $this->app->config('smtp');
-            $tplMail = $this->app->template('password-reset-notification.php')->parent("mail.php")->vars([
-                'title' => 'Passwort geändert',
-                'preheader' => 'Das Passwort für deinen Account wurde soeben zurückgesetzt',
+            
+            $tplMail = $this->app->template('password-reset-notification.php')->parent("mail.php");
+
+            $subject = $tplMail->getI18n()->t('email.passwordResetNotification.subject', new TemplateVarArray(['name' => $name]));
+            $tplMail->vars([
+                'title' => $subject,
+                'preheader' => 'email.passwordResetNotification.preheader',
                 'name' => $name
             ]);
-            (new SmtpClient($smtp['host'], intval($smtp['port']), $smtp['address'], $smtp['password']))->sendHtml($smtp['address'], $smtp['name'], $res['Email'], 'Passwort für '.$name.' zurückgesetzt', $tplMail);
+            (new SmtpClient($smtp['host'], intval($smtp['port']), $smtp['address'], $smtp['password']))->sendHtml($smtp['address'], $smtp['name'], $res['Email'], $subject, $tplMail);
 
             header('Location: index.php?page=login');
         }
@@ -90,22 +91,24 @@ class ResetPassword extends \Mcp\RequestHandler
     private function displayTokenError(string $message): void
     {
         $this->app->template('error.php')->parent('__presession.php')->vars([
-            'title' => 'Fehler',
+            'title' => 'error.title',
             'error-message' => $message
         ])->render();
     }
 
-    private function displayPage(string $message = ''): void
+    private function displayPage(string $message = '', ?array $params = null): void
     {
         if (!isset($_GET['token']) || !preg_match('/^[a-z0-9A-Z]{32}$/', $_GET['token'])) {
-            $this->displayTokenError($this::TOKEN_INVALID);
+            $this->displayTokenError('resetPassword.error.tokenInvalid');
             return;
         }
 
         $this->app->template('reset-password.php')->parent('__presession.php')->vars([
-            'title' => 'Neues Passwort festlegen',
+            'title' => 'resetPassword.title',
             'message' => $message,
-            'reset-token' => $_GET['token']
+            'message-params' => $params,
+            'reset-token' => $_GET['token'],
+            'pwMinLength' => $this->app->config('password-min-length')
         ])->render();
     }
 }

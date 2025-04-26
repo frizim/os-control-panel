@@ -37,9 +37,9 @@ class Register extends RequestHandler
     
         if (!$validator->isValid($_POST)) {
             if (!isset($_POST['tos']) || $_POST['tos'] !== true) {
-                $this->displayPage("Du musst die Nutzungsbedingungen lesen und Akzeptieren.");
+                $this->displayPage('register.error.tos');
             } else {
-                $this->displayPage("Ups da stimmt was nicht. Versuche es bitte noch mal.");
+                $this->displayPage('register.error.invalid');
             }
     
             return;
@@ -56,14 +56,14 @@ class Register extends RequestHandler
             $statementAvatarName = $this->app->db()->prepare("SELECT 1 FROM UserAccounts WHERE FirstName = :FirstName AND LastName = :LastName LIMIT 1");
             $statementAvatarName->execute(['FirstName' => $nameParts[0], 'LastName' => $nameParts[1]]);
             if ($statementAvatarName->rowCount() > 0) {
-                $this->displayPage("Der gewählte Name ist bereits vergeben.");
+                $this->displayPage('register.error.nameTaken');
                 return;
             }
         }
     
         $pass = trim($_POST['password']);
         if (strlen($pass) < $this->app->config('password-min-length')) {
-            $this->displayPage('Dein Passwort muss mindestens '.$this->app->config('password-min-length').' Zeichen lang sein.');
+            $this->displayPage('register.error.passwordTooShort', ['length' => $this->app->config('password-min-length')]);
             return;
         }
     
@@ -73,7 +73,7 @@ class Register extends RequestHandler
         if (isset($this->app->config('default-avatar')[$_POST['avatar']])) {
             $avatar = trim($_POST['avatar']);
         } else {
-            $this->displayPage("Der gewählte Standardavatar existiert nicht.");
+            $this->displayPage('register.error.invalidAvatar');
             return;
         }
     
@@ -86,7 +86,7 @@ class Register extends RequestHandler
         $statementInviteDeleter = $this->app->db()->prepare('DELETE FROM mcp_invites WHERE InviteCode = :code');
         $statementInviteDeleter->execute(['code' => $_REQUEST['code']]);
         if ($statementInviteDeleter->rowCount() == 0) {
-            Util::displayError($this->app, "Der angegebene Einladungscode ist nicht mehr gültig.");
+            Util::displayError($this->app, 'register.error.inviteExpired');
             return;
         }
     
@@ -98,9 +98,6 @@ class Register extends RequestHandler
     
             $statementAccounts = $this->app->db()->prepare('INSERT INTO `UserAccounts` (`PrincipalID`, `ScopeID`, `FirstName`, `LastName`, `Email`, `ServiceURLs`, `Created`, `UserLevel`, `UserFlags`, `UserTitle`, `active`) VALUES (:PrincipalID, :ScopeID, :FirstName, :LastName, :Email, :ServiceURLs, :Created, :UserLevel, :UserFlags, :UserTitle, :active )');
             $statementAccounts->execute(['PrincipalID' => $avatarUUID, 'ScopeID' => "00000000-0000-0000-0000-000000000000", 'FirstName' => $nameParts[0], 'LastName' => $nameParts[1], 'Email' => $email, 'ServiceURLs' => "HomeURI= GatekeeperURI= InventoryServerURI= AssetServerURI= ", 'Created' => time(), 'UserLevel' => 0, 'UserFlags' => 0, 'UserTitle' => "", 'active' => 1]);
-    
-            //$statementProfile = $this->app->db()->prepare('INSERT INTO `userprofile` (`useruuid`, `profilePartner`, `profileImage`, `profileURL`, `profileFirstImage`, `profileAllowPublish`, `profileMaturePublish`, `profileWantToMask`, `profileWantToText`, `profileSkillsMask`, `profileSkillsText`, `profileLanguages`, `profileAboutText`, `profileFirstText`) VALUES (:useruuid, :profilePartner, :profileImage, :profileURL, :profileFirstImage, :profileAllowPublish, :profileMaturePublish, :profileWantToMask, :profileWantToText, :profileSkillsMask, :profileSkillsText, :profileLanguages, :profileAboutText, :profileFirstText)');
-            //$statementProfile->execute(['useruuid' => $avatarUUID, 'profilePartner' => "00000000-0000-0000-0000-000000000000", 'profileImage' => "00000000-0000-0000-0000-000000000000", 'profileURL' => '', 'profileFirstImage' => "00000000-0000-0000-0000-000000000000", "profileAllowPublish" => "0", "profileMaturePublish" => "0", "profileWantToMask" => "0", "profileWantToText" => "", "profileSkillsMask" => "0", "profileSkillsText" => "", "profileLanguages" => "", "profileAboutText" => "", "profileFirstText" => ""]);
     
             $statementInventoryFolder = $this->app->db()->prepare('INSERT INTO `inventoryfolders` (`folderName`, `type`, `version`, `folderID`, `agentID`, `parentFolderID`) VALUES (:folderName, :folderTyp, :folderVersion, :folderID, :agentID, :parentFolderID)');
             $inventory = array('Calling Cards' => 2, 'Objects' => 6, 'Landmarks' => 3, 'Clothing' => 5, 'Gestures' => 21, 'Body Parts' => 13, 'Textures' =>  0, 'Scripts' => 10, 'Photo Album' => 15, 'Lost And Found' => 16, 'Trash' => 14, 'Notecards' =>  7, 'My Inventory' =>  8, 'Sounds' =>  1, 'Animations' => 20);
@@ -120,7 +117,7 @@ class Register extends RequestHandler
         } catch (Exception $pdoException) {
             $this->app->db()->rollBack();
             error_log('Could not create Account: '.$pdoException->getMessage());
-            $this->displayPage('Fehler bei der Erstellung deines Accounts. Bitte versuche es später erneut.');
+            $this->displayPage('register.error.serverError');
             return;
         }
     
@@ -148,29 +145,31 @@ class Register extends RequestHandler
         header('Location: index.php?page=dashboard');
     }
 
-    private function displayPage(string $message = ''): void
+    private function displayPage(string $message = '', array $params = []): void
     {
         $this->app->template('register.php')->parent('__presession.php')->vars([
             'title' => 'Registrieren',
             'message' => $message,
+            'message-params' => $params,
             'tos-url' => $this->app->config('tos-url'),
             'invcode' => $_REQUEST['code'],
-            'avatars' => $this->app->config('default-avatar')
+            'avatars' => $this->app->config('default-avatar'),
+            'pwMinLength' => $this->app->config('password-min-length')
         ])->render();
     }
 
     private function checkInvite(): bool
     {
         if (!isset($_REQUEST['code'])) {
-            Util::displayError($this->app, "Du benötigst einen Einladungscode, um dich zu registrieren.");
+            Util::displayError($this->app, 'register.error.noInvite');
         } elseif (strlen($_REQUEST['code']) != 32 || !preg_match('/^[a-f0-9]+$/', $_REQUEST['code'])) {
-            Util::displayError($this->app, "Der angegebene Einladungscode ist nicht gültig. Nutze genau den Link, der dir zugeschickt wurde.");
+            Util::displayError($this->app, 'register.error.invalidInvite');
         } else {
             $statementInviteCode = $this->app->db()->prepare("SELECT 1 FROM mcp_invites WHERE InviteCode = ? LIMIT 1");
             $statementInviteCode->execute([$_REQUEST['code']]);
         
             if ($statementInviteCode->rowCount() == 0) {
-                Util::displayError($this->app, "Der angegebene Einladungscode ist nicht gültig. Nutze genau den Link, der dir zugeschickt wurde.");
+                Util::displayError($this->app, 'register.error.invalidInvite');
                 return false;
             }
             return true;

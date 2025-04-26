@@ -22,8 +22,6 @@ class Regions extends \Mcp\RequestHandler
 
     public function get(): void
     {
-
-
         $statement = $this->app->db()->prepare("SELECT uuid,regionName,owner_uuid,locX,locY FROM regions ".($this->showAll ? "ORDER BY owner_uuid ASC" : "WHERE owner_uuid = ? ORDER BY uuid ASC"));
         $statement->execute($this->showAll ? array() : array($_SESSION['UUID']));
     
@@ -44,7 +42,7 @@ class Regions extends \Mcp\RequestHandler
         }
 
         $this->app->template('regions.php')->parent('__dashboard.php')->vars([
-            'title' => $this->showAll ? 'Regionen verwalten' : 'Deine Regionen',
+            'title' => $this->showAll ? 'dashboard.regions.title' : 'dashboard.admin.regions',
             'username' => $_SESSION['DISPLAYNAME'],
             'showall' => $this->showAll ? '&SHOWALL=1' : '',
             'regions' => $regions

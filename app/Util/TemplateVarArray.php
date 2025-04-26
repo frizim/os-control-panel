@@ -67,4 +67,13 @@ class TemplateVarArray implements \ArrayAccess, \IteratorAggregate, \Countable
         return count($this->vars);
     }
 
+    public function toArray(): array
+    {
+        $res = [];
+        foreach($this as $k => $v) {
+            $res[$k] = $v;
+        }
+        return $res;
+    }
+
 }

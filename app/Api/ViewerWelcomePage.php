@@ -12,8 +12,8 @@ class ViewerWelcomePage extends \Mcp\RequestHandler
         $images = array();
         if ($handle = opendir('./img/viewerWelcomeImages')) {
             while (false !== ($entry = readdir($handle))) {
-                if ($entry != "." && $entry != "..") {
-                    $images[] = "./img/viewerWelcomeImages/".$entry;
+                if ($entry != '.' && $entry != '..') {
+                    $images[] = "/img/viewerWelcomeImages/$entry";
                 }
             }
         
@@ -25,7 +25,7 @@ class ViewerWelcomePage extends \Mcp\RequestHandler
         $opensim = new OpenSim($this->app->db());
 
         $this->app->template('viewerWelcomeImages.php')->vars([
-            'title' => 'Splash',
+            'title' => 'splash.title',
             'grid-name' => $this->app->config('grid')['name'],
             'news' => $this->app->config('grid')['main-news'],
             'registered' => $opensim->getUserCount(),

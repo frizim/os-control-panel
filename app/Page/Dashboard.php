@@ -17,7 +17,7 @@ class Dashboard extends \Mcp\RequestHandler
     {
         $opensim = new OpenSim($this->app->db());
         $this->app->template('dashboard-home.php')->parent('__dashboard.php')->vars([
-            'title' => 'Dashboard',
+            'title' => 'dashboard.title',
             'username' => $_SESSION['DISPLAYNAME'],
             'global-user-count' => $opensim->getUserCount(),
             'global-region-count' => $opensim->getRegionCount()

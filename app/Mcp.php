@@ -90,21 +90,12 @@ class Mcp implements ConnectionProvider
     }
 
     /**
-     * Returns a hidden form field with the current CSRF token set.
-     */
-    public function csrfField(): string
-    {
-        return '<input type="hidden" name="csrf" value="'.(isset($_SESSION['csrf']) ? $_SESSION['csrf'] : '').'">';
-    }
-
-    /**
      * Creates a TemplateBuilder instance for the specified template file, setting some basic variables.
      */
     public function template($name): TemplateBuilder
     {
-        return (new TemplateBuilder($this->templateDir, $name, $this->csrfField()))->vars([
+        return (new TemplateBuilder($this->templateDir, $name))->vars([
             'domain' => $this->config['domain'],
-            'title' => 'MCP',
             'admin' => isset($_SESSION['LEVEL']) && $_SESSION['LEVEL'] > 100
         ]);
     }

@@ -4,7 +4,7 @@
     "version": "1.0.0",
     "private": true,
     "scripts": {
-        "build": "webpack",
+        "build": "genrb -s locales -d locales de.txt && webpack",
         "server": "php -S localhost:8080 -t public/",
         "watch": "nodemon -e html,scss,js --ignore public -x \"npm run build\"",
         "dev": "npm run watch & npm run server"

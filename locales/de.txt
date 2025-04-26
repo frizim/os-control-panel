@@ -1,0 +1,182 @@
+de:table {
+    common.title {"OS-CPL - {page}"}
+    common.cancel {"Abbrechen"}
+    common.close {"Schließen"}
+
+    common.error.404 {"Die gewünschte Seite wurde nicht gefunden."}
+
+    properties.name {"Name"}
+    properties.firstName {"Vorname"}
+    properties.lastName {"Nachname"}
+    properties.username {"Benutzername"}
+    properties.password {"Passwort"}
+    properties.email {"E-Mail"}
+    properties.offlineIm {"Offline IM"}
+    properties.partner {"Partner-Name"}
+    properties.actions {"Aktionen"}
+    properties.level {"User-Level"}
+    properties.inventory {"Inventar"}
+    properties.region {"Region"}
+
+    properties.groups {"Gruppen"}
+    properties.profile {"Profil"}
+    properties.friends {"Freundesliste"}
+
+    error.title {"Fehler"}
+    error.back {"Zurück zum Login"}
+
+    login.title {"Login"}
+    login.forgotPassword {"Passwort vergessen?"}
+    login.submit {"Anmelden"}
+    login.error.invalid {"Bitte gib deinen vollen Benutzernamen (Vor- und Nachname) und dein Passwort ein"}
+    login.error.invalidCredentials {"Benutzername und/oder Passwort falsch"}
+
+    register.title {"Registrieren"}
+    register.defaultAvatar {"Wähle deinen Standardavatar aus:"}
+    register.tos {"Nutzungsbedingungen"}
+    register.confirmTos {"Ich habe die {tosLink} gelesen und stimme ihnen zu."}
+    register.button {"Registrieren"}
+
+    register.error.noInvite {"Du benötigst einen Einladungscode um dich in diesem Grid zu registrieren."}
+    register.error.invalidInvite {"Der angegebene Einladungscode ist nicht gültig. Nutze genau den Link der dir zugeschickt wurde."}
+    register.error.inviteExpired {"Der angegebene Einladungscode ist nicht mehr gültig."}
+    register.error.serverError {"Fehler bei der Erstellung deines Accounts. Bitte versuche es später erneut."}
+    register.error.nameTaken {"Der gewählte Name ist bereits vergeben."}
+    register.error.passwordTooShort {"Dein Passwort muss mindestens {length, number, integer} Zeichen lang sein."}
+    register.error.invalidAvatar {"Der gewählte Standardavatar existiert nicht."}
+    register.error.invalid {"Bitte stelle sicher, dass du alle Felder richtig ausgefüllt hast."}
+    register.error.tos {"Du musst die Nutzungsbedingungen lesen und akzeptieren."}
+
+    forgotPassword.title {"Passwort vergessen"}
+    forgotPassword.submit {"Absenden"}
+    forgotPassword.invalid {"Bitte gib deinen Benutzernamen (Vor- und Nachname) und die dazugehörige E-Mail-Adresse ein"}
+    forgotPassword.success {"Falls Name und E-Mail-Adresse bei uns registriert sind erhältst du in Kürze eine E-Mail mit weiteren Informationen"}
+
+    resetPassword.title {"Neues Passwort festlegen"}
+    resetPassword.repeatPassword {"Passwort wiederholen"}
+    resetPassword.submit {"Passwort ändern"}
+    resetPassword.error.passwordsNotMatching {"Du musst in beiden Feldern das gleiche Passwort eingeben"}
+    resetPassword.error.tokenInvalid {"Dieser Link zur Passwortzurücksetzung ist nicht gültig. Bitte klicke oder kopiere den Link aus der E-Mail die du erhalten hast."}
+    resetPassword.error.tokenExpired {"Dein Link zur Passwortzurücksetzung ist abgelaufen. Bitte sende eine neue Anfrage."}
+    resetPassword.success {"Du kannst dich jetzt mit deinem neuen Passwort einloggen!"}
+
+    dashboard.title {"Gridverwaltung"}
+    dashboard.logout {"Logout"}
+    dashboard.shrinkMenu {"Menü verkleinern"}
+
+    dashboard.user-online-state.title {"Benutzer online"}
+    dashboard.user-online-state.noUsers {"Es ist niemand online!"}
+
+    dashboard.regions.title {"Deine Regionen"}
+    dashboard.regions.name {"Regionsname"}
+    dashboard.regions.owner {"Eigentümer"}
+    dashboard.regions.position {"Position"}
+    dashboard.regions.stats {"Prims: {Prims}; RAM-Nutzung: {ProcMem}; SIM/PHYS FPS: {SimFPS} / {PhyFPS} ({RegionVersion})"}
+    dashboard.regions.noStats {"Keine Statistik verfügbar"}
+    dashboard.regions.delete {"Löschen"}
+
+    dashboard.home.title {"Übersicht"}
+    dashboard.home.usersOnline {"Benutzer online"}
+    dashboard.home.regions {"Regionen"}
+
+    dashboard.profile.title {"Profil"}
+    dashboard.profile.save {"Speichern"}
+    dashboard.profile.oldPassword {"Altes Passwort"}
+    dashboard.profile.newPassword {"Neues Passwort"}
+    dashboard.profile.newPasswordRepeat {"Neues Passwort wiederholen"}
+    dashboard.profile.passwordChanged {"Neues Passwort gespeichert"}
+
+    dashboard.profile.error.nameTaken {"Der gewählte Name ist bereits vergeben"}
+    dashboard.profile.error.invalidCredentials {"Du hast dein aktuelles Passwort nicht richtig eingegeben"}
+    dashboard.profile.error.passwordsNotMatching {"Du musst in beiden Feldern das gleiche Passwort eingeben"}
+    dashboard.profile.error.passwordChangeInvalid {"Bitte fülle das Formular vollständig aus"}
+
+    dashboard.profile.delete.title {"Account löschen"}
+    dashboard.profile.delete.help {"Du kannst deinen eigenen Account löschen. Dies wird sofort ausgeführt. Deine Daten, einschließlich Inventar, Identitäten und Freundesliste, können danach nicht wiederhergestellt werden."}
+    dashboard.profile.delete.password {"Aktuelles Passwort"}
+    dashboard.profile.delete.confirm {"Ich möchte meinen Account, mein Inventar und alle sonstigen Benutzerdaten von mir unwiderruflich löschen lassen."}
+    dashboard.profile.delete.submit {"Account jetzt löschen"}
+
+    dashboard.profile.delete.error.serverError {"Bei der Accountlöschung ist ein Fehler aufgetreten. Bitte versuche es später erneut."}
+    dashboard.profile.delete.error.invalidCredentials {"Zur Bestätigung der Accountlöschung musst du dein Passwort richtig eingeben."}
+    dashboard.profile.delete.error.invalid {"Um deinen Account zu löschen, ist dein aktuelles Passwort und die Bestätigung des Vorgangs erforderlich."}
+
+    dashboard.profile.iar.title {"IAR-Backup"}
+    dashboard.profile.iar.download {"Herunterladen"}
+    dashboard.profile.iar.help {"Hier kannst du eine IAR deines Inventars erstellen.\nDies wird einige Zeit dauern. Du bekommst eine PM mit einem Downloadlink sobald deine IAR fertig erstellt wurde."}
+    dashboard.profile.iar.create {"IAR erstellen"}
+
+    dashboard.profile.iar.started {"Deine IAR wird jetzt erstellt und der Download-Link wird dir per PM zugesendet."}
+    dashboard.profile.iar.inprogress {"Aktuell wird eine IAR erstellt.<br>Warte bitte bis du eine PM bekommst."}
+    dashboard.profile.iar.done {"Du kannst dir deine IAR (erstellt am {created, date, short}) jetzt herunterladen. Sie ist mit dem Passwort <b>password</b> geschützt."}
+
+    dashboard.identities.title {"Identitäten"}
+    dashboard.identities.help {"Hier kannst du die UUID von deinem Avatar ändern und später jederzeit wieder zurückwechseln.\nInventar und Gruppen bleiben dabei erhalten.\nJede Identität hat ein eigenes Aussehen ein eigenes Profil und eine eigene Freundesliste."}
+    dashboard.identities.active {"Aktiv"}
+    dashboard.identities.activate {"Aktivieren"}
+    dashboard.identities.delete.title {"Löschen"}
+    dashboard.identities.delete.confirm {"Löschung der Identität bestätigen"}
+    dashboard.identities.delete.removing {"Wenn du eine Identität löschst werden folgende zu dieser zugehörige Daten gelöscht:"}
+    dashboard.identities.delete.prompt {"Deine anderen Account-Daten sind davon nicht betroffen.\nMöchtest du die Identität <b id='idc-ident-name'>{identity}</b> wirklich löschen?"}
+    dashboard.identities.delete.button {"Identität löschen"}
+    dashboard.identities.create {"Identität erstellen"}
+    dashboard.identities.create.help {"Hier kannst du eine neue Identität erstellen."}
+    dashboard.identities.switch.title {"Identität wechseln"}
+    dashboard.identities.switch.confirm {"Identitätswechsel bestätigen"}
+    dashboard.identities.switch.common {"Folgende Daten sind für alle deine Identitäten gleich:"}
+    dashboard.identities.switch.changing {"Dagegen besitzt du nach dem Wechsel die folgenden separaten Einstellungen deiner neuen Identität:"}
+    dashboard.identities.switch.prompt {"Möchtest du deine aktive Identität von <b>{current}</b> zu <b id='isc-ident-name'>{new}</b> wechseln? Du kannst jederzeit zurückwechseln."}
+
+    dashboard.identities.error.loggedin {"Du kannst die Identität nicht ändern, während du angemeldet bist. Bitte schließe den Viewer."}
+    dashboard.identities.error.nameTaken {"Dieser Name ist schon in Benutzung"}
+    dashboard.identities.error.nameInvalid {"Der Name muss aus einem Vor- und einem Nachnamen bestehen"}
+
+    dashboard.groups.title {"Deine Gruppen"}
+    dashboard.groups.name {"Name"}
+    dashboard.groups.founder {"Gründer"}
+    dashboard.groups.leave {"Verlassen"}
+
+    dashboard.friends.title {"Deine Freunde"}
+    dashboard.friends.name {"Name"}
+    dashboard.friends.delete {"Löschen"}
+
+    dashboard.admin.title {"Administration"}
+
+    dashboard.admin.users {"Benutzer verwalten"}
+    dashboard.admin.users.delete {"Löschen"}
+    dashboard.admin.users.deleteIdentity {"Identität löschen"}
+    dashboard.admin.users.resetPassword {"Passwort zurücksetzen"}
+    dashboard.admin.users.createInvite.help {"Hier kannst du einen Invite-Link erstellen.\nJeder der solch einen Link bekommt, kann sich im Grid registrieren.\nDer Link ist einzigartig und funktioniert nur einmalig."}
+    dashboard.admin.users.createInvite.output {"Invite-Link"}
+    dashboard.admin.users.createInvite.create {"Link generieren"}
+
+    dashboard.admin.users.resetPassword.success {"Das Passwort für {name} kann in den nächsten 24 Stunden über diesen Link zurückgesetzt werden: <b>{resetLink}</b>"}
+
+    dashboard.admin.identities.delete.error {"Identität <b>{identityName}</b> konnte nicht gelöscht werden"}
+    dashboard.admin.identities.delete.success {"Identität <b>{identityName}</b> von <b>{userName}</b> wurde gelöscht"}
+
+    dashboard.admin.users.delete.error {"Der Account <b>{name}</b> wurde gelöscht."}
+    dashboard.admin.users.delete.success {"Der Account <b>{name}</b> konnte nicht gelöscht werden."}
+
+    dashboard.admin.groups {"Gruppen verwalten"}
+    dashboard.admin.regions {"Regionen verwalten"}
+
+    offlineim.introduction {"Du hast {category} in {grid} bekommen."}
+    offlineim.sentBy {"Gesendet von: {sender}"}
+
+    splash.welcome {"Willkommen\nMelde dich an, um {grid} zu betreten.\n\n{news}"}
+    splash.status {"Status: {status}"}
+    splash.status.online {"Online"}
+
+    splash.registered {"Registrierte User: {registered, number, integer}"}
+    splash.regions {"Regionen: {regions, number, integer}"}
+    splash.online {"Aktuell online: {online, number, integer}"}
+
+    email.passwordReset {"<p>Hallo {name},</p>\n\n<p>wir haben soeben eine Anfrage zur Zurücksetzung des Passworts für deinen Account erhalten.</p><p>Klicke <a href=\"{resetLink}\">hier</a>, um ein neues Passwort festzulegen. Dieser Link läuft in 24 Stunden ab.</p>\n\n<p>Falls du diese Anfrage nicht gesendet hast, ignoriere sie einfach. Bei weiteren Fragen kannst du uns per E-Mail oder über unseren Discord-Server erreichen.</p>"}
+    email.passwordReset.subject {"Zurücksetzung des Passworts für {name}"}
+    email.passwordReset.preheader {"So kannst du ein neues Passwort für deinen Account festlegen"}
+
+    email.passwordResetNotification {"<p>Hallo {name},</p>\n\n<p>das Passwort für deinen Account wurde soeben über die Funktion \"Passwort vergessen\" geändert.</p><p>Solltest du diese Änderung nicht selbst durchgeführt haben, wende dich bitte umgehend per E-Mail oder über unseren Discord-Server an uns.</p>"}
+    email.passwordResetNotification.subject {"Passwort für {name} zurückgesetzt"}
+    email.passwordResetNotification.preheader {"Das Passwort für deinen Account wurde soeben zurückgesetzt"}
+}

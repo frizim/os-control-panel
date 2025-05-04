@@ -30,7 +30,7 @@ class CronStarter extends RequestHandler
         $resArray = [];
         $cronUpdateStatement = $this->app->db()->prepare('REPLACE INTO mcp_cron_runs(Name,LastRun) VALUES (?,?)');
         foreach ($cronJobs as $jobName) {
-            $jobClass = "Mcp\\Cron\\".$jobName;
+            $jobClass = "Mcp\\Cron\\$jobName";
             if (in_array($jobName, $cronJobs)) {
                 $job = (new $jobClass($this->app));
                 $now = time();

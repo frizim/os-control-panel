@@ -32,7 +32,7 @@ abstract class RequestHandler
                     exit();
                 }
             } catch (Exception $e) {
-                error_log("Middleware handling raised an exception: ".$e->getMessage());
+                error_log('Middleware handling raised an exception: '.$e->getMessage());
                 http_response_code(500);
                 exit();
             }

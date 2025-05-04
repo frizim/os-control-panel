@@ -1,7 +1,7 @@
 {
     "name": "@os-control-panel/frontend",
     "description": "OS-CPL frontend components",
-    "version": "1.0.0",
+    "version": "1.3.0",
     "private": true,
     "scripts": {
         "build:locales": "genrb -s locales -d locales {en,de}.txt",

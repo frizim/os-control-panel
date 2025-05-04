@@ -2,6 +2,7 @@
 FROM node:22-alpine AS build-frontend
 COPY js ./js
 COPY scss ./scss
+COPY locales ./locales
 COPY package.json package-lock.json webpack.config.mjs ./
 RUN ls -al
 RUN npm update && npm audit fix && npm install
@@ -17,7 +18,7 @@ FROM nginx:mainline-alpine-slim AS runtime
 LABEL org.opencontainers.image.authors="frizim.com"
 WORKDIR /app
 RUN apk add curl dcron libcap \
-    php84-curl php84-fpm php84-mbstring php84-pdo_mysql php84-pecl-apcu php84-session php84-xml && \
+    php84-curl php84-fpm php84-intl php84-mbstring php84-pdo_mysql php84-pecl-apcu php84-session php84-xml && \
     
     apk cache clean && \
     mkdir -p /app/data /run/nginx /run/php /var/cache/nginx /var/log/php84 /var/lib/php/sessions && \
@@ -45,7 +46,7 @@ RUN sed -iE 's/^;error_log.*/error_log=\/dev\/stderr/' /etc/php84/php-fpm.conf &
       export SMTP_SENDER_DISPLAY="${SMTP_SENDER_DISPLAY:-${GRID_NAME} Support}" \n\
       \n\
       echo "${CRON_KEY}" > /tmp/cronkey \n\
-      envsubst < ./config.ini.template > ./config.ini' > /docker-entrypoint.d/80-mcp-config.sh && \
+      envsubst < ./config.ini.template > ./config.ini' > /docker-entrypoint.d/80-oscpl-config.sh && \
     echo $'#!/bin/sh \n\
       CRON_KEY="$(cat /tmp/cronkey)" \n\
       rm /tmp/cronkey \n\
@@ -59,6 +60,7 @@ RUN sed -iE 's/^;error_log.*/error_log=\/dev\/stderr/' /etc/php84/php-fpm.conf &
 # ------------- COPY CONFIG TEMPLATE & APP FILES --------------
 COPY --chown=root:nginx --chmod=550 deploy/config.ini.template .
 COPY --chown=root:nginx --chmod=550 templates ./templates
+COPY --chown=root:nginx --chmod=550 --from=build-frontend locales ./locales
 COPY --chown=root:nginx --chmod=550 --from=build-frontend public ./public
 COPY --chown=root:nginx --chmod=550 public/index.php ./public/index.php
 COPY --chown=root:nginx --chmod=550 --from=build-backend app/app ./app

@@ -134,6 +134,17 @@ class OpenSim
         return "";
     }
 
+    public function getUserLanguage($uuid): ?string {
+        $statement = $this->pdo->prepare('SELECT Language FROM AgentPrefs WHERE PrincipalID = ?');
+        $statement->execute(array($uuid));
+
+        if($row = $statement->fetch()) {
+            return substr($row['Language'], 0, 2);
+        }
+
+        return null;
+    }
+
     private function getEntryCount($table): int
     {
         $statementCount = $this->pdo->prepare('SELECT COUNT(*) AS Count FROM '.$table);

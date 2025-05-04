@@ -1,10 +1,11 @@
 {
-    "name": "mcp-frontend",
-    "description": "MCP frontend components",
+    "name": "@os-control-panel/frontend",
+    "description": "OS-CPL frontend components",
     "version": "1.0.0",
     "private": true,
     "scripts": {
-        "build": "genrb -s locales -d locales de.txt && webpack",
+        "build:locales": "genrb -s locales -d locales {en,de}.txt",
+        "build": "npm run build:locales && webpack",
         "server": "php -S localhost:8080 -t public/",
         "watch": "nodemon -e html,scss,js --ignore public -x \"npm run build\"",
         "dev": "npm run watch & npm run server"

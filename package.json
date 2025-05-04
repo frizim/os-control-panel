@@ -4,7 +4,7 @@
     "version": "1.3.0",
     "private": true,
     "scripts": {
-        "build:locales": "genrb -s locales -d locales {en,de}.txt",
+        "build:locales": "genrb -s locales -d locales en.txt de.txt",
         "build": "npm run build:locales && webpack",
         "server": "php -S localhost:8080 -t public/",
         "watch": "nodemon -e html,scss,js --ignore public -x \"npm run build\"",

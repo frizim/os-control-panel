@@ -4,14 +4,14 @@ COPY js ./js
 COPY scss ./scss
 COPY locales ./locales
 COPY package.json package-lock.json webpack.config.mjs ./
-RUN ls -al
+RUN apk add icu
 RUN npm update && npm audit fix && npm install
 RUN npm run build
 
 FROM composer:lts AS build-backend
 COPY app ./app
 COPY composer.json composer.lock .
-RUN composer install
+RUN composer install --ignore-platform-req=ext-intl
 
 # ------------- INSTALL AND CONFIGURE PHP & NGINX -------------
 FROM nginx:mainline-alpine-slim AS runtime
@@ -19,7 +19,6 @@ LABEL org.opencontainers.image.authors="frizim.com"
 WORKDIR /app
 RUN apk add curl dcron libcap \
     php84-curl php84-fpm php84-intl php84-mbstring php84-pdo_mysql php84-pecl-apcu php84-session php84-xml && \
-    
     apk cache clean && \
     mkdir -p /app/data /run/nginx /run/php /var/cache/nginx /var/log/php84 /var/lib/php/sessions && \
     chown -R nginx:nginx /app/data /etc/nginx /run/nginx /run/php /var/cache/nginx /var/log/php84 /var/lib/php && \

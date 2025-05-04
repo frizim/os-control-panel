@@ -43,6 +43,7 @@ form button {
     min-width: 90px;
     max-width: 250px;
     color: $gray-500;
+    flex-shrink: 0;
 }
 
 .sidebar.toggled {

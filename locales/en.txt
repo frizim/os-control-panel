@@ -1,0 +1,182 @@
+en:table {
+    common.title {"OS-CPL - {page}"}
+    common.cancel {"Cancel"}
+    common.close {"Close"}
+
+    common.error.404 {"The requested page was not found"}
+
+    properties.name {"Name"}
+    properties.firstName {"First Name"}
+    properties.lastName {"Last Name"}
+    properties.username {"Username"}
+    properties.password {"Password"}
+    properties.email {"E-Mail Address"}
+    properties.offlineIm {"Offline IM"}
+    properties.partner {"Partner Name"}
+    properties.actions {"Actions"}
+    properties.level {"User Level"}
+    properties.inventory {"Inventory"}
+    properties.region {"Region"}
+
+    properties.groups {"Groups"}
+    properties.profile {"Profile"}
+    properties.friends {"Friends List"}
+
+    error.title {"Error"}
+    error.back {"Back"}
+
+    login.title {"Sign In"}
+    login.forgotPassword {"Forgot Password"}
+    login.submit {"Sign In"}
+    login.error.invalid {"Please enter your username (first and last name) and your password"}
+    login.error.invalidCredentials {"Invalid username and/or password"}
+
+    register.title {"Registration"}
+    register.defaultAvatar {"Choose your default avatar:"}
+    register.tos {"Terms of Service"}
+    register.confirmTos {"I have read the {tosLink} and accept them."}
+    register.button {"Register"}
+
+    register.error.noInvite {"You need an invitation code to register on this grid."}
+    register.error.invalidInvite {"Your invitation code is not valid. Make sure you use the exact link you received."}
+    register.error.inviteExpired {"Your invitation code was already used or expired."}
+    register.error.serverError {"Error creating your account, please try again later."}
+    register.error.nameTaken {"The name you chose is already taken."}
+    register.error.passwordTooShort {"Your password needs to be at least {length, number, integer} characters long."}
+    register.error.invalidAvatar {"This default avatar does not exist."}
+    register.error.invalid {"Make sure you filled out all fields."}
+    register.error.tos {"You need to read and accept the terms of service."}
+
+    forgotPassword.title {"Forgot Password"}
+    forgotPassword.submit {"Submit"}
+    forgotPassword.invalid {"Enter your username (first and last name) and the e-mail address you registered with."}
+    forgotPassword.success {"If the data you entered matches our records, you will receive an e-mail with further information soon."}
+
+    resetPassword.title {"Set new Password"}
+    resetPassword.repeatPassword {"Repeat Password"}
+    resetPassword.submit {"Change Password"}
+    resetPassword.error.passwordsNotMatching {"Passwords do not match"}
+    resetPassword.error.tokenInvalid {"Invalid password reset link. Please click or copy the link from the message you received."}
+    resetPassword.error.tokenExpired {"This password reset link has expired. Please request a new one."}
+    resetPassword.success {"You can now sign in using your new password!"}
+
+    dashboard.title {"Grid Management"}
+    dashboard.logout {"Sign Out"}
+    dashboard.shrinkMenu {"Shrink Menu"}
+
+    dashboard.user-online-state.title {"Online users"}
+    dashboard.user-online-state.noUsers {"There is nobody online!"}
+
+    dashboard.regions.title {"Your Regions"}
+    dashboard.regions.name {"Region Name"}
+    dashboard.regions.owner {"Owner"}
+    dashboard.regions.position {"Position"}
+    dashboard.regions.stats {"Prims: {Prims}; RAM usage: {ProcMem}; SIM/PHYS FPS: {SimFPS} / {PhyFPS} ({RegionVersion})"}
+    dashboard.regions.noStats {"No statistics available"}
+    dashboard.regions.delete {"Delete"}
+
+    dashboard.home.title {"Dashboard"}
+    dashboard.home.usersOnline {"Users online"}
+    dashboard.home.regions {"Regions"}
+
+    dashboard.profile.title {"Profile"}
+    dashboard.profile.save {"Save"}
+    dashboard.profile.oldPassword {"Current Password"}
+    dashboard.profile.newPassword {"New Password"}
+    dashboard.profile.newPasswordRepeat {"Repeat new Password"}
+    dashboard.profile.passwordChanged {"New password has been saved"}
+
+    dashboard.profile.error.nameTaken {"The username you chose is already taken"}
+    dashboard.profile.error.invalidCredentials {"You did not enter your current password correctly"}
+    dashboard.profile.error.passwordsNotMatching {"Passwords do not match"}
+    dashboard.profile.error.passwordChangeInvalid {"Make sure to fill out all fields"}
+
+    dashboard.profile.delete.title {"Delete Account"}
+    dashboard.profile.delete.help {"Here you can delete your account. Deletion will start immediately after you confirm. All associated data, including inventory, identities and friends list, can not be recovered afterwards."}
+    dashboard.profile.delete.password {"Current Password"}
+    dashboard.profile.delete.confirm {"I want to permanently delete my account, including inventory and all associated data."}
+    dashboard.profile.delete.submit {"Confirm Deletion"}
+
+    dashboard.profile.delete.error.serverError {"Error deleting your account. Please try again later."}
+    dashboard.profile.delete.error.invalidCredentials {"To confirm deletion, you have to enter your current password correctly."}
+    dashboard.profile.delete.error.invalid {"You have to confirm and enter your current password in order to delete your account."}
+
+    dashboard.profile.iar.title {"IAR Backup"}
+    dashboard.profile.iar.download {"Download"}
+    dashboard.profile.iar.help {"You can create an IAR of your inventory here.\nThis will take a while. Once the process is completed, you will receive a PM with a download link"}
+    dashboard.profile.iar.create {"Create IAR"}
+
+    dashboard.profile.iar.started {"Your IAR request has been received. When completed, you will receive the download link through PM."}
+    dashboard.profile.iar.inprogress {"You IAR is currently being created.<br>Please wait until you receive a PM."}
+    dashboard.profile.iar.done {"You can download your IAR (created on {created, date, short}) now. It is protected with the password <b>password</b>."}
+
+    dashboard.identities.title {"Identities"}
+    dashboard.identities.help {"Identities allow you to switch your account between different UUIDs.\nYour inventory and groups will stay the same.\nEach identity has its own appearance, profile and friends list."}
+    dashboard.identities.active {"Active"}
+    dashboard.identities.activate {"Activate"}
+    dashboard.identities.delete.title {"Delete"}
+    dashboard.identities.delete.confirm {"Confirm Identity Deletion"}
+    dashboard.identities.delete.removing {"If you delete this identity, the following associated data will also be deleted:"}
+    dashboard.identities.delete.prompt {"Anything else is not affected.\nDo you really want to delete the identity <b id='idc-ident-name'>{identity}</b>?"}
+    dashboard.identities.delete.button {"Delete Identity"}
+    dashboard.identities.create {"Create Identity"}
+    dashboard.identities.create.help {"You can create a new identity here."}
+    dashboard.identities.switch.title {"Switch Identity"}
+    dashboard.identities.switch.confirm {"Confirm Switching Identity"}
+    dashboard.identities.switch.common {"The following settings are the same across all identities:"}
+    dashboard.identities.switch.changing {"In contrast, these settings are separate for each identity:"}
+    dashboard.identities.switch.prompt {"Do you want to switch your active identity from <b>{current}</b> to <b id='isc-ident-name'>{new}</b>? You can switch back any time."}
+
+    dashboard.identities.error.loggedin {"You can not switch identities while being online. Please close your viewer."}
+    dashboard.identities.error.nameTaken {"The name you chose is already taken"}
+    dashboard.identities.error.nameInvalid {"Name has to consist of first and last name"}
+
+    dashboard.groups.title {"Your Groups"}
+    dashboard.groups.name {"Name"}
+    dashboard.groups.founder {"Founder"}
+    dashboard.groups.leave {"Leave"}
+
+    dashboard.friends.title {"Your Friends"}
+    dashboard.friends.name {"Name"}
+    dashboard.friends.delete {"Delete"}
+
+    dashboard.admin.title {"Admin Settings"}
+
+    dashboard.admin.users {"Manage Users"}
+    dashboard.admin.users.delete {"Delete"}
+    dashboard.admin.users.deleteIdentity {"Delete Identity"}
+    dashboard.admin.users.resetPassword {"Reset Password"}
+    dashboard.admin.users.createInvite.help {"Use the button below to create a new invitation link.\nWhoever receives it is able to register on this grid.\nEach link is unique and can only be used once."}
+    dashboard.admin.users.createInvite.output {"Invitation Link"}
+    dashboard.admin.users.createInvite.create {"Generate Link"}
+
+    dashboard.admin.users.resetPassword.success {"The password for {name} can be reset using this link: <b>{resetLink}</b> (valid 24 hours)"}
+
+    dashboard.admin.identities.delete.error {"Could not delete identity <b>{identityName}</b>"}
+    dashboard.admin.identities.delete.success {"<b>{userName}</b>'s identity <b>{identityName}</b> has been deleted"}
+
+    dashboard.admin.users.delete.error {"Could not delete account <b>{name}</b>."}
+    dashboard.admin.users.delete.success {"Account <b>{name}</b> has been deleted"}
+
+    dashboard.admin.groups {"Manage Groups"}
+    dashboard.admin.regions {"Manage Regions"}
+
+    offlineim.introduction {"You received {category} on {grid}."}
+    offlineim.sentBy {"Sent by: {sender}"}
+
+    splash.welcome {"Welcome\nSign in to enter {grid}.\n\n{news}"}
+    splash.status {"Status: {status}"}
+    splash.status.online {"Online"}
+
+    splash.registered {"Registered users: {registered, number, integer}"}
+    splash.regions {"Regions: {regions, number, integer}"}
+    splash.online {"Users online: {online, number, integer}"}
+
+    email.passwordReset {"<p>Hi {name},</p>\n\n<p>we received a request to reset your account's password.</p><p>Click <a href=\"{resetLink}\">here</a> to set a new password. This link is valid for 24 hours.</p>\n\n<p>If you did not send this request, just ignore it. Feel free to reach out to us if you have further questions.</p>"}
+    email.passwordReset.subject {"Password reset for {name}"}
+    email.passwordReset.preheader {"This is how you can set a new password for your account"}
+
+    email.passwordResetNotification {"<p>Hi {name},</p>\n\n<p>your account's password was just changed through our \"Forgot Password\" feature.</p><p>If you did not perform this change yourself, please contact us immediately.</p>"}
+    email.passwordResetNotification.subject {"New password set for {name}"}
+    email.passwordResetNotification.preheader {"A new password has been set for your account"}
+}

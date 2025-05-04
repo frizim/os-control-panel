@@ -155,8 +155,8 @@ de:table {
     dashboard.admin.identities.delete.error {"Identität <b>{identityName}</b> konnte nicht gelöscht werden"}
     dashboard.admin.identities.delete.success {"Identität <b>{identityName}</b> von <b>{userName}</b> wurde gelöscht"}
 
-    dashboard.admin.users.delete.error {"Der Account <b>{name}</b> wurde gelöscht."}
-    dashboard.admin.users.delete.success {"Der Account <b>{name}</b> konnte nicht gelöscht werden."}
+    dashboard.admin.users.delete.error {"Der Account <b>{name}</b> konnte nicht gelöscht werden."}
+    dashboard.admin.users.delete.success {"Der Account <b>{name}</b> wurde gelöscht."}
 
     dashboard.admin.groups {"Gruppen verwalten"}
     dashboard.admin.regions {"Regionen verwalten"}

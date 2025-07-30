@@ -16,6 +16,7 @@ RUN composer install --ignore-platform-req=ext-intl
 # ------------- INSTALL AND CONFIGURE PHP & NGINX -------------
 FROM nginx:mainline-alpine-slim AS runtime
 LABEL org.opencontainers.image.authors="frizim.com"
+LABEL org.opencontainers.image.version="1.3.1"
 WORKDIR /app
 RUN apk add curl dcron libcap \
     php84-curl php84-fpm php84-intl php84-mbstring php84-pdo_mysql php84-pecl-apcu php84-session php84-xml && \

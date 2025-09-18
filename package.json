@@ -11,7 +11,7 @@
         "dev": "npm run watch & npm run server"
     },
     "dependencies": {
-        "@fontsource/ubuntu": "^5.2.6",
+        "@fontsource/ubuntu": "^5.2.8",
         "@fortawesome/fontawesome-free": "^7.0.0",
         "bootstrap": "^5.3.7"
     },

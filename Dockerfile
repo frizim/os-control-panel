@@ -5,7 +5,7 @@ COPY scss ./scss
 COPY locales ./locales
 COPY package.json package-lock.json webpack.config.mjs ./
 RUN apk add icu
-RUN npm update && npm audit fix && npm install
+RUN npm update && npm audit fix && npm ci
 RUN npm run build
 
 FROM composer:lts AS build-backend
